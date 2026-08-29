@@ -1,0 +1,157 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+enum CefrLevel {
+  A1
+  A2
+  B1
+  B2
+  C1
+  C2
+}
+
+enum ExerciseType {
+  CLOZE
+  MULTIPLE_CHOICE
+  MATCHING
+  TRANSLATION_HU_TO_EN
+  TRANSLATION_EN_TO_HU
+}
+
+model User {
+  id                 String              @id @default(uuid())
+  email              String              @unique
+  passwordHash       String
+  targetCefr         CefrLevel           @default(B2)
+  currentCefr        CefrLevel           @default(A2)
+  streakDays         Int                 @default(0)
+  lastActiveAt       DateTime?
+  progressEntries    UserProgress[]
+  mistakeLogs        MistakeLog[]
+  writingSubmissions WritingSubmission[]
+  createdAt          DateTime            @default(now())
+  updatedAt          DateTime            @updatedAt
+}
+
+model LearningPack {
+  id               String            @id @default(uuid())
+  title            String
+  cefr             CefrLevel
+  topic            String            // "IT", "Business", "Everyday", "Academic"
+  focus            String
+  estimatedMinutes Int
+  rawJson          Json
+  lessons          Lesson[]
+  vocabulary       VocabularyItem[]
+  chunks           Chunk[]
+  contrastiveNotes ContrastiveNote[]
+  exercises        Exercise[]
+  readingMaterials ReadingMaterial[]
+  createdAt        DateTime          @default(now())
+}
+
+model Lesson {
+  id        String       @id @default(uuid())
+  packId    String
+  pack      LearningPack @relation(fields: [packId], references: [id], onDelete: Cascade)
+  title     String
+  contentMd String       // Hungarian explanations with embedded English examples
+  createdAt DateTime     @default(now())
+}
+
+model VocabularyItem {
+  id            String       @id @default(uuid())
+  packId        String
+  pack          LearningPack @relation(fields: [packId], references: [id], onDelete: Cascade)
+  term          String       // Target English term
+  phonetics     String?
+  translationHu String       // Hungarian meaning
+  definitionEn  String?      // English definition for B2+ levels
+  collocations  String[]
+  examples      String[]
+  createdAt     DateTime     @default(now())
+}
+
+model Chunk {
+  id              String       @id @default(uuid())
+  packId          String
+  pack            LearningPack @relation(fields: [packId], references: [id], onDelete: Cascade)
+  phrase          String       // Target English chunk
+  meaningHu       String       // Hungarian translation
+  contextSentence String       // English context sentence
+  createdAt       DateTime     @default(now())
+}
+
+model ContrastiveNote {
+  id            String       @id @default(uuid())
+  packId        String
+  pack          LearningPack @relation(fields: [packId], references: [id], onDelete: Cascade)
+  hunglishTrap  String       // Common Hungarian error pattern
+  correctUsage  String       // Correct English usage
+  explanationHu String       // Hungarian grammatical/cultural note
+  createdAt     DateTime     @default(now())
+}
+
+model Exercise {
+  id        String       @id @default(uuid())
+  packId    String
+  pack      LearningPack @relation(fields: [packId], references: [id], onDelete: Cascade)
+  type      ExerciseType
+  prompt    String       // Instructions in Hungarian or English
+  payload   Json         // Options, gap-fill sentences, or hints
+  solution  String       // Correct English answer
+  mistakes  MistakeLog[]
+  createdAt DateTime     @default(now())
+}
+
+model ReadingMaterial {
+  id        String       @id @default(uuid())
+  packId    String
+  pack      LearningPack @relation(fields: [packId], references: [id], onDelete: Cascade)
+  title     String
+  bodyText  String       // Authentic English reading text
+  questions Json         // Reading comprehension questions
+  createdAt DateTime     @default(now())
+}
+
+model UserProgress {
+  id            String    @id @default(uuid())
+  userId        String
+  user          User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  itemType      String    // "VOCAB", "CHUNK", "EXERCISE"
+  itemId        String
+  srsStage      Int       @default(0) // 0: New, 1-5: Intervals (1d, 3d, 7d, 14d, 30d)
+  consecutiveOk Int       @default(0)
+  totalAttempts Int       @default(0)
+  nextReviewAt  DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  @@unique([userId, itemType, itemId])
+}
+
+model MistakeLog {
+  id         String   @id @default(uuid())
+  userId     String
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  exerciseId String
+  exercise   Exercise @relation(fields: [exerciseId], references: [id], onDelete: Cascade)
+  userAnswer String
+  createdAt  DateTime @default(now())
+}
+
+model WritingSubmission {
+  id            String   @id @default(uuid())
+  userId        String
+  user          User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  promptText    String
+  submittedText String
+  aiScore       Int?
+  aiFeedback    Json     // Format: { errors: [{ original: string, replacement: string, explanationHu: string, ruleHu: string }] }
+  createdAt     DateTime @default(now())
+}

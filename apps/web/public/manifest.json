@@ -1,0 +1,16 @@
+{
+  "name": "Lexicon: English Expedition Log",
+  "short_name": "Lexicon",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#F5EFE6",
+  "theme_color": "#F5EFE6",
+  "description": "Tactile Contrastive English Expedition for Hungarian Speakers",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "192x192 512x512",
+      "type": "image/svg+xml"
+    }
+  ]
+}

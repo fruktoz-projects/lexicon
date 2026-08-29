@@ -1,0 +1,23 @@
+{
+  "name": "lexicon-monorepo",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Lexicon: English Expedition Log — Contrastive English Learning for Hungarian Speakers",
+  "scripts": {
+    "dev": "pnpm --parallel --filter @lexicon/api --filter @lexicon/web dev",
+    "dev:api": "pnpm --filter @lexicon/api dev",
+    "dev:web": "pnpm --filter @lexicon/web dev",
+    "build": "pnpm --recursive run build",
+    "typecheck": "pnpm --recursive run typecheck",
+    "lint": "pnpm --recursive run lint",
+    "db:migrate": "pnpm --filter @lexicon/api db:migrate",
+    "db:seed": "pnpm --filter @lexicon/api db:seed",
+    "docker:up": "docker compose up -d",
+    "docker:down": "docker compose down"
+  },
+  "devDependencies": {
+    "typescript": "^5.7.3",
+    "tsx": "^4.19.3"
+  },
+  "packageManager": "pnpm@9.15.0"
+}
