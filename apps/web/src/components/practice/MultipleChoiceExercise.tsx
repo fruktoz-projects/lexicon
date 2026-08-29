@@ -24,7 +24,7 @@ export const MultipleChoiceExercise: React.FC<MultipleChoiceExerciseProps> = ({
       </div>
 
       {/* Question Box */}
-      <div className="p-5 sm:p-7 bg-[#EAD9B8] rounded-2xl border-2 border-[#C5A566] text-center shadow-inner">
+      <div className="p-5 sm:p-7 bg-papyrus-subtle rounded-2xl text-center shadow-inner">
         <div className="text-base sm:text-2xl font-scribe font-bold text-[#1C150D] leading-relaxed">
           {payload.question}
         </div>
@@ -45,17 +45,15 @@ export const MultipleChoiceExercise: React.FC<MultipleChoiceExerciseProps> = ({
                 audio.playClickSound();
                 onSelect(option);
               }}
-              className={`p-3.5 sm:p-4 rounded-xl sm:rounded-2xl border-2 text-left font-medium transition-all duration-150 flex items-center justify-between group active:scale-98 shadow-sm ${
-                isSelected
-                  ? 'bg-[#8B5E3C] text-white border-[#6B4226] shadow-md scale-[1.02]'
-                  : 'bg-[#FBF4E4] hover:bg-white text-[#1C150D] border-[#C5A566] hover:border-[#8B5E3C]'
-              }`}
+              className={`p-3.5 sm:p-4 rounded-xl sm:rounded-2xl text-left font-medium transition-all duration-150 flex items-center justify-between group active:scale-98 shadow-sm ${isSelected
+                  ? 'bg-[#E5C175] text-[#1C150D] shadow-md scale-[1.02] font-bold'
+                  : 'bg-white hover:bg-papyrus-subtle text-[#1C150D]'
+                }`}
             >
               <span className="text-sm sm:text-base font-scribe font-bold">{option}</span>
               <span
-                className={`keyboard-badge hidden sm:inline-flex ${
-                  isSelected ? 'bg-white/25 text-white border-white/40' : ''
-                }`}
+                className={`keyboard-badge hidden sm:inline-flex ${isSelected ? 'bg-papyrus-warm text-[#1C150D]' : ''
+                  }`}
               >
                 {keyNum}
               </span>

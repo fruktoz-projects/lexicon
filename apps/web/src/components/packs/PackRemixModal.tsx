@@ -80,14 +80,14 @@ export const PackRemixModal: React.FC<PackRemixModalProps> = ({
     >
       <form onSubmit={handleRemix} className="space-y-5">
         {error && (
-          <div className="p-3.5 rounded-xl bg-red-100 border border-red-300 text-red-950 text-xs font-sans font-bold shadow-sm">
+          <div className="p-3.5 rounded-xl bg-status-errorBg border border-status-errorBorder text-red-950 text-xs font-sans font-bold shadow-subtle">
             ⚠️ {error}
           </div>
         )}
 
         {/* CEFR Level */}
         <div>
-          <label className="block text-xs font-monument font-bold text-[#1C150D] mb-1.5">
+          <label className="block text-xs font-sans font-bold text-papyrus-ink mb-1.5">
             1. CEFR szint *
           </label>
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
@@ -101,11 +101,10 @@ export const PackRemixModal: React.FC<PackRemixModalProps> = ({
                     audio.playClickSound();
                     setCefr(opt.level);
                   }}
-                  className={`p-2.5 rounded-xl border-2 text-xs font-monument font-bold flex items-center justify-center gap-1 transition-all shadow-sm ${
-                    isSelected
-                      ? 'bg-[#8B5E3C] text-white border-[#6B4226]'
-                      : 'bg-white border-[#C5A566] text-[#1C150D] hover:bg-[#F5EBD4]'
-                  }`}
+                  className={`p-2.5 rounded-xl border-2 text-xs font-sans font-bold flex items-center justify-center gap-1 transition-all shadow-subtle ${isSelected
+                      ? 'bg-[#E5C175] text-papyrus-ink border-[#DDB460]'
+                      : 'bg-white border-papyrus-border text-papyrus-ink hover:bg-papyrus-card'
+                    }`}
                 >
                   {isSelected && <CheckCircle2 size={14} />}
                   <span>{opt.label}</span>
@@ -117,7 +116,7 @@ export const PackRemixModal: React.FC<PackRemixModalProps> = ({
 
         {/* Zone Selection */}
         <div>
-          <label className="block text-xs font-monument font-bold text-[#1C150D] mb-1.5">
+          <label className="block text-xs font-sans font-bold text-papyrus-ink mb-1.5">
             2. Tartalmi terület
           </label>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
@@ -131,14 +130,13 @@ export const PackRemixModal: React.FC<PackRemixModalProps> = ({
                     audio.playClickSound();
                     setZone(z.type);
                   }}
-                  className={`p-2.5 rounded-xl border-2 text-xs font-monument font-bold text-left flex items-center justify-between transition-all shadow-sm ${
-                    isSelected
-                      ? 'bg-[#FAF0CD] border-[#8B5E3C] text-[#1C150D] ring-1 ring-[#8B5E3C]/30'
-                      : 'bg-white border-[#C5A566] text-[#1C150D] hover:bg-[#F5EBD4]'
-                  }`}
+                  className={`p-2.5 rounded-xl border-2 text-xs font-sans font-bold text-left flex items-center justify-between transition-all shadow-subtle ${isSelected
+                      ? 'bg-papyrus-warm border-brand text-papyrus-ink ring-1 ring-brand/30'
+                      : 'bg-white border-papyrus-border text-papyrus-ink hover:bg-papyrus-card'
+                    }`}
                 >
                   <span>{z.label}</span>
-                  {isSelected && <CheckCircle2 size={16} className="text-[#8B5E3C] shrink-0" />}
+                  {isSelected && <CheckCircle2 size={16} className="text-brand shrink-0" />}
                 </button>
               );
             })}
@@ -146,19 +144,19 @@ export const PackRemixModal: React.FC<PackRemixModalProps> = ({
         </div>
 
         {/* Modular Composition Sliders */}
-        <div className="bg-[#EAD9B8] p-4 rounded-2xl border border-[#C5A566] space-y-3.5">
-          <div className="flex items-center gap-2 font-monument font-bold text-xs text-[#1C150D]">
-            <Sliders size={15} className="text-[#8B5E3C]" />
+        <div className="bg-papyrus-subtle p-4 rounded-2xl border border-papyrus-border space-y-3.5">
+          <div className="flex items-center gap-2 font-sans font-bold text-xs text-papyrus-ink">
+            <Sliders size={15} className="text-brand" />
             <span>Almodulok mennyisége:</span>
           </div>
 
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-            <div className="bg-white p-2.5 rounded-xl border border-[#C5A566] text-center shadow-sm">
-              <label className="text-[11px] font-monument text-[#7A6B55] block font-bold mb-1">Szavak</label>
+            <div className="bg-white p-2.5 rounded-xl border border-papyrus-border text-center shadow-subtle">
+              <label className="text-[11px] font-sans text-papyrus-muted block font-bold mb-1">Szavak</label>
               <select
                 value={vocabCount}
                 onChange={(e) => setVocabCount(parseInt(e.target.value, 10))}
-                className="w-full text-center font-mono font-bold text-sm bg-[#FBF4E4] border rounded-lg py-1 text-[#1C150D] focus:outline-none"
+                className="w-full text-center font-mono font-bold text-sm bg-papyrus-warm border rounded-lg py-1 text-papyrus-ink focus:outline-none"
               >
                 {[3, 4, 5, 6, 8, 10].map((num) => (
                   <option key={num} value={num}>{num} db</option>
@@ -166,12 +164,12 @@ export const PackRemixModal: React.FC<PackRemixModalProps> = ({
               </select>
             </div>
 
-            <div className="bg-white p-2.5 rounded-xl border border-[#C5A566] text-center shadow-sm">
-              <label className="text-[11px] font-monument text-[#7A6B55] block font-bold mb-1">Kollokációk</label>
+            <div className="bg-white p-2.5 rounded-xl border border-papyrus-border text-center shadow-subtle">
+              <label className="text-[11px] font-sans text-papyrus-muted block font-bold mb-1">Kollokációk</label>
               <select
                 value={chunkCount}
                 onChange={(e) => setChunkCount(parseInt(e.target.value, 10))}
-                className="w-full text-center font-mono font-bold text-sm bg-[#FBF4E4] border rounded-lg py-1 text-[#1C150D] focus:outline-none"
+                className="w-full text-center font-mono font-bold text-sm bg-papyrus-warm border rounded-lg py-1 text-papyrus-ink focus:outline-none"
               >
                 {[2, 3, 4, 5, 6, 8].map((num) => (
                   <option key={num} value={num}>{num} db</option>
@@ -179,12 +177,12 @@ export const PackRemixModal: React.FC<PackRemixModalProps> = ({
               </select>
             </div>
 
-            <div className="bg-white p-2.5 rounded-xl border border-[#C5A566] text-center shadow-sm">
-              <label className="text-[11px] font-monument text-[#7A6B55] block font-bold mb-1">Hunglish csapdák</label>
+            <div className="bg-white p-2.5 rounded-xl border border-papyrus-border text-center shadow-subtle">
+              <label className="text-[11px] font-sans text-papyrus-muted block font-bold mb-1">Hunglish csapdák</label>
               <select
                 value={trapCount}
                 onChange={(e) => setTrapCount(parseInt(e.target.value, 10))}
-                className="w-full text-center font-mono font-bold text-sm bg-[#FBF4E4] border rounded-lg py-1 text-[#1C150D] focus:outline-none"
+                className="w-full text-center font-mono font-bold text-sm bg-papyrus-warm border rounded-lg py-1 text-papyrus-ink focus:outline-none"
               >
                 {[1, 2, 3, 4, 5].map((num) => (
                   <option key={num} value={num}>{num} db</option>
@@ -192,12 +190,12 @@ export const PackRemixModal: React.FC<PackRemixModalProps> = ({
               </select>
             </div>
 
-            <div className="bg-white p-2.5 rounded-xl border border-[#C5A566] text-center shadow-sm">
-              <label className="text-[11px] font-monument text-[#7A6B55] block font-bold mb-1">Feladatok</label>
+            <div className="bg-white p-2.5 rounded-xl border border-papyrus-border text-center shadow-subtle">
+              <label className="text-[11px] font-sans text-papyrus-muted block font-bold mb-1">Feladatok</label>
               <select
                 value={exerciseCount}
                 onChange={(e) => setExerciseCount(parseInt(e.target.value, 10))}
-                className="w-full text-center font-mono font-bold text-sm bg-[#FBF4E4] border rounded-lg py-1 text-[#1C150D] focus:outline-none"
+                className="w-full text-center font-mono font-bold text-sm bg-papyrus-warm border rounded-lg py-1 text-papyrus-ink focus:outline-none"
               >
                 {[3, 4, 5, 6, 8, 10].map((num) => (
                   <option key={num} value={num}>{num} db</option>
@@ -209,7 +207,7 @@ export const PackRemixModal: React.FC<PackRemixModalProps> = ({
 
         {/* Custom Pack Name */}
         <div>
-          <label className="block text-xs font-monument font-bold text-[#1C150D] mb-1.5">
+          <label className="block text-xs font-sans font-bold text-papyrus-ink mb-1.5">
             Egyedi tananyag név (opcionális)
           </label>
           <input
@@ -217,12 +215,12 @@ export const PackRemixModal: React.FC<PackRemixModalProps> = ({
             placeholder={`pl. B2 ismétlő remix • ${new Date().toLocaleDateString('hu-HU')}`}
             value={customTitle}
             onChange={(e) => setCustomTitle(e.target.value)}
-            className="w-full px-4 py-2.5 rounded-xl border-2 border-[#C5A566] bg-white text-xs sm:text-sm text-[#1C150D] font-medium placeholder:text-[#9A8B73] focus:border-[#8B5E3C] focus:ring-2 focus:ring-[#8B5E3C]/20 focus:outline-none shadow-sm"
+            className="w-full px-4 py-2.5 rounded-xl border-2 border-papyrus-border bg-white text-xs sm:text-sm text-papyrus-ink font-medium placeholder:text-papyrus-muted/60 focus:border-brand focus:ring-2 focus:ring-brand/20 focus:outline-none shadow-subtle"
           />
         </div>
 
         {/* Action Buttons */}
-        <div className="flex items-center justify-end gap-3 pt-2 border-t border-[#C5A566]">
+        <div className="flex items-center justify-end gap-3 pt-2 border-t border-papyrus-border">
           <Button type="button" variant="secondary" onClick={onClose} disabled={isLoading}>
             Mégse
           </Button>
@@ -231,7 +229,7 @@ export const PackRemixModal: React.FC<PackRemixModalProps> = ({
             type="submit"
             variant="primary"
             disabled={isLoading}
-            className="flex items-center gap-2 px-6 py-2.5 font-monument"
+            className="flex items-center gap-2 px-6 py-2.5 font-sans font-bold"
           >
             {isLoading ? (
               <>

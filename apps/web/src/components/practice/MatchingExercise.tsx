@@ -74,13 +74,12 @@ export const MatchingExercise: React.FC<MatchingExerciseProps> = ({
                 type="button"
                 disabled={disabled || isDone}
                 onClick={() => handleSelectLeft(p.left)}
-                className={`w-full p-3 sm:p-3.5 rounded-xl border-2 text-left text-xs sm:text-sm font-scribe font-bold transition-all active:scale-98 shadow-sm ${
-                  isDone
-                    ? 'bg-[#E0F0E8] border-[#6BB38A] text-[#1C4C34] opacity-60 line-through'
+                className={`w-full p-3 sm:p-3.5 rounded-xl text-left text-xs sm:text-sm font-scribe font-bold transition-all active:scale-98 shadow-sm ${isDone
+                    ? 'bg-[#E0F0E8] border border-[#6BB38A] text-[#1C4C34] opacity-60 line-through'
                     : isSelected
-                    ? 'bg-[#8B5E3C] text-white border-[#6B4226] shadow-md scale-102'
-                    : 'bg-[#FBF4E4] border-[#C5A566] text-[#1C150D] hover:border-[#8B5E3C]'
-                }`}
+                      ? 'bg-[#E5C175] text-[#1C150D] shadow-md scale-102'
+                      : 'bg-white text-[#1C150D] hover:bg-papyrus-subtle'
+                  }`}
               >
                 {p.left}
               </button>
@@ -102,13 +101,12 @@ export const MatchingExercise: React.FC<MatchingExerciseProps> = ({
                 type="button"
                 disabled={disabled || isDone || !selectedLeft}
                 onClick={() => handleSelectRight(right)}
-                className={`w-full p-3 sm:p-3.5 rounded-xl border-2 text-left text-xs sm:text-sm font-sans font-semibold transition-all active:scale-98 shadow-sm ${
-                  isDone
-                    ? 'bg-[#E0F0E8] border-[#6BB38A] text-[#1C4C34] opacity-60 line-through'
+                className={`w-full p-3 sm:p-3.5 rounded-xl text-left text-xs sm:text-sm font-sans font-semibold transition-all active:scale-98 shadow-sm ${isDone
+                    ? 'bg-[#E0F0E8] border border-[#6BB38A] text-[#1C4C34] opacity-60 line-through'
                     : selectedLeft
-                    ? 'bg-white border-[#8B5E3C] text-[#1C150D] hover:bg-[#FAF0CD] cursor-pointer'
-                    : 'bg-[#EAD9B8]/60 border-[#C5A566] text-[#7A6B55]/60 cursor-not-allowed'
-                }`}
+                      ? 'bg-white text-[#1C150D] hover:bg-[#FAF0CD] cursor-pointer'
+                      : 'bg-papyrus-subtle/60 text-[#7A6B55]/60 cursor-not-allowed'
+                  }`}
               >
                 {right}
               </button>

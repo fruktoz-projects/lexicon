@@ -3,32 +3,26 @@ import { CefrLevel, LearningPackDetail, LearningPackSummary, ZoneType } from '@l
 import { api } from '../services/api';
 import { PackCard } from '../components/packs/PackCard';
 import { PackDetailModal } from '../components/packs/PackDetailModal';
-import { PackGeneratorModal } from '../components/packs/PackGeneratorModal';
 import { PackRemixModal } from '../components/packs/PackRemixModal';
 import { Button } from '../components/common/Button';
+import { useUiStore } from '../store/uiStore';
 import { Layers, Plus, Filter, Anchor, Coins, Cpu, Landmark, Shuffle } from 'lucide-react';
 import { audio } from '../services/audio';
 
 interface ZonesPageProps {
   initialZone?: ZoneType;
   onStartPractice: () => void;
-  onOpenGenerator: () => void;
-  isGeneratorOpen: boolean;
-  setIsGeneratorOpen: (open: boolean) => void;
 }
 
 export const ZonesPage: React.FC<ZonesPageProps> = ({
   initialZone,
   onStartPractice,
-  onOpenGenerator,
-  isGeneratorOpen,
-  setIsGeneratorOpen,
 }) => {
+  const { openGeneratorModal, isRemixModalOpen, openRemixModal, closeRemixModal } = useUiStore();
   const [selectedZone, setSelectedZone] = useState<string>(initialZone || 'all');
   const [selectedCefr, setSelectedCefr] = useState<string>('all');
   const [packs, setPacks] = useState<LearningPackSummary[]>([]);
   const [activePackDetail, setActivePackDetail] = useState<LearningPackDetail | null>(null);
-  const [isRemixOpen, setIsRemixOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
   const fetchPacks = async () => {
@@ -68,7 +62,7 @@ export const ZonesPage: React.FC<ZonesPageProps> = ({
     { id: 'all', label: 'Összes', icon: <Layers size={14} /> },
     { id: ZoneType.EVERYDAY, label: 'Mindennapok', icon: <Anchor size={14} /> },
     { id: ZoneType.BUSINESS, label: 'Üzleti', icon: <Coins size={14} /> },
-    { id: ZoneType.IT, label: 'IT', icon: <Cpu size={14} /> },
+    { id: ZoneType.IT, label: 'IT & Tech', icon: <Cpu size={14} /> },
     { id: ZoneType.ACADEMIC, label: 'Akadémiai', icon: <Landmark size={14} /> },
   ];
 
@@ -77,15 +71,15 @@ export const ZonesPage: React.FC<ZonesPageProps> = ({
   return (
     <div className="space-y-5 sm:space-y-7 animate-fade-in">
       {/* Header Banner */}
-      <div className="bg-[#F5EBD4] border-2 border-[#C5A566] rounded-2xl sm:rounded-3xl p-5 sm:p-7 shadow-card flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+      <div className="bg-papyrus-card rounded-2xl sm:rounded-3xl p-5 sm:p-7 shadow-card flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
           <div className="flex items-center gap-2">
-            <Layers size={22} className="text-[#8B5E3C]" />
-            <h2 className="text-lg sm:text-2xl font-monument font-bold text-[#1C150D]">
+            <Layers size={22} className="text-brand" />
+            <h2 className="text-lg sm:text-2xl font-monument font-bold text-papyrus-ink">
               Tananyagok & Tartalmi Zónák
             </h2>
           </div>
-          <p className="text-xs sm:text-sm font-scribe text-[#7A6B55] mt-0.5 sm:mt-1 font-semibold">
+          <p className="text-xs sm:text-sm font-sans text-papyrus-muted mt-0.5 sm:mt-1 font-semibold">
             Válassz szakterületet és CEFR szintet a tanulási modulok felfedezéséhez
           </p>
         </div>
@@ -95,9 +89,9 @@ export const ZonesPage: React.FC<ZonesPageProps> = ({
             variant="primary"
             onClick={() => {
               audio.playClickSound();
-              setIsRemixOpen(true);
+              openRemixModal();
             }}
-            className="flex items-center gap-2 font-monument"
+            className="flex items-center gap-2 font-sans font-bold"
           >
             <Shuffle size={16} />
             <span>Ismétlő remix</span>
@@ -107,9 +101,9 @@ export const ZonesPage: React.FC<ZonesPageProps> = ({
             variant="secondary"
             onClick={() => {
               audio.playClickSound();
-              setIsGeneratorOpen(true);
+              openGeneratorModal();
             }}
-            className="flex items-center gap-2 font-monument"
+            className="flex items-center gap-2 font-sans font-bold"
           >
             <Plus size={16} />
             <span>Új tananyag (AI)</span>
@@ -118,16 +112,16 @@ export const ZonesPage: React.FC<ZonesPageProps> = ({
       </div>
 
       {/* Remix Info Card */}
-      <div className="p-4 sm:p-5 rounded-2xl bg-[#FAF0CD] border-2 border-[#D4A843] shadow-card flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+      <div className="p-4 sm:p-5 rounded-2xl bg-papyrus-warm shadow-subtle flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-xl bg-[#EAD9B8] border border-[#C5A566] flex items-center justify-center text-[#8B5E3C] shrink-0">
+          <div className="w-10 h-10 rounded-xl bg-papyrus-subtle flex items-center justify-center text-brand shrink-0">
             <Shuffle size={20} />
           </div>
           <div>
-            <h4 className="font-monument font-bold text-xs sm:text-sm text-[#1C150D]">
+            <h4 className="font-sans font-bold text-xs sm:text-sm text-papyrus-ink">
               Moduláris tudásfelelevenítő rendszer
             </h4>
-            <p className="text-xs font-scribe text-[#7A6B55] mt-0.5 font-semibold leading-relaxed">
+            <p className="text-xs font-sans text-papyrus-muted mt-0.5 font-medium leading-relaxed">
               Az AI tananyagok almoduljai (szavak, kollokációk, Hunglish csapdák) szinten belül szabadon variálhatóak. Készíts véletlenszerű ismétlő összeállítást a meglévő tudás felelevenítésére.
             </p>
           </div>
@@ -136,16 +130,16 @@ export const ZonesPage: React.FC<ZonesPageProps> = ({
         <button
           onClick={() => {
             audio.playClickSound();
-            setIsRemixOpen(true);
+            openRemixModal();
           }}
-          className="px-4 py-2 rounded-xl text-xs font-monument font-bold bg-[#8B5E3C] hover:bg-[#6B4226] text-white border border-[#5C3A1E] shadow-sm shrink-0 transition-all active:scale-95"
+          className="px-4 py-2 rounded-xl text-xs font-sans font-bold bg-[#E5C175] hover:bg-[#DDB460] text-papyrus-ink shadow-sm shrink-0 transition-all active:scale-95"
         >
           Remix összeállítása
         </button>
       </div>
 
       {/* Filter Toolbar */}
-      <div className="bg-[#F5EBD4] border-2 border-[#C5A566] rounded-2xl p-3.5 sm:p-4 space-y-3 shadow-card">
+      <div className="bg-papyrus-card rounded-2xl p-3.5 sm:p-4 space-y-3 shadow-card">
         {/* Zone Pills */}
         <div className="flex items-center gap-1.5 overflow-x-auto pb-1 scrollbar-none">
           {zoneTabs.map((tab) => {
@@ -157,11 +151,10 @@ export const ZonesPage: React.FC<ZonesPageProps> = ({
                   audio.playClickSound();
                   setSelectedZone(tab.id);
                 }}
-                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-monument font-bold whitespace-nowrap transition-all ${
-                  isSelected
-                    ? 'bg-[#8B5E3C] text-white shadow-sm border border-[#5C3A1E]'
-                    : 'bg-[#FBF4E4] border border-[#C5A566] text-[#5C4A2F] hover:bg-white hover:border-[#8B5E3C]'
-                }`}
+                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-sans font-bold whitespace-nowrap transition-all ${isSelected
+                    ? 'bg-[#E5C175] text-papyrus-ink shadow-sm'
+                    : 'bg-papyrus-subtle text-papyrus-ink hover:bg-papyrus-card'
+                  }`}
               >
                 <span>{tab.icon}</span>
                 <span>{tab.label}</span>
@@ -171,8 +164,8 @@ export const ZonesPage: React.FC<ZonesPageProps> = ({
         </div>
 
         {/* CEFR Level Pills */}
-        <div className="flex items-center gap-2 pt-2 border-t border-[#C5A566]">
-          <span className="text-xs font-monument font-bold text-[#7A6B55] flex items-center gap-1">
+        <div className="flex items-center gap-2 pt-2 border-t border-papyrus-borderSubtle">
+          <span className="text-xs font-sans font-bold text-papyrus-muted flex items-center gap-1">
             <Filter size={12} /> Szint:
           </span>
           <div className="flex items-center gap-1.5 overflow-x-auto scrollbar-none">
@@ -185,11 +178,10 @@ export const ZonesPage: React.FC<ZonesPageProps> = ({
                     audio.playClickSound();
                     setSelectedCefr(lvl);
                   }}
-                  className={`px-2.5 py-0.5 rounded-full text-xs font-monument font-bold transition-all whitespace-nowrap ${
-                    isSelected
-                      ? 'bg-[#8B5E3C] text-white shadow-sm border border-[#5C3A1E]'
-                      : 'bg-[#FBF4E4] border border-[#C5A566] text-[#5C4A2F] hover:bg-white'
-                  }`}
+                  className={`px-2.5 py-0.5 rounded-full text-xs font-sans font-bold transition-all whitespace-nowrap ${isSelected
+                      ? 'bg-[#E5C175] text-papyrus-ink shadow-sm'
+                      : 'bg-papyrus-subtle text-papyrus-ink hover:bg-papyrus-card'
+                    }`}
                 >
                   {lvl === 'all' ? 'Minden' : lvl}
                 </button>
@@ -201,16 +193,16 @@ export const ZonesPage: React.FC<ZonesPageProps> = ({
 
       {/* Grid of Packs */}
       {isLoading ? (
-        <div className="p-8 text-center bg-[#F5EBD4] rounded-2xl border-2 border-[#C5A566] text-[#7A6B55] text-sm font-scribe shadow-card font-semibold">
+        <div className="p-8 text-center bg-papyrus-card rounded-2xl text-papyrus-muted text-sm font-sans shadow-card font-semibold">
           Tananyagok betöltése...
         </div>
       ) : packs.length === 0 ? (
-        <div className="p-8 sm:p-12 text-center bg-[#F5EBD4] rounded-3xl border-2 border-[#C5A566] shadow-card space-y-3">
-          <Layers size={40} className="text-[#C5A566] mx-auto" />
-          <h4 className="font-monument font-bold text-sm sm:text-base text-[#1C150D]">
+        <div className="p-8 sm:p-12 text-center bg-papyrus-card rounded-3xl shadow-card space-y-3">
+          <Layers size={40} className="text-papyrus-muted/40 mx-auto" />
+          <h4 className="font-monument font-bold text-sm sm:text-base text-papyrus-ink">
             Nincs találat a kiválasztott szűrőkre.
           </h4>
-          <p className="text-xs font-scribe text-[#7A6B55] max-w-sm mx-auto font-semibold">
+          <p className="text-xs font-sans text-papyrus-muted max-w-sm mx-auto font-medium">
             Hozz létre egy új tananyagot az „Új tananyag (AI)" vagy az „Ismétlő remix" gombbal.
           </p>
         </div>
@@ -222,7 +214,7 @@ export const ZonesPage: React.FC<ZonesPageProps> = ({
         </div>
       )}
 
-      {/* Detail Modal */}
+      {/* Detail Modal (Station Stepper) */}
       <PackDetailModal
         pack={activePackDetail}
         isOpen={Boolean(activePackDetail)}
@@ -233,19 +225,10 @@ export const ZonesPage: React.FC<ZonesPageProps> = ({
         }}
       />
 
-      {/* AI Generator Modal */}
-      <PackGeneratorModal
-        isOpen={isGeneratorOpen}
-        onClose={() => setIsGeneratorOpen(false)}
-        onPackCreated={() => {
-          fetchPacks();
-        }}
-      />
-
       {/* Remix Modal */}
       <PackRemixModal
-        isOpen={isRemixOpen}
-        onClose={() => setIsRemixOpen(false)}
+        isOpen={isRemixModalOpen}
+        onClose={closeRemixModal}
         onPackCreated={handleRemixCreated}
       />
     </div>

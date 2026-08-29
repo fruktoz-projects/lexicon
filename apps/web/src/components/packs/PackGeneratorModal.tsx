@@ -63,25 +63,25 @@ export const PackGeneratorModal: React.FC<PackGeneratorModalProps> = ({
       type: ZoneType.EVERYDAY,
       title: 'Mindennapok',
       sub: 'Mindennapi élet & utazás (40%)',
-      icon: <Anchor size={18} className="text-[#8B5E3C]" />,
+      icon: <Anchor size={18} className="text-zone-everyday" />,
     },
     {
       type: ZoneType.BUSINESS,
       title: 'Üzleti angol',
       sub: 'Üzlet, tárgyalás, karrier (25%)',
-      icon: <Coins size={18} className="text-[#B8860B]" />,
+      icon: <Coins size={18} className="text-zone-business" />,
     },
     {
       type: ZoneType.IT,
       title: 'IT & Technológia',
       sub: 'Szoftver, DevOps, architektúra (20%)',
-      icon: <Cpu size={18} className="text-[#4A6F8B]" />,
+      icon: <Cpu size={18} className="text-zone-it" />,
     },
     {
       type: ZoneType.ACADEMIC,
       title: 'Akadémiai angol',
       sub: 'Akadémiai írás & érvelés (15%)',
-      icon: <Landmark size={18} className="text-[#2E7D5B]" />,
+      icon: <Landmark size={18} className="text-zone-academic" />,
     },
   ];
 
@@ -102,14 +102,14 @@ export const PackGeneratorModal: React.FC<PackGeneratorModalProps> = ({
     >
       <form onSubmit={handleSubmit} className="space-y-5">
         {error && (
-          <div className="p-3.5 rounded-xl bg-red-100 border border-red-300 text-red-950 text-xs font-sans font-bold shadow-sm">
+          <div className="p-3.5 rounded-xl bg-status-errorBg border border-status-errorBorder text-red-950 text-xs font-sans font-bold shadow-subtle">
             ⚠️ {error}
           </div>
         )}
 
         {/* Quick Topic Chips */}
         <div>
-          <span className="text-[11px] font-monument font-bold uppercase tracking-wider text-[#5C4A2F] block mb-1.5">
+          <span className="text-[11px] font-sans font-bold uppercase tracking-wider text-papyrus-muted block mb-1.5">
             Gyors témaötletek:
           </span>
           <div className="flex flex-wrap gap-1.5">
@@ -123,7 +123,7 @@ export const PackGeneratorModal: React.FC<PackGeneratorModalProps> = ({
                   setZone(qt.zone);
                   setCefr(qt.cefr);
                 }}
-                className="text-xs font-medium px-3 py-1.5 rounded-xl bg-[#EAD9B8] hover:bg-white text-[#1C150D] border border-[#C5A566] hover:border-[#8B5E3C] transition-all shadow-sm"
+                className="text-xs font-sans font-semibold px-3 py-1.5 rounded-xl bg-papyrus-subtle hover:bg-white text-papyrus-ink border border-papyrus-border hover:border-brand transition-all shadow-subtle"
               >
                 + {qt.label}
               </button>
@@ -133,7 +133,7 @@ export const PackGeneratorModal: React.FC<PackGeneratorModalProps> = ({
 
         {/* Topic Input */}
         <div>
-          <label className="block text-xs font-monument font-bold text-[#1C150D] mb-1.5">
+          <label className="block text-xs font-sans font-bold text-papyrus-ink mb-1.5">
             Témakör vagy tanulási cél *
           </label>
           <input
@@ -142,13 +142,13 @@ export const PackGeneratorModal: React.FC<PackGeneratorModalProps> = ({
             placeholder="pl. GraphQL vs REST API, Nemzetközi bértárgyalási stratégiák..."
             value={topic}
             onChange={(e) => setTopic(e.target.value)}
-            className="w-full px-4 py-3 rounded-xl border-2 border-[#C5A566] bg-white text-sm text-[#1C150D] font-medium placeholder:text-[#9A8B73] focus:border-[#8B5E3C] focus:ring-2 focus:ring-[#8B5E3C]/20 focus:outline-none shadow-sm"
+            className="w-full px-4 py-3 rounded-xl border-2 border-papyrus-border bg-white text-sm text-papyrus-ink font-medium placeholder:text-papyrus-muted/60 focus:border-brand focus:ring-2 focus:ring-brand/20 focus:outline-none shadow-subtle"
           />
         </div>
 
         {/* CEFR Level */}
         <div>
-          <label className="block text-xs font-monument font-bold text-[#1C150D] mb-1.5">
+          <label className="block text-xs font-sans font-bold text-papyrus-ink mb-1.5">
             CEFR szint
           </label>
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
@@ -162,11 +162,10 @@ export const PackGeneratorModal: React.FC<PackGeneratorModalProps> = ({
                     audio.playClickSound();
                     setCefr(opt.level);
                   }}
-                  className={`p-2.5 rounded-xl border-2 text-xs font-monument font-bold flex items-center justify-center gap-1 transition-all shadow-sm ${
-                    isSelected
-                      ? 'bg-[#8B5E3C] text-white border-[#6B4226]'
-                      : 'bg-white border-[#C5A566] text-[#1C150D] hover:bg-[#F5EBD4]'
-                  }`}
+                  className={`p-2.5 rounded-xl border-2 text-xs font-sans font-bold flex items-center justify-center gap-1 transition-all shadow-subtle ${isSelected
+                      ? 'bg-[#E5C175] text-papyrus-ink border-[#DDB460]'
+                      : 'bg-white border-papyrus-border text-papyrus-ink hover:bg-papyrus-card'
+                    }`}
                 >
                   {isSelected && <CheckCircle2 size={14} />}
                   <span>{opt.label}</span>
@@ -178,7 +177,7 @@ export const PackGeneratorModal: React.FC<PackGeneratorModalProps> = ({
 
         {/* Content Zone Grid Selection */}
         <div>
-          <label className="block text-xs font-monument font-bold text-[#1C150D] mb-1.5">
+          <label className="block text-xs font-sans font-bold text-papyrus-ink mb-1.5">
             Tartalmi zóna
           </label>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
@@ -191,24 +190,23 @@ export const PackGeneratorModal: React.FC<PackGeneratorModalProps> = ({
                     audio.playClickSound();
                     setZone(z.type);
                   }}
-                  className={`p-3 rounded-xl border-2 cursor-pointer transition-all flex items-center justify-between shadow-sm ${
-                    isSelected
-                      ? 'bg-[#FAF0CD] border-[#8B5E3C] ring-1 ring-[#8B5E3C]/30'
-                      : 'bg-white border-[#C5A566] hover:bg-[#F5EBD4] hover:border-[#8B5E3C]'
-                  }`}
+                  className={`p-3 rounded-xl border-2 cursor-pointer transition-all flex items-center justify-between shadow-subtle ${isSelected
+                      ? 'bg-papyrus-warm border-brand ring-1 ring-brand/30'
+                      : 'bg-white border-papyrus-border hover:bg-papyrus-card hover:border-brand'
+                    }`}
                 >
                   <div className="flex items-center gap-2.5">
-                    <div className="p-2 rounded-lg bg-[#EAD9B8] border border-[#C5A566]">
+                    <div className="p-2 rounded-lg bg-papyrus-subtle border border-papyrus-border">
                       {z.icon}
                     </div>
                     <div>
-                      <span className="font-monument font-bold text-xs text-[#1C150D]">{z.title}</span>
-                      <span className="text-[11px] text-[#7A6B55] font-sans font-medium block">{z.sub}</span>
+                      <span className="font-sans font-bold text-xs text-papyrus-ink block">{z.title}</span>
+                      <span className="text-[11px] text-papyrus-muted font-sans font-medium block">{z.sub}</span>
                     </div>
                   </div>
 
                   {isSelected && (
-                    <CheckCircle2 size={18} className="text-[#8B5E3C] shrink-0" />
+                    <CheckCircle2 size={18} className="text-brand shrink-0" />
                   )}
                 </div>
               );
@@ -218,7 +216,7 @@ export const PackGeneratorModal: React.FC<PackGeneratorModalProps> = ({
 
         {/* Custom Focus */}
         <div>
-          <label className="block text-xs font-monument font-bold text-[#1C150D] mb-1.5">
+          <label className="block text-xs font-sans font-bold text-papyrus-ink mb-1.5">
             Egyedi fókusz (opcionális)
           </label>
           <input
@@ -226,17 +224,17 @@ export const PackGeneratorModal: React.FC<PackGeneratorModalProps> = ({
             placeholder="pl. Különös hangsúly az elöljárószókra vagy szoftveres kifejezésekre"
             value={customFocus}
             onChange={(e) => setCustomFocus(e.target.value)}
-            className="w-full px-4 py-2.5 rounded-xl border-2 border-[#C5A566] bg-white text-xs sm:text-sm text-[#1C150D] font-medium placeholder:text-[#9A8B73] focus:border-[#8B5E3C] focus:ring-2 focus:ring-[#8B5E3C]/20 focus:outline-none shadow-sm"
+            className="w-full px-4 py-2.5 rounded-xl border-2 border-papyrus-border bg-white text-xs sm:text-sm text-papyrus-ink font-medium placeholder:text-papyrus-muted/60 focus:border-brand focus:ring-2 focus:ring-brand/20 focus:outline-none shadow-subtle"
           />
         </div>
 
         {/* Info Banner */}
-        <div className="p-3.5 bg-[#EAD9B8] rounded-xl border border-[#C5A566] text-xs text-[#5C4A2F] leading-relaxed font-scribe font-semibold">
+        <div className="p-3.5 bg-papyrus-subtle rounded-xl border border-papyrus-border text-xs text-papyrus-muted leading-relaxed font-sans font-medium">
           Az AI a magyar magyarázatokat, szókincset, kollokációkat és Hunglish csapdákat pedagógiai séma szerint állítja elő a napi SRS gyakorláshoz.
         </div>
 
         {/* Action Buttons */}
-        <div className="flex items-center justify-end gap-3 pt-2 border-t border-[#C5A566]">
+        <div className="flex items-center justify-end gap-3 pt-2 border-t border-papyrus-border">
           <Button type="button" variant="secondary" onClick={onClose} disabled={isLoading}>
             Mégse
           </Button>
@@ -245,7 +243,7 @@ export const PackGeneratorModal: React.FC<PackGeneratorModalProps> = ({
             type="submit"
             variant="primary"
             disabled={isLoading || !topic.trim()}
-            className="flex items-center gap-2 px-6 py-2.5 font-monument"
+            className="flex items-center gap-2 px-6 py-2.5 font-sans font-bold"
           >
             {isLoading ? (
               <>

@@ -17,29 +17,29 @@ export const ZoneCards: React.FC<ZoneCardsProps> = ({ onSelectZone }) => {
         return {
           title: 'Mindennapok',
           badge: '40%',
-          icon: <Anchor size={22} className="text-[#8B5E3C]" />,
-          accentBg: 'bg-[#F5E6D3] border-[#C5A566]',
+          icon: <Anchor size={22} className="text-zone-everyday" />,
+          accentBg: 'bg-brand-subtle border-papyrus-border',
         };
       case ZoneType.BUSINESS:
         return {
           title: 'Üzleti angol',
           badge: '25%',
-          icon: <Coins size={22} className="text-[#B8860B]" />,
-          accentBg: 'bg-[#FAF0CD] border-[#D4A843]',
+          icon: <Coins size={22} className="text-zone-business" />,
+          accentBg: 'bg-status-warningBg border-status-warningBorder',
         };
       case ZoneType.IT:
         return {
           title: 'IT & Technológia',
           badge: '20%',
-          icon: <Cpu size={22} className="text-[#4A6F8B]" />,
-          accentBg: 'bg-[#E0EDF5] border-[#7AAFCF]',
+          icon: <Cpu size={22} className="text-zone-it" />,
+          accentBg: 'bg-blue-50 border-blue-200',
         };
       case ZoneType.ACADEMIC:
         return {
           title: 'Akadémiai angol',
           badge: '15%',
-          icon: <Landmark size={22} className="text-[#2E7D5B]" />,
-          accentBg: 'bg-[#E0F0E8] border-[#6BB38A]',
+          icon: <Landmark size={22} className="text-zone-academic" />,
+          accentBg: 'bg-status-successBg border-status-successBorder',
         };
     }
   };
@@ -50,10 +50,10 @@ export const ZoneCards: React.FC<ZoneCardsProps> = ({ onSelectZone }) => {
     <div className="space-y-4">
       <div className="flex items-center justify-between">
         <div>
-          <h3 className="text-lg sm:text-xl font-monument font-bold text-[#1C150D]">
+          <h3 className="text-lg sm:text-xl font-monument font-bold text-papyrus-ink">
             4 Tartalmi Zóna
           </h3>
-          <p className="text-xs sm:text-sm font-scribe text-[#7A6B55] font-semibold">
+          <p className="text-xs sm:text-sm font-sans text-papyrus-muted font-semibold">
             Funkcionális tanulási területek súlyozással
           </p>
         </div>
@@ -72,32 +72,32 @@ export const ZoneCards: React.FC<ZoneCardsProps> = ({ onSelectZone }) => {
                 audio.playClickSound();
                 onSelectZone(z);
               }}
-              className="bg-[#F5EBD4] border-2 border-[#C5A566] rounded-2xl p-5 shadow-card hover:border-[#8B5E3C] hover:shadow-lg transition-all duration-200 cursor-pointer flex flex-col justify-between group"
+              className="bg-papyrus-card rounded-2xl p-5 shadow-card hover:shadow-card-hover transition-all duration-200 cursor-pointer flex flex-col justify-between group"
             >
               <div>
                 <div className="flex items-start justify-between mb-3.5">
-                  <div className={`p-3 rounded-2xl border ${meta.accentBg} group-hover:scale-105 transition-transform shadow-sm`}>
+                  <div className={`p-3 rounded-2xl border ${meta.accentBg} group-hover:scale-105 transition-transform shadow-subtle`}>
                     {meta.icon}
                   </div>
-                  <span className="text-[11px] font-monument font-bold px-2.5 py-0.5 rounded-full bg-[#EAD9B8] text-[#5C4A2F] border border-[#C5A566]">
+                  <span className="text-[11px] font-sans font-bold px-2.5 py-0.5 rounded-full bg-papyrus-subtle text-papyrus-ink border border-papyrus-border">
                     {meta.badge}
                   </span>
                 </div>
 
-                <h4 className="font-monument font-bold text-base text-[#1C150D] group-hover:text-[#8B5E3C] transition-colors mb-0.5">
+                <h4 className="font-monument font-bold text-base text-papyrus-ink group-hover:text-brand transition-colors mb-0.5">
                   {meta.title}
                 </h4>
-                <p className="text-xs font-mono text-[#7A6B55] font-bold mb-2">{detail.name}</p>
-                <p className="text-xs text-[#7A6B55] line-clamp-2 leading-relaxed font-sans">
+                <p className="text-xs font-mono text-papyrus-muted font-bold mb-2">{detail.name}</p>
+                <p className="text-xs text-papyrus-muted line-clamp-2 leading-relaxed font-sans">
                   {detail.descriptionHu}
                 </p>
               </div>
 
-              <div className="mt-4 pt-3 border-t border-[#C5A566] flex items-center justify-between text-xs">
-                <span className="font-mono text-[#7A6B55] font-bold">
+              <div className="mt-4 pt-3 border-t border-papyrus-border flex items-center justify-between text-xs">
+                <span className="font-mono text-papyrus-muted font-bold">
                   {zonePacks.length} tananyag
                 </span>
-                <span className="flex items-center gap-1 text-[#8B5E3C] font-monument font-bold group-hover:translate-x-1 transition-transform">
+                <span className="flex items-center gap-1 text-brand font-sans font-bold group-hover:translate-x-1 transition-transform">
                   Megnyitás <ChevronRight size={14} />
                 </span>
               </div>

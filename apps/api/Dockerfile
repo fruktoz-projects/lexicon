@@ -4,11 +4,11 @@ RUN corepack enable && corepack prepare pnpm@9.15.0 --activate
 
 FROM base AS builder
 WORKDIR /app
-COPY pnpm-workspace.yaml package.json tsconfig.base.json ./
+COPY pnpm-workspace.yaml package.json tsconfig.base.json pnpm-lock.yaml ./
 COPY packages/types/package.json ./packages/types/
 COPY apps/api/package.json ./apps/api/
 
-RUN pnpm install --frozen-lockfile=false
+RUN pnpm install --frozen-lockfile
 
 COPY packages/types ./packages/types
 COPY apps/api ./apps/api
@@ -21,11 +21,11 @@ FROM base AS runner
 WORKDIR /app
 ENV NODE_ENV=production
 
-COPY pnpm-workspace.yaml package.json ./
+COPY pnpm-workspace.yaml package.json pnpm-lock.yaml ./
 COPY packages/types/package.json ./packages/types/
 COPY apps/api/package.json ./apps/api/
 
-RUN pnpm install --prod --frozen-lockfile=false
+RUN pnpm install --prod --frozen-lockfile
 
 COPY --from=builder /app/packages/types ./packages/types
 COPY --from=builder /app/apps/api/dist ./apps/api/dist

@@ -4,11 +4,11 @@ RUN corepack enable && corepack prepare pnpm@9.15.0 --activate
 
 FROM base AS builder
 WORKDIR /app
-COPY pnpm-workspace.yaml package.json tsconfig.base.json ./
+COPY pnpm-workspace.yaml package.json tsconfig.base.json pnpm-lock.yaml ./
 COPY packages/types/package.json ./packages/types/
 COPY apps/web/package.json ./apps/web/
 
-RUN pnpm install --frozen-lockfile=false
+RUN pnpm install --frozen-lockfile
 
 COPY packages/types ./packages/types
 COPY apps/web ./apps/web

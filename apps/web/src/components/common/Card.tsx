@@ -16,13 +16,13 @@ export const Card: React.FC<CardProps> = ({
 }) => {
   const variants = {
     default:
-      'bg-[#F5EBD4] border-2 border-[#C5A566] rounded-2xl p-5 shadow-card',
+      'bg-papyrus-card rounded-2xl p-5 shadow-card',
     elevated:
-      'bg-[#F5EBD4] border-2 border-[#C5A566] rounded-2xl p-5 shadow-lg',
+      'bg-papyrus-card rounded-2xl p-5 shadow-card-hover',
     interactive:
-      'bg-[#F5EBD4] border-2 border-[#C5A566] hover:border-[#8B5E3C] rounded-2xl p-5 shadow-card hover:shadow-md transition-all duration-200 cursor-pointer',
+      'bg-papyrus-card hover:border-brand rounded-2xl p-5 shadow-card hover:shadow-card-hover transition-all duration-200 cursor-pointer',
     sunken:
-      'bg-[#EAD9B8] border-2 border-[#C5A566] rounded-2xl p-4 shadow-inner',
+      'bg-papyrus-subtle rounded-2xl p-4 shadow-inner',
   };
 
   return (

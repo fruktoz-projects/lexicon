@@ -21,38 +21,38 @@ export const PackCard: React.FC<PackCardProps> = ({ pack, onOpen }) => {
         audio.playClickSound();
         onOpen(pack.id);
       }}
-      className="bg-[#F5EBD4] border-2 border-[#C5A566] rounded-2xl p-5 shadow-card hover:border-[#8B5E3C] hover:shadow-lg transition-all duration-200 cursor-pointer flex flex-col justify-between group"
+      className="bg-papyrus-card rounded-2xl p-5 shadow-card hover:shadow-card-hover transition-all duration-200 cursor-pointer flex flex-col justify-between group"
     >
       <div>
         <div className="flex items-center justify-between gap-2 mb-3">
           <CefrBadge level={pack.cefr} size="sm" />
-          <span className="text-[11px] font-monument font-bold px-2.5 py-0.5 rounded-full bg-[#EAD9B8] text-[#5C4A2F] border border-[#C5A566]">
+          <span className="text-[11px] font-sans font-bold px-2.5 py-0.5 rounded-full bg-papyrus-subtle text-papyrus-ink border border-papyrus-border">
             {zoneInfo.nameHu}
           </span>
         </div>
 
-        <h4 className="font-monument font-bold text-sm sm:text-base text-[#1C150D] group-hover:text-[#8B5E3C] transition-colors line-clamp-2 mb-2">
+        <h4 className="font-monument font-bold text-sm sm:text-base text-papyrus-ink group-hover:text-brand transition-colors line-clamp-2 mb-2">
           {pack.title}
         </h4>
 
-        <p className="text-xs text-[#7A6B55] line-clamp-2 leading-relaxed mb-4 font-sans font-medium">
+        <p className="text-xs text-papyrus-muted line-clamp-2 leading-relaxed mb-4 font-sans font-medium">
           {pack.focus}
         </p>
       </div>
 
-      <div className="pt-3 border-t border-[#C5A566] flex items-center justify-between text-xs text-[#7A6B55]">
+      <div className="pt-3 border-t border-papyrus-border flex items-center justify-between text-xs text-papyrus-muted">
         <div className="flex items-center gap-3">
           <span className="flex items-center gap-1 font-mono font-bold">
-            <Clock size={13} className="text-[#9A8B73]" />
+            <Clock size={13} className="text-papyrus-muted" />
             <span>{pack.estimatedMinutes}p</span>
           </span>
           <span className="flex items-center gap-1 font-mono font-bold">
-            <Layers size={13} className="text-[#9A8B73]" />
+            <Layers size={13} className="text-papyrus-muted" />
             <span>{pack.vocabularyCount || 4} szó / {pack.chunksCount || 3} kif.</span>
           </span>
         </div>
 
-        <span className="text-[#8B5E3C] font-monument font-bold group-hover:translate-x-1 transition-transform flex items-center gap-0.5">
+        <span className="text-brand font-sans font-bold group-hover:translate-x-1 transition-transform flex items-center gap-0.5">
           Megnyitás <ChevronRight size={14} />
         </span>
       </div>

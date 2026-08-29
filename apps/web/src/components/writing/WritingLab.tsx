@@ -47,10 +47,10 @@ export const WritingLab: React.FC = () => {
   return (
     <div className="space-y-4 sm:space-y-6">
       {/* Top Banner */}
-      <div className="bg-[#F5EBD4] border-2 border-[#C5A566] rounded-2xl sm:rounded-3xl p-4 sm:p-6 shadow-card flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4">
+      <div className="bg-white rounded-2xl sm:rounded-3xl p-4 sm:p-6 shadow-card flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4">
         <div>
           <div className="flex items-center gap-2">
-            <PenTool size={22} className="text-[#8B5E3C]" />
+            <PenTool size={22} className="text-brand" />
             <h2 className="text-lg sm:text-2xl font-monument font-bold text-[#1C150D]">
               Írásműhely (Writing Lab)
             </h2>
@@ -61,17 +61,16 @@ export const WritingLab: React.FC = () => {
         </div>
 
         {/* Tab Switcher */}
-        <div className="flex items-center gap-1 bg-[#EAD9B8] p-1 rounded-2xl border border-[#C5A566] self-start sm:self-auto shadow-sm">
+        <div className="flex items-center gap-1 bg-papyrus-subtle p-1 rounded-2xl self-start sm:self-auto shadow-sm">
           <button
             onClick={() => {
               audio.playClickSound();
               setActiveTab('editor');
             }}
-            className={`flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl text-xs font-monument font-bold transition-all ${
-              activeTab === 'editor'
-                ? 'bg-[#8B5E3C] text-white shadow-sm border border-[#6B4226]'
+            className={`flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl text-xs font-monument font-bold transition-all ${activeTab === 'editor'
+                ? 'bg-[#E5C175] text-[#1C150D] shadow-sm'
                 : 'text-[#7A6B55] hover:text-[#1C150D]'
-            }`}
+              }`}
           >
             <PenTool size={13} />
             <span>Fogalmazás</span>
@@ -83,11 +82,10 @@ export const WritingLab: React.FC = () => {
               setActiveTab('history');
               fetchHistory();
             }}
-            className={`flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl text-xs font-monument font-bold transition-all ${
-              activeTab === 'history'
-                ? 'bg-[#8B5E3C] text-white shadow-sm border border-[#6B4226]'
+            className={`flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl text-xs font-monument font-bold transition-all ${activeTab === 'history'
+                ? 'bg-[#E5C175] text-[#1C150D] shadow-sm'
                 : 'text-[#7A6B55] hover:text-[#1C150D]'
-            }`}
+              }`}
           >
             <History size={13} />
             <span>Korábbiak ({history.length})</span>
@@ -108,11 +106,10 @@ export const WritingLab: React.FC = () => {
                   audio.playClickSound();
                   setSelectedPrompt(p.prompt);
                 }}
-                className={`px-3 py-1.5 rounded-xl border text-xs whitespace-nowrap transition-all flex items-center gap-2 font-monument font-bold ${
-                  selectedPrompt === p.prompt
-                    ? 'bg-[#8B5E3C] text-white border-[#6B4226] shadow-sm'
-                    : 'bg-[#F5EBD4] border-[#C5A566] text-[#1C150D] hover:border-[#8B5E3C] shadow-sm'
-                }`}
+                className={`px-3 py-1.5 rounded-xl text-xs whitespace-nowrap transition-all flex items-center gap-2 font-monument font-bold ${selectedPrompt === p.prompt
+                    ? 'bg-[#E5C175] text-[#1C150D] shadow-sm'
+                    : 'bg-white text-[#1C150D] shadow-sm hover:bg-papyrus-subtle'
+                  }`}
               >
                 <span>{p.title}</span>
                 <CefrBadge level={p.cefr} size="sm" />
@@ -128,14 +125,14 @@ export const WritingLab: React.FC = () => {
       {activeTab === 'history' && (
         <div className="space-y-4">
           {history.length === 0 ? (
-            <div className="p-8 text-center bg-[#F5EBD4] rounded-2xl border-2 border-[#C5A566] text-[#7A6B55] font-scribe shadow-card font-semibold">
+            <div className="p-8 text-center bg-white rounded-2xl text-[#7A6B55] font-scribe shadow-card font-semibold">
               Még nem küldtél be esszét értékelésre.
             </div>
           ) : (
             history.map((sub) => (
               <div
                 key={sub.id}
-                className="bg-[#F5EBD4] border-2 border-[#C5A566] rounded-2xl p-4 sm:p-5 shadow-card space-y-3"
+                className="bg-white rounded-2xl p-4 sm:p-5 shadow-card space-y-3"
               >
                 <div className="flex items-start justify-between gap-3">
                   <div>

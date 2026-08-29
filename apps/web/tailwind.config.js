@@ -6,68 +6,55 @@ export default {
     extend: {
       colors: {
         papyrus: {
-          50: '#FBF4E4',  // Light warm papyrus highlight
-          100: '#F5EBD4', // Authentic Light Warm Brownish Papyrus Reed Card
-          200: '#EAD9B8', // Inner sunken parchment box
-          300: '#DCBE92', // Aged parchment ribbon
-          400: '#BFA064', // Defined antique bronze-gold border
-          500: '#967A42', // Deep aged edge
-          600: '#755E2E',
-          800: '#281E10',
-          900: '#150E06',
-          canvas: '#D8C194', // Deep Sandstone canvas background
+          canvas: '#D8C194', // Main backdrop sandstone/papyrus
+          card: '#FFFFFF',   // Pure white for maximum contrast
+          subtle: '#F2E8D5', // Inset / recessed container
+          warm: '#FAF0CD',   // Highlight / accent surface
+          border: '#C5A566', // Primary antique parchment border
+          borderSubtle: '#D8C092', // Muted inner border
+          ink: '#1C150D',    // Deep soot black text (primary)
+          muted: '#7A6B55',  // Secondary/label text
         },
-        hieroglyph: {
-          DEFAULT: '#1A1208', // Deep carbon soot black ink
-          muted: '#4D3B26',
-          light: '#6E563A',
-        },
-        terracotta: {
-          DEFAULT: '#B8542F', // Red ochre / wax seal CTA
-          hover: '#9E4220',
-          light: '#F8ECE5',
-          dark: '#7A2C10',
-        },
-        nile: {
-          DEFAULT: '#14747C', // Nile turquoise
-          hover: '#0E585E',
-          light: '#E6F4F5',
-          dark: '#0A4347',
-        },
-        lapis: {
-          DEFAULT: '#19498C', // Royal lapis lazuli
-          hover: '#12376C',
-          light: '#E8F0FA',
-          dark: '#0C264D',
-        },
-        gold: {
-          DEFAULT: '#C68E17', // Pharaoh gold leaf
-          hover: '#A9750D',
+        brand: {
+          DEFAULT: '#8B5E3C', // Terracotta warm brown primary CTA
+          hover: '#6B4226',
+          dark: '#5C3A1E',
           light: '#FAF0CD',
-          dark: '#855904',
+          subtle: '#F5E6D3',
         },
-        desert: {
-          sand: '#D8C194',
-          dune: '#C7AD7E',
+        zone: {
+          everyday: '#8B5E3C',
+          business: '#B8860B',
+          it: '#4A6F8B',
+          academic: '#2E7D5B',
+        },
+        status: {
+          success: '#2E7D5B',
+          successBg: '#E0F0E8',
+          successBorder: '#6BB38A',
+          warning: '#D4A843',
+          warningBg: '#FAF0CD',
+          warningBorder: '#D4A843',
+          error: '#B83A3A',
+          errorBg: '#FDE8E8',
+          errorBorder: '#F8B4B4',
         },
       },
       fontFamily: {
-        monument: ['"Cinzel"', '"Marcellus"', 'Georgia', 'serif'],
-        decorative: ['"Cinzel Decorative"', '"Cinzel"', 'serif'],
+        monument: ['"Cinzel"', 'Georgia', 'serif'],
         scribe: ['"Marcellus"', '"Cormorant Garamond"', 'Georgia', 'serif'],
         sans: ['"Plus Jakarta Sans"', 'Inter', 'system-ui', 'sans-serif'],
         mono: ['"Geist Mono"', 'JetBrains Mono', 'monospace'],
       },
       boxShadow: {
-        card: '0 5px 20px -2px rgba(45, 30, 12, 0.2), 0 2px 7px rgba(45, 30, 12, 0.12), 0 0 0 1.5px #BFA064',
-        'card-hover': '0 10px 30px -4px rgba(45, 30, 12, 0.3), 0 4px 10px rgba(45, 30, 12, 0.16), 0 0 0 2px #C68E17',
-        cartouche: '0 0 0 2px #C68E17, 0 4px 14px rgba(198, 142, 23, 0.35)',
-        seal: '0 4px 14px rgba(184, 84, 47, 0.4)',
-        inner: 'inset 0 2px 5px rgba(50, 35, 15, 0.12)',
+        card: '0 8px 20px rgba(45, 30, 12, 0.15), 0 2px 8px rgba(45, 30, 12, 0.08)',
+        'card-hover': '0 12px 28px rgba(45, 30, 12, 0.22), 0 4px 12px rgba(45, 30, 12, 0.12)',
+        subtle: '0 2px 6px rgba(45, 30, 12, 0.06)',
+        inner: 'inset 0 2px 4px rgba(50, 35, 15, 0.08)',
       },
       borderRadius: {
-        cartouche: '9999px',
-        scroll: '18px',
+        card: '18px',
+        container: '14px',
       },
     },
   },

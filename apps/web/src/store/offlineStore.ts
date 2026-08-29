@@ -1,12 +1,16 @@
 import { create } from 'zustand';
 import {
+  calculateNextSrsResult,
   CefrLevel,
+  checkAnswer,
   CreateRemixPackPayload,
   ExerciseType,
+  isProgressDue,
   LearningPackDetail,
   LearningPackGenerationDto,
   LearningPackSummary,
   MistakeLogModel,
+  normalizeAnswer,
   PracticeSessionItem,
   PracticeSessionResponse,
   PracticeSubmitResult,
@@ -318,27 +322,19 @@ export const useOfflineStore = create<OfflineState>((set, get) => {
         }
       }
 
-      const normUser = userAnswer.toLowerCase().trim().replace(/[.,/#!$%^&*;:{}=\-_`~()?"']/g, '');
-      const normExpected = expectedSolution.toLowerCase().trim().replace(/[.,/#!$%^&*;:{}=\-_`~()?"']/g, '');
-      const isCorrect = normUser === normExpected || normUser.includes(normExpected) || normExpected.includes(normUser);
+      const normUser = normalizeAnswer(userAnswer);
+      const normExpected = normalizeAnswer(expectedSolution);
+      const isCorrect = normUser === normExpected || (normExpected.length > 2 && normUser.includes(normExpected));
 
       const currentProg = state.progress[itemId];
       const currentStage = currentProg ? currentProg.srsStage : 0;
       const currentConsecutive = currentProg ? currentProg.consecutiveOk : 0;
 
-      let nextStage = currentStage;
-      let nextConsecutive = currentConsecutive;
-      let intervalDays = 1;
+      const srsRes = calculateNextSrsResult(currentStage, isCorrect);
+      const nextStage = srsRes.nextStage;
+      const nextConsecutive = isCorrect ? currentConsecutive + 1 : 0;
 
-      if (isCorrect) {
-        nextStage = Math.min(5, currentStage + 1);
-        nextConsecutive = currentConsecutive + 1;
-        intervalDays = SRS_INTERVAL_DAYS[nextStage] || 1;
-      } else {
-        nextStage = Math.max(1, currentStage - 1);
-        nextConsecutive = 0;
-        intervalDays = 1;
-
+      if (!isCorrect) {
         // Log mistake
         const newMistake: MistakeLogModel = {
           id: `mist_${Date.now()}`,
@@ -352,9 +348,6 @@ export const useOfflineStore = create<OfflineState>((set, get) => {
         set({ mistakeLogs: updatedMistakes });
       }
 
-      const nextDate = new Date();
-      nextDate.setDate(nextDate.getDate() + intervalDays);
-
       const updatedProgress = {
         ...state.progress,
         [itemId]: {
@@ -362,7 +355,7 @@ export const useOfflineStore = create<OfflineState>((set, get) => {
           itemType,
           srsStage: nextStage,
           consecutiveOk: nextConsecutive,
-          nextReviewAt: nextDate.toISOString(),
+          nextReviewAt: srsRes.nextReviewAt,
         },
       };
 

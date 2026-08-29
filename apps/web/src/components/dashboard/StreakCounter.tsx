@@ -17,22 +17,22 @@ export const StreakCounter: React.FC = () => {
   ];
 
   return (
-    <div className="bg-[#F5EBD4] border-2 border-[#C5A566] rounded-2xl p-5 sm:p-6 shadow-card">
+    <div className="bg-papyrus-card border-2 border-papyrus-border rounded-2xl p-5 sm:p-6 shadow-card">
       <div className="flex items-center justify-between mb-4">
         <div className="flex items-center gap-2.5">
-          <div className="p-2.5 rounded-2xl bg-amber-100 text-amber-900 border border-amber-300 shadow-sm">
-            <Flame size={22} className="fill-amber-500" />
+          <div className="p-2.5 rounded-2xl bg-status-warningBg text-amber-900 border border-status-warningBorder shadow-subtle">
+            <Flame size={22} className="fill-amber-500 text-amber-600" />
           </div>
           <div>
-            <h4 className="font-monument font-bold text-sm sm:text-base text-[#1C150D]">
+            <h4 className="font-monument font-bold text-sm sm:text-base text-papyrus-ink">
               Tanulási sorozat
             </h4>
-            <p className="text-xs font-scribe text-[#7A6B55] font-semibold">Napi gyakorlási fegyelem</p>
+            <p className="text-xs font-sans text-papyrus-muted font-semibold">Napi gyakorlási fegyelem</p>
           </div>
         </div>
         <div className="text-right">
-          <span className="font-monument font-bold text-2xl text-[#1C150D]">{streak}</span>
-          <span className="text-xs font-scribe text-[#7A6B55] ml-1 font-semibold">nap egyhuzamban</span>
+          <span className="font-monument font-bold text-2xl text-papyrus-ink">{streak}</span>
+          <span className="text-xs font-sans text-papyrus-muted ml-1 font-semibold">nap egyhuzamban</span>
         </div>
       </div>
 
@@ -42,13 +42,13 @@ export const StreakCounter: React.FC = () => {
           return (
             <div
               key={day.name}
-              className={`py-2 px-1 rounded-xl border text-[11px] font-mono transition-all flex flex-col items-center justify-between shadow-sm ${
+              className={`py-2 px-1 rounded-xl border text-[11px] font-mono transition-all flex flex-col items-center justify-between shadow-subtle ${
                 isDone
-                  ? 'bg-[#FAF0CD] border-[#D4A843] text-[#5C4A2F] font-bold'
-                  : 'bg-[#EAD9B8] border-[#C5A566] text-[#9A8B73]'
+                  ? 'bg-status-warningBg border-status-warningBorder text-papyrus-ink font-bold'
+                  : 'bg-papyrus-subtle border-papyrus-border text-papyrus-muted/60'
               }`}
             >
-              <span className="text-[10px] uppercase font-monument tracking-wider mb-0.5">{day.name}</span>
+              <span className="text-[10px] uppercase font-sans font-bold tracking-wider mb-0.5">{day.name}</span>
               <span className="text-xs mt-1">{isDone ? '🔥' : '○'}</span>
             </div>
           );

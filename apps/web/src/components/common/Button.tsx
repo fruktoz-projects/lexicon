@@ -28,19 +28,19 @@ export const Button: React.FC<ButtonProps> = ({
 
   const variants = {
     primary:
-      'bg-[#8B5E3C] text-white hover:bg-[#6B4226] shadow-sm border border-[#5C3A1E] font-bold',
+      'bg-[#E5C175] text-papyrus-ink hover:bg-[#DDB460] shadow-sm font-sans font-bold',
     secondary:
-      'bg-[#EAD9B8] text-[#1C150D] hover:bg-[#F5EBD4] border border-[#C5A566] shadow-sm font-bold',
+      'bg-papyrus-subtle text-papyrus-ink hover:bg-papyrus-card shadow-sm font-sans font-bold',
     outline:
-      'bg-transparent border-2 border-[#C5A566] text-[#1C150D] hover:bg-[#EAD9B8] font-bold',
+      'bg-transparent border border-papyrus-border text-papyrus-ink hover:bg-papyrus-subtle font-sans font-bold',
     ghost:
-      'bg-transparent text-[#7A6B55] hover:text-[#1C150D] hover:bg-[#EAD9B8] border border-transparent font-medium',
+      'bg-transparent text-papyrus-muted hover:text-papyrus-ink hover:bg-papyrus-subtle font-sans font-semibold',
     nile:
-      'bg-[#2E7D5B] text-white hover:bg-[#1E5840] shadow-sm border border-[#1A4B36] font-bold',
+      'bg-status-successBg text-status-success hover:bg-emerald-200 shadow-sm border border-status-successBorder font-sans font-bold',
     gold:
-      'bg-[#D4A843] text-[#1C150D] hover:bg-[#C29632] shadow-sm border border-[#B38520] font-bold',
+      'bg-status-warningBg text-amber-900 hover:bg-amber-200 shadow-sm border border-status-warningBorder font-sans font-bold',
     danger:
-      'bg-red-700 text-white hover:bg-red-800 shadow-sm border border-red-900 font-bold',
+      'bg-status-errorBg text-status-error hover:bg-red-200 shadow-sm border border-status-errorBorder font-sans font-bold',
   };
 
   const sizes = {
@@ -53,7 +53,7 @@ export const Button: React.FC<ButtonProps> = ({
     <button
       className={twMerge(
         clsx(
-          'inline-flex items-center justify-center transition-all duration-150 focus:outline-none focus:ring-2 focus:ring-[#8B5E3C]/40 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none select-none shrink-0 active:scale-[0.98]',
+          'inline-flex items-center justify-center transition-all duration-150 focus:outline-none focus:ring-2 focus:ring-brand/40 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none select-none shrink-0 active:scale-[0.98]',
           variants[variant],
           sizes[size],
           className

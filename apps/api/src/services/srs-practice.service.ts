@@ -1,6 +1,10 @@
 import { PrismaClient } from '@prisma/client';
 import {
+  calculateNextSrsResult,
+  checkAnswer,
   ExerciseType,
+  isProgressDue,
+  normalizeAnswer,
   PracticeSessionItem,
   PracticeSessionResponse,
   PracticeSubmitResult,
@@ -10,14 +14,6 @@ import {
 
 export class SrsPracticeService {
   constructor(private prisma: PrismaClient) {}
-
-  private normalizeText(str: string): string {
-    return str
-      .toLowerCase()
-      .trim()
-      .replace(/[.,/#!$%^&*;:{}=\-_`~()?"']/g, '')
-      .replace(/\s+/g, ' ');
-  }
 
   /**
    * Assembles a customized SRS practice session prioritizing due items, mistake retries, and new items.
@@ -212,9 +208,9 @@ export class SrsPracticeService {
     }
 
     // Deterministic comparison
-    const normUser = this.normalizeText(userAnswer);
-    const normExpected = this.normalizeText(expectedSolution);
-    const isCorrect = normUser === normExpected || normUser.includes(normExpected) || normExpected.includes(normUser);
+    const normUser = normalizeAnswer(userAnswer);
+    const normExpected = normalizeAnswer(expectedSolution);
+    const isCorrect = normUser === normExpected || (normExpected.length > 2 && normUser.includes(normExpected));
 
     // Get current progress or create initial
     const existingProg = await this.prisma.userProgress.findUnique({
@@ -230,33 +226,23 @@ export class SrsPracticeService {
     const currentStage = existingProg ? existingProg.srsStage : 0;
     const currentConsecutive = existingProg ? existingProg.consecutiveOk : 0;
 
-    let nextStage = currentStage;
-    let nextConsecutive = currentConsecutive;
-    let intervalDays = 1;
+    const srsRes = calculateNextSrsResult(currentStage, isCorrect);
+    const nextStage = srsRes.nextStage;
+    const nextConsecutive = isCorrect ? currentConsecutive + 1 : 0;
+    const intervalDays = srsRes.intervalDays;
 
-    if (isCorrect) {
-      nextStage = Math.min(5, currentStage + 1);
-      nextConsecutive = currentConsecutive + 1;
-      intervalDays = SRS_INTERVAL_DAYS[nextStage] || 1;
-    } else {
-      nextStage = Math.max(1, currentStage - 1);
-      nextConsecutive = 0;
-      intervalDays = 1; // repeat tomorrow
-
+    if (!isCorrect && itemType === ProgressItemType.EXERCISE) {
       // Log mistake
-      if (itemType === ProgressItemType.EXERCISE) {
-        await this.prisma.mistakeLog.create({
-          data: {
-            userId,
-            exerciseId: itemId,
-            userAnswer,
-          },
-        });
-      }
+      await this.prisma.mistakeLog.create({
+        data: {
+          userId,
+          exerciseId: itemId,
+          userAnswer,
+        },
+      });
     }
 
-    const nextReviewDate = new Date();
-    nextReviewDate.setDate(nextReviewDate.getDate() + intervalDays);
+    const nextReviewDate = new Date(srsRes.nextReviewAt);
 
     // Persist updated progress
     await this.prisma.userProgress.upsert({

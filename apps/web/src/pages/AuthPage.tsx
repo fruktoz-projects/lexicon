@@ -47,10 +47,10 @@ export const AuthPage: React.FC<AuthPageProps> = ({ onSuccess }) => {
 
   return (
     <div className="min-h-screen flex items-center justify-center p-4 bg-[#D8C194]">
-      <div className="w-full max-w-md bg-[#F5EBD4] border-2 border-[#C5A566] rounded-3xl p-6 sm:p-9 shadow-xl space-y-6">
+      <div className="w-full max-w-md bg-white rounded-3xl p-6 sm:p-9 shadow-xl space-y-6">
         {/* Brand Header */}
         <div className="text-center space-y-2">
-          <div className="w-14 h-14 rounded-2xl bg-[#8B5E3C] flex items-center justify-center text-white mx-auto shadow-md border-2 border-[#6B4226]">
+          <div className="w-14 h-14 rounded-2xl bg-[#E5C175] flex items-center justify-center text-[#1C150D] mx-auto shadow-md font-bold">
             <span className="text-2xl font-monument font-bold">L</span>
           </div>
           <h2 className="text-2xl sm:text-3xl font-monument font-black tracking-wider text-[#1C150D]">
@@ -62,18 +62,17 @@ export const AuthPage: React.FC<AuthPageProps> = ({ onSuccess }) => {
         </div>
 
         {/* Segmented Tab Switcher */}
-        <div className="p-1.5 bg-[#EAD9B8] rounded-2xl border border-[#C5A566] grid grid-cols-2 gap-1.5">
+        <div className="p-1.5 bg-[#F2E8D5] rounded-2xl grid grid-cols-2 gap-1.5">
           <button
             type="button"
             onClick={() => {
               audio.playClickSound();
               setIsLogin(true);
             }}
-            className={`py-2.5 px-3 rounded-xl text-xs font-monument font-bold transition-all duration-200 flex items-center justify-center gap-1.5 ${
-              isLogin
-                ? 'bg-[#8B5E3C] text-white shadow-md border border-[#6B4226]'
-                : 'text-[#7A6B55] hover:text-[#1C150D] hover:bg-[#F5EBD4]/60'
-            }`}
+            className={`py-2.5 px-3 rounded-xl text-xs font-monument font-bold transition-all duration-200 flex items-center justify-center gap-1.5 ${isLogin
+                ? 'bg-[#E5C175] text-[#1C150D] shadow-sm'
+                : 'text-[#7A6B55] hover:text-[#1C150D] hover:bg-white/60'
+              }`}
           >
             <KeyRound size={14} />
             <span>Bejelentkezés</span>
@@ -85,11 +84,10 @@ export const AuthPage: React.FC<AuthPageProps> = ({ onSuccess }) => {
               audio.playClickSound();
               setIsLogin(false);
             }}
-            className={`py-2.5 px-3 rounded-xl text-xs font-monument font-bold transition-all duration-200 flex items-center justify-center gap-1.5 ${
-              !isLogin
-                ? 'bg-[#8B5E3C] text-white shadow-md border border-[#6B4226]'
-                : 'text-[#7A6B55] hover:text-[#1C150D] hover:bg-[#F5EBD4]/60'
-            }`}
+            className={`py-2.5 px-3 rounded-xl text-xs font-monument font-bold transition-all duration-200 flex items-center justify-center gap-1.5 ${!isLogin
+                ? 'bg-[#E5C175] text-[#1C150D] shadow-sm'
+                : 'text-[#7A6B55] hover:text-[#1C150D] hover:bg-white/60'
+              }`}
           >
             <UserPlus size={14} />
             <span>Regisztráció</span>

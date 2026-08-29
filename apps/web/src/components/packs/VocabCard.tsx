@@ -1,6 +1,7 @@
 import React from 'react';
 import { VocabularyItemModel } from '@lexicon/types';
 import { AudioButton } from '../common/AudioButton';
+import { BookOpen } from 'lucide-react';
 
 interface VocabCardProps {
   item: VocabularyItemModel;
@@ -8,59 +9,63 @@ interface VocabCardProps {
 
 export const VocabCard: React.FC<VocabCardProps> = ({ item }) => {
   return (
-    <div className="bg-[#F5EBD4] border-2 border-[#C5A566] rounded-2xl p-4 sm:p-5 shadow-card hover:border-[#8B5E3C] hover:shadow-md transition-all">
-      <div className="flex items-start justify-between gap-2 mb-2">
-        <div>
-          <div className="flex items-center gap-2">
-            <h4 className="text-base sm:text-lg font-scribe font-bold text-[#1C150D]">{item.term}</h4>
-            <AudioButton text={item.term} size="sm" />
+    <div className="bg-papyrus-card rounded-2xl p-5 shadow-card hover:shadow-card-hover transition-all flex flex-col justify-between">
+      <div>
+        {/* Header: Term, Phonetics, Audio, Badge */}
+        <div className="flex items-start justify-between gap-2 mb-3">
+          <div>
+            <div className="flex items-center gap-2">
+              <h4 className="text-lg sm:text-xl font-scribe font-bold text-papyrus-ink">{item.term}</h4>
+              <AudioButton text={item.term} size="sm" />
+            </div>
+            {item.phonetics && (
+              <span className="text-xs font-mono text-papyrus-muted font-semibold block mt-0.5">{item.phonetics}</span>
+            )}
           </div>
-          {item.phonetics && (
-            <span className="text-xs font-mono text-[#7A6B55] font-semibold">{item.phonetics}</span>
-          )}
+          <span className="text-[11px] font-sans font-bold px-2.5 py-0.5 rounded-full bg-status-successBg text-status-success border border-status-successBorder shrink-0 flex items-center gap-1">
+            <BookOpen size={12} />
+            <span>Szó</span>
+          </span>
         </div>
-        <span className="text-[10px] font-monument font-bold px-2.5 py-0.5 rounded-full bg-[#E0F0E8] text-[#1C4C34] border border-[#6BB38A] shrink-0 shadow-sm">
-          Szókincs
-        </span>
+
+        {/* Hungarian Translation Inset */}
+        <div className="mb-3 p-3 rounded-xl bg-papyrus-subtle">
+          <span className="text-[10px] text-papyrus-muted font-sans font-bold uppercase tracking-wider block mb-0.5">Magyar jelentés:</span>
+          <span className="text-sm font-sans font-bold text-papyrus-ink">{item.translationHu}</span>
+        </div>
+
+        {/* English Definition */}
+        {item.definitionEn && (
+          <div className="mb-3 text-xs text-papyrus-muted leading-relaxed font-sans">
+            <strong className="text-papyrus-ink font-semibold">Definíció: </strong>
+            <span className="italic">{item.definitionEn}</span>
+          </div>
+        )}
+
+        {/* Collocations Pills */}
+        {item.collocations && item.collocations.length > 0 && (
+          <div className="mb-3">
+            <span className="text-[10px] font-sans font-bold uppercase tracking-wider text-papyrus-muted block mb-1.5">Gyakori kollokációk:</span>
+            <div className="flex flex-wrap gap-1.5">
+              {item.collocations.map((c, i) => (
+                <span
+                  key={i}
+                  className="text-xs px-2.5 py-1 rounded-lg bg-papyrus-warm text-papyrus-ink font-sans font-semibold border border-status-warningBorder flex items-center gap-1.5 shadow-subtle"
+                >
+                  <span>{c}</span>
+                  <AudioButton text={c} size="sm" />
+                </span>
+              ))}
+            </div>
+          </div>
+        )}
       </div>
 
-      {/* Hungarian Translation */}
-      <div className="my-2 p-2.5 rounded-xl bg-[#EAD9B8] border border-[#C5A566]">
-        <span className="text-[11px] text-[#7A6B55] font-monument uppercase tracking-wider block font-bold">Magyar jelentés:</span>
-        <span className="text-xs sm:text-sm font-bold text-[#1C150D]">{item.translationHu}</span>
-      </div>
-
-      {/* English Definition */}
-      {item.definitionEn && (
-        <div className="mb-2 text-xs text-[#7A6B55] leading-relaxed font-scribe font-semibold italic">
-          <strong className="not-italic text-[#1C150D] font-sans font-bold">Definíció: </strong>
-          {item.definitionEn}
-        </div>
-      )}
-
-      {/* Collocations */}
-      {item.collocations && item.collocations.length > 0 && (
-        <div className="mb-2">
-          <span className="text-[11px] font-monument uppercase text-[#7A6B55] block mb-1 font-bold">Gyakori kollokációk:</span>
-          <div className="flex flex-wrap gap-1.5">
-            {item.collocations.map((c, i) => (
-              <span
-                key={i}
-                className="text-xs px-2.5 py-0.5 rounded-lg bg-[#FBF4E4] text-[#1C150D] font-bold border border-[#C5A566] flex items-center gap-1 shadow-sm font-scribe"
-              >
-                <span>{c}</span>
-                <AudioButton text={c} size="sm" />
-              </span>
-            ))}
-          </div>
-        </div>
-      )}
-
-      {/* Examples */}
+      {/* Examples Context Sentence */}
       {item.examples && item.examples.length > 0 && (
-        <div className="mt-2.5 pt-2 border-t border-[#C5A566]">
-          <span className="text-[11px] font-monument uppercase text-[#7A6B55] block mb-1 font-bold">Kontextus mondat:</span>
-          <p className="text-xs text-[#1C150D] italic font-scribe leading-relaxed bg-[#FBF4E4] p-2.5 rounded-xl border border-[#C5A566] font-semibold">
+        <div className="mt-3 pt-3 border-t border-papyrus-border">
+          <span className="text-[10px] font-sans font-bold uppercase tracking-wider text-papyrus-muted block mb-1">Példamondat:</span>
+          <p className="text-xs text-papyrus-ink italic font-scribe leading-relaxed bg-papyrus-warm/60 p-2.5 rounded-xl font-medium">
             "{item.examples[0]}"
           </p>
         </div>

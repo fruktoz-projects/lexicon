@@ -1,6 +1,6 @@
 import React from 'react';
 import { ContrastiveNoteModel } from '@lexicon/types';
-import { AlertCircle, CheckCircle2 } from 'lucide-react';
+import { AlertCircle, CheckCircle2, ShieldAlert } from 'lucide-react';
 import { AudioButton } from '../common/AudioButton';
 
 interface HunglishTrapCardProps {
@@ -9,45 +9,55 @@ interface HunglishTrapCardProps {
 
 export const HunglishTrapCard: React.FC<HunglishTrapCardProps> = ({ note }) => {
   return (
-    <div className="bg-[#F5EBD4] border-2 border-[#C5A566] rounded-2xl p-4 sm:p-5 shadow-card">
-      <div className="flex items-center gap-2 mb-3">
-        <div className="p-1.5 rounded-lg bg-amber-100 text-amber-900 border border-amber-300 shadow-sm">
-          <AlertCircle size={16} />
+    <div className="bg-papyrus-card rounded-2xl p-5 shadow-card space-y-3.5">
+      {/* Card Title */}
+      <div className="flex items-center justify-between">
+        <div className="flex items-center gap-2">
+          <div className="p-1.5 rounded-lg bg-status-warningBg text-amber-900 border border-status-warningBorder shadow-subtle">
+            <ShieldAlert size={16} />
+          </div>
+          <h4 className="font-sans font-bold text-xs sm:text-sm text-papyrus-ink">
+            Kontrasztív Hunglish Csapda & Szabály
+          </h4>
         </div>
-        <h4 className="font-monument font-bold text-xs sm:text-sm text-[#1C150D]">
-          Kontrasztív Hunglish Elemzés & Szabály
-        </h4>
+
+        <span className="text-[10px] font-sans font-bold px-2 py-0.5 rounded-full bg-status-errorBg text-status-error border border-status-errorBorder">
+          Gyakori Hiba
+        </span>
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 sm:gap-3 mb-3">
-        {/* Trap */}
-        <div className="bg-red-50 border border-red-300 rounded-xl p-3 shadow-sm">
-          <span className="text-[11px] font-bold text-red-900 block mb-1 font-sans">
-            ❌ Gyakori magyar hibaminta:
+      {/* 2-Column Contrast Blocks */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+        {/* Error Side */}
+        <div className="bg-status-errorBg border border-status-errorBorder rounded-xl p-3.5 shadow-subtle">
+          <span className="text-[11px] font-bold text-status-error block mb-1 font-sans flex items-center gap-1">
+            <AlertCircle size={13} /> Hibás magyar tükörfordítás:
           </span>
           <span className="font-mono text-xs sm:text-sm text-red-950 font-bold line-through">
             "{note.hunglishTrap}"
           </span>
         </div>
 
-        {/* Correct */}
-        <div className="bg-emerald-50 border border-emerald-400 rounded-xl p-3 shadow-sm">
-          <div className="flex items-center justify-between">
-            <span className="text-[11px] font-bold text-emerald-950 flex items-center gap-1 font-sans">
-              <CheckCircle2 size={13} /> Helyes angol kifejezés:
+        {/* Correct Side */}
+        <div className="bg-status-successBg border border-status-successBorder rounded-xl p-3.5 shadow-subtle">
+          <div className="flex items-center justify-between mb-1">
+            <span className="text-[11px] font-bold text-status-success flex items-center gap-1 font-sans">
+              <CheckCircle2 size={13} /> Helyes angol forma:
             </span>
             <AudioButton text={note.correctUsage} size="sm" />
           </div>
-          <span className="font-mono text-xs sm:text-sm text-emerald-950 font-bold block mt-1">
+          <span className="font-mono text-xs sm:text-sm text-emerald-950 font-bold block">
             "{note.correctUsage}"
           </span>
         </div>
       </div>
 
-      {/* Explanation */}
-      <div className="p-3 bg-[#EAD9B8] rounded-xl border border-[#C5A566] shadow-inner">
-        <span className="text-[11px] font-monument font-bold text-[#1C150D] block mb-0.5">Szabály:</span>
-        <p className="text-xs text-[#1C150D] leading-relaxed font-sans">{note.explanationHu}</p>
+      {/* Explanation Rule */}
+      <div className="p-3.5 bg-papyrus-subtle rounded-xl">
+        <span className="text-[11px] font-sans font-bold text-papyrus-ink block mb-0.5">
+          Magyarázat & Szabály:
+        </span>
+        <p className="text-xs text-papyrus-ink leading-relaxed font-sans">{note.explanationHu}</p>
       </div>
     </div>
   );
