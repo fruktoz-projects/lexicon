@@ -12,6 +12,8 @@ export const INITIAL_USER: UserProfile = {
   email: 'expedition@lexicon.hu',
   targetCefr: CefrLevel.B2,
   currentCefr: CefrLevel.B1,
+  dailyGoalMinutes: 15,
+  preferredZones: [],
   streakDays: 7,
   lastActiveAt: new Date().toISOString(),
   createdAt: new Date().toISOString(),
