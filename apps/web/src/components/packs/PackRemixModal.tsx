@@ -63,7 +63,7 @@ export const PackRemixModal: React.FC<PackRemixModalProps> = ({
       onPackCreated(newPack.id);
       onClose();
     } catch (err: any) {
-      setError(err.message || 'Nem sikerült az ismétlő tananyag összeállítása');
+      setError(err.response?.data?.error || err.message || 'Nem sikerült az ismétlő tananyag összeállítása');
       audio.playMistakeSound();
     } finally {
       setIsLoading(false);
@@ -80,14 +80,14 @@ export const PackRemixModal: React.FC<PackRemixModalProps> = ({
     >
       <form onSubmit={handleRemix} className="space-y-5">
         {error && (
-          <div className="p-3.5 rounded-xl bg-status-errorBg border border-status-errorBorder text-red-950 text-xs font-sans font-bold shadow-subtle">
+          <div className="p-3.5 rounded-xl bg-status-errorBg border border-status-errorBorder text-status-error text-xs font-sans font-bold shadow-subtle">
             ⚠️ {error}
           </div>
         )}
 
         {/* CEFR Level */}
         <div>
-          <label className="block text-xs font-sans font-bold text-papyrus-ink mb-1.5">
+          <label className="block text-xs font-sans font-bold text-ink mb-1.5">
             1. CEFR szint *
           </label>
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
@@ -102,8 +102,8 @@ export const PackRemixModal: React.FC<PackRemixModalProps> = ({
                     setCefr(opt.level);
                   }}
                   className={`p-2.5 rounded-xl border-2 text-xs font-sans font-bold flex items-center justify-center gap-1 transition-all shadow-subtle ${isSelected
-                      ? 'bg-[#E5C175] text-papyrus-ink border-[#DDB460]'
-                      : 'bg-white border-papyrus-border text-papyrus-ink hover:bg-papyrus-card'
+                      ? 'bg-accent text-accent-text border-accent shadow-sm'
+                      : 'bg-surface-subtle border-border text-ink hover:bg-surface-subtle'
                     }`}
                 >
                   {isSelected && <CheckCircle2 size={14} />}
@@ -116,7 +116,7 @@ export const PackRemixModal: React.FC<PackRemixModalProps> = ({
 
         {/* Zone Selection */}
         <div>
-          <label className="block text-xs font-sans font-bold text-papyrus-ink mb-1.5">
+          <label className="block text-xs font-sans font-bold text-ink mb-1.5">
             2. Tartalmi terület
           </label>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
@@ -131,12 +131,12 @@ export const PackRemixModal: React.FC<PackRemixModalProps> = ({
                     setZone(z.type);
                   }}
                   className={`p-2.5 rounded-xl border-2 text-xs font-sans font-bold text-left flex items-center justify-between transition-all shadow-subtle ${isSelected
-                      ? 'bg-papyrus-warm border-brand text-papyrus-ink ring-1 ring-brand/30'
-                      : 'bg-white border-papyrus-border text-papyrus-ink hover:bg-papyrus-card'
+                      ? 'bg-surface-subtle border-accent text-ink ring-1 ring-accent/30 shadow-sm'
+                      : 'bg-surface-subtle border-border-subtle text-ink hover:bg-surface-subtle hover:border-accent'
                     }`}
                 >
                   <span>{z.label}</span>
-                  {isSelected && <CheckCircle2 size={16} className="text-brand shrink-0" />}
+                  {isSelected && <CheckCircle2 size={16} className="text-accent shrink-0" />}
                 </button>
               );
             })}
@@ -144,19 +144,19 @@ export const PackRemixModal: React.FC<PackRemixModalProps> = ({
         </div>
 
         {/* Modular Composition Sliders */}
-        <div className="bg-papyrus-subtle p-4 rounded-2xl border border-papyrus-border space-y-3.5">
-          <div className="flex items-center gap-2 font-sans font-bold text-xs text-papyrus-ink">
-            <Sliders size={15} className="text-brand" />
+        <div className="bg-surface-subtle p-4 rounded-2xl border border-border space-y-3.5">
+          <div className="flex items-center gap-2 font-sans font-bold text-xs text-ink">
+            <Sliders size={15} className="text-accent" />
             <span>Almodulok mennyisége:</span>
           </div>
 
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-            <div className="bg-white p-2.5 rounded-xl border border-papyrus-border text-center shadow-subtle">
-              <label className="text-[11px] font-sans text-papyrus-muted block font-bold mb-1">Szavak</label>
+            <div className="bg-surface p-2.5 rounded-xl border border-border text-center shadow-subtle">
+              <label className="text-[11px] font-sans text-muted block font-bold mb-1">Szavak</label>
               <select
                 value={vocabCount}
                 onChange={(e) => setVocabCount(parseInt(e.target.value, 10))}
-                className="w-full text-center font-mono font-bold text-sm bg-papyrus-warm border rounded-lg py-1 text-papyrus-ink focus:outline-none"
+                className="w-full text-center font-mono font-bold text-sm bg-surface-subtle border rounded-lg py-1 text-ink focus:outline-none"
               >
                 {[3, 4, 5, 6, 8, 10].map((num) => (
                   <option key={num} value={num}>{num} db</option>
@@ -164,12 +164,12 @@ export const PackRemixModal: React.FC<PackRemixModalProps> = ({
               </select>
             </div>
 
-            <div className="bg-white p-2.5 rounded-xl border border-papyrus-border text-center shadow-subtle">
-              <label className="text-[11px] font-sans text-papyrus-muted block font-bold mb-1">Kollokációk</label>
+            <div className="bg-surface p-2.5 rounded-xl border border-border text-center shadow-subtle">
+              <label className="text-[11px] font-sans text-muted block font-bold mb-1">Kollokációk</label>
               <select
                 value={chunkCount}
                 onChange={(e) => setChunkCount(parseInt(e.target.value, 10))}
-                className="w-full text-center font-mono font-bold text-sm bg-papyrus-warm border rounded-lg py-1 text-papyrus-ink focus:outline-none"
+                className="w-full text-center font-mono font-bold text-sm bg-surface-subtle border rounded-lg py-1 text-ink focus:outline-none"
               >
                 {[2, 3, 4, 5, 6, 8].map((num) => (
                   <option key={num} value={num}>{num} db</option>
@@ -177,12 +177,12 @@ export const PackRemixModal: React.FC<PackRemixModalProps> = ({
               </select>
             </div>
 
-            <div className="bg-white p-2.5 rounded-xl border border-papyrus-border text-center shadow-subtle">
-              <label className="text-[11px] font-sans text-papyrus-muted block font-bold mb-1">Hunglish csapdák</label>
+            <div className="bg-surface p-2.5 rounded-xl border border-border text-center shadow-subtle">
+              <label className="text-[11px] font-sans text-muted block font-bold mb-1">Hunglish csapdák</label>
               <select
                 value={trapCount}
                 onChange={(e) => setTrapCount(parseInt(e.target.value, 10))}
-                className="w-full text-center font-mono font-bold text-sm bg-papyrus-warm border rounded-lg py-1 text-papyrus-ink focus:outline-none"
+                className="w-full text-center font-mono font-bold text-sm bg-surface-subtle border rounded-lg py-1 text-ink focus:outline-none"
               >
                 {[1, 2, 3, 4, 5].map((num) => (
                   <option key={num} value={num}>{num} db</option>
@@ -190,12 +190,12 @@ export const PackRemixModal: React.FC<PackRemixModalProps> = ({
               </select>
             </div>
 
-            <div className="bg-white p-2.5 rounded-xl border border-papyrus-border text-center shadow-subtle">
-              <label className="text-[11px] font-sans text-papyrus-muted block font-bold mb-1">Feladatok</label>
+            <div className="bg-surface p-2.5 rounded-xl border border-border text-center shadow-subtle">
+              <label className="text-[11px] font-sans text-muted block font-bold mb-1">Feladatok</label>
               <select
                 value={exerciseCount}
                 onChange={(e) => setExerciseCount(parseInt(e.target.value, 10))}
-                className="w-full text-center font-mono font-bold text-sm bg-papyrus-warm border rounded-lg py-1 text-papyrus-ink focus:outline-none"
+                className="w-full text-center font-mono font-bold text-sm bg-surface-subtle border rounded-lg py-1 text-ink focus:outline-none"
               >
                 {[3, 4, 5, 6, 8, 10].map((num) => (
                   <option key={num} value={num}>{num} db</option>
@@ -207,7 +207,7 @@ export const PackRemixModal: React.FC<PackRemixModalProps> = ({
 
         {/* Custom Pack Name */}
         <div>
-          <label className="block text-xs font-sans font-bold text-papyrus-ink mb-1.5">
+          <label className="block text-xs font-sans font-bold text-ink mb-1.5">
             Egyedi tananyag név (opcionális)
           </label>
           <input
@@ -215,12 +215,12 @@ export const PackRemixModal: React.FC<PackRemixModalProps> = ({
             placeholder={`pl. B2 ismétlő remix • ${new Date().toLocaleDateString('hu-HU')}`}
             value={customTitle}
             onChange={(e) => setCustomTitle(e.target.value)}
-            className="w-full px-4 py-2.5 rounded-xl border-2 border-papyrus-border bg-white text-xs sm:text-sm text-papyrus-ink font-medium placeholder:text-papyrus-muted/60 focus:border-brand focus:ring-2 focus:ring-brand/20 focus:outline-none shadow-subtle"
+            className="w-full px-4 py-2.5 rounded-xl border-2 border-border bg-surface text-xs sm:text-sm text-ink font-medium placeholder:text-muted/60 focus:border-accent focus:ring-2 focus:ring-accent/20 focus:outline-none shadow-inner"
           />
         </div>
 
         {/* Action Buttons */}
-        <div className="flex items-center justify-end gap-3 pt-2 border-t border-papyrus-border">
+        <div className="flex items-center justify-end gap-3 pt-2 border-t border-border">
           <Button type="button" variant="secondary" onClick={onClose} disabled={isLoading}>
             Mégse
           </Button>

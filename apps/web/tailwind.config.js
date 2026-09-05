@@ -5,39 +5,37 @@ export default {
   theme: {
     extend: {
       colors: {
-        papyrus: {
-          canvas: '#D8C194', // Main backdrop sandstone/papyrus
-          card: '#FFFFFF',   // Pure white for maximum contrast
-          subtle: '#F2E8D5', // Inset / recessed container
-          warm: '#FAF0CD',   // Highlight / accent surface
-          border: '#C5A566', // Primary antique parchment border
-          borderSubtle: '#D8C092', // Muted inner border
-          ink: '#1C150D',    // Deep soot black text (primary)
-          muted: '#7A6B55',  // Secondary/label text
-        },
-        brand: {
-          DEFAULT: '#8B5E3C', // Terracotta warm brown primary CTA
-          hover: '#6B4226',
-          dark: '#5C3A1E',
-          light: '#FAF0CD',
-          subtle: '#F5E6D3',
+        canvas: '#F8FAFC',   // gray-50 — page background
+        surface: '#FFFFFF',  // pure white — dominant card surface
+        'surface-subtle': '#F1F5F9', // gray-100 — inset / recessed surfaces
+        border: '#E5E7EB',   // gray-200 — primary borders
+        'border-subtle': '#E5E7EB', // gray-200 — subtle borders / dividers
+        ink: '#0F172A',      // slate-900 — primary text
+        muted: '#64748B',    // slate-500 — secondary / label text
+        accent: {
+          DEFAULT: '#6D28D9', // violet-700 — primary CTA / brand
+          hover: '#5B21B6',   // violet-800
+          dark: '#5B21B8',    // violet-800 dark
+          subtle: '#F5F3FF',  // violet-50
+          soft: '#DDD6FE',    // violet-300
+          text: '#F8FAFC',    // button text
         },
         zone: {
-          everyday: '#8B5E3C',
-          business: '#B8860B',
-          it: '#4A6F8B',
-          academic: '#2E7D5B',
+          everyday: '#0EA5E9', // sky-500
+          business: '#7C3AED', // violet-600 = accent
+          it: '#4F46E5',       // indigo-600
+          academic: '#10B981', // emerald-500
         },
         status: {
-          success: '#2E7D5B',
-          successBg: '#E0F0E8',
-          successBorder: '#6BB38A',
-          warning: '#D4A843',
-          warningBg: '#FAF0CD',
-          warningBorder: '#D4A843',
-          error: '#B83A3A',
-          errorBg: '#FDE8E8',
-          errorBorder: '#F8B4B4',
+          success: '#10B981',    // emerald-500
+          successBg: '#DCFCE7',  // emerald-100
+          successBorder: '#86EFAC', // emerald-300
+          warning: '#F59E0B',    // amber-500
+          warningBg: '#FFFBEB',  // amber-50
+          warningBorder: '#FDE68A', // amber-300
+          error: '#EF4444',      // red-500
+          errorBg: '#FEE2E2',    // red-100
+          errorBorder: '#FCA5A5', // red-300
         },
       },
       fontFamily: {
@@ -47,10 +45,10 @@ export default {
         mono: ['"Geist Mono"', 'JetBrains Mono', 'monospace'],
       },
       boxShadow: {
-        card: '0 8px 20px rgba(45, 30, 12, 0.15), 0 2px 8px rgba(45, 30, 12, 0.08)',
-        'card-hover': '0 12px 28px rgba(45, 30, 12, 0.22), 0 4px 12px rgba(45, 30, 12, 0.12)',
-        subtle: '0 2px 6px rgba(45, 30, 12, 0.06)',
-        inner: 'inset 0 2px 4px rgba(50, 35, 15, 0.08)',
+        card: '0 1px 2px rgba(15, 23, 42, 0.04), 0 1px 4px rgba(15, 23, 42, 0.06)',
+        'card-hover': '0 2px 8px rgba(15, 23, 42, 0.08), 0 4px 12px rgba(15, 23, 42, 0.10)',
+        subtle: '0 2px 6px rgba(15, 23, 42, 0.04)',
+        inner: 'inset 0 2px 4px rgba(15, 23, 42, 0.04)',
       },
       borderRadius: {
         card: '18px',

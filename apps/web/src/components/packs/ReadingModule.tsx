@@ -37,19 +37,19 @@ export const ReadingModule: React.FC<ReadingModuleProps> = ({ reading }) => {
   return (
     <div className="space-y-4 sm:space-y-6">
       {/* Reading Text */}
-      <div className="bg-[#F5EBD4] border-2 border-[#C5A566] rounded-2xl sm:rounded-3xl p-5 sm:p-7 shadow-card">
-        <div className="flex items-center gap-2 mb-3 pb-2 border-b border-[#C5A566]">
-          <BookOpen size={18} className="text-[#8B5E3C]" />
-          <h4 className="font-monument font-bold text-base sm:text-lg text-[#1C150D]">{reading.title}</h4>
+      <div className="bg-surface-subtle border-2 border-border rounded-2xl sm:rounded-3xl p-5 sm:p-7 shadow-card">
+        <div className="flex items-center gap-2 mb-3 pb-2 border-b border-border">
+          <BookOpen size={18} className="text-accent" />
+          <h4 className="font-monument font-bold text-base sm:text-lg text-ink">{reading.title}</h4>
         </div>
-        <p className="font-scribe text-[#1C150D] text-sm sm:text-base leading-relaxed whitespace-pre-line font-semibold">
+        <p className="font-scribe text-ink text-sm sm:text-base leading-relaxed whitespace-pre-line font-semibold">
           {reading.bodyText}
         </p>
       </div>
 
       {/* Comprehension Questions */}
-      <div className="bg-[#EAD9B8] border-2 border-[#C5A566] rounded-2xl sm:rounded-3xl p-5 sm:p-6 shadow-inner space-y-4">
-        <h5 className="font-monument font-bold text-xs sm:text-sm text-[#1C150D] uppercase tracking-wider">
+      <div className="bg-surface-subtle border-2 border-border rounded-2xl sm:rounded-3xl p-5 sm:p-6 shadow-inner space-y-4">
+        <h5 className="font-monument font-bold text-xs sm:text-sm text-ink uppercase tracking-wider">
           Szövegértési Feladványok
         </h5>
 
@@ -58,8 +58,8 @@ export const ReadingModule: React.FC<ReadingModuleProps> = ({ reading }) => {
           const isCorrect = userChoice === q.answer;
 
           return (
-            <div key={qIndex} className="p-3.5 sm:p-4 bg-[#F5EBD4] rounded-xl sm:rounded-2xl border border-[#C5A566] space-y-2.5 shadow-sm">
-              <p className="text-xs sm:text-sm font-scribe font-bold text-[#1C150D]">
+            <div key={qIndex} className="p-3.5 sm:p-4 bg-surface-subtle rounded-xl sm:rounded-2xl border border-border space-y-2.5 shadow-sm">
+              <p className="text-xs sm:text-sm font-scribe font-bold text-ink">
                 {qIndex + 1}. {q.question}
               </p>
 
@@ -68,17 +68,17 @@ export const ReadingModule: React.FC<ReadingModuleProps> = ({ reading }) => {
                   const isSelected = userChoice === opt;
                   const isAnswer = q.answer === opt;
 
-                  let optClass = 'border-[#C5A566] hover:bg-white text-[#1C150D] bg-[#FBF4E4]';
+                  let optClass = 'border-border hover:bg-surface-subtle text-ink bg-surface-subtle';
                   if (submitted) {
                     if (isAnswer) {
-                      optClass = 'border-emerald-500 bg-emerald-50 text-emerald-950 font-bold';
+                      optClass = 'border-status-successBorder bg-status-successBg text-status-success font-bold';
                     } else if (isSelected && !isCorrect) {
-                      optClass = 'border-red-500 bg-red-50 text-red-950 line-through';
+                      optClass = 'border-status-errorBorder bg-status-errorBg text-status-error line-through';
                     } else {
-                      optClass = 'border-[#C5A566] opacity-50';
+                      optClass = 'border-border opacity-50';
                     }
                   } else if (isSelected) {
-                    optClass = 'border-[#8B5E3C] bg-[#FAF0CD] text-[#5C4A2F] font-bold shadow-sm';
+                    optClass = 'border-accent bg-accent-subtle text-ink font-bold shadow-sm';
                   }
 
                   return (
@@ -88,8 +88,8 @@ export const ReadingModule: React.FC<ReadingModuleProps> = ({ reading }) => {
                       className={`p-3 rounded-xl border-2 text-xs sm:text-sm cursor-pointer transition-all flex items-center justify-between font-scribe font-bold ${optClass}`}
                     >
                       <span>{opt}</span>
-                      {submitted && isAnswer && <CheckCircle size={16} className="text-emerald-600 shrink-0" />}
-                      {submitted && isSelected && !isCorrect && <XCircle size={16} className="text-red-600 shrink-0" />}
+                      {submitted && isAnswer && <CheckCircle size={16} className="text-status-success shrink-0" />}
+                      {submitted && isSelected && !isCorrect && <XCircle size={16} className="text-status-error shrink-0" />}
                     </div>
                   );
                 })}
@@ -107,7 +107,7 @@ export const ReadingModule: React.FC<ReadingModuleProps> = ({ reading }) => {
             Válaszok Ellenőrzése
           </Button>
         ) : (
-          <div className="p-3 bg-[#F5EBD4] rounded-xl text-center text-xs font-monument text-[#7A6B55] font-bold border border-[#C5A566]">
+          <div className="p-3 bg-surface-subtle rounded-xl text-center text-xs font-monument text-muted font-bold border border-border">
             Szövegértési feladvány lezárva.
           </div>
         )}

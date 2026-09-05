@@ -1,20 +1,16 @@
-version: '3.8'
-
 services:
   postgres:
     image: postgres:16-alpine
     container_name: lexicon-postgres
-    restart: unless-stopped
+    restart: always
     environment:
-      POSTGRES_USER: lexicon
-      POSTGRES_PASSWORD: lexicon_password
-      POSTGRES_DB: lexicon_db
-    ports:
-      - "5432:5432"
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
     volumes:
       - pgdata:/var/lib/postgresql/data
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U lexicon -d lexicon_db"]
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
       interval: 5s
       timeout: 5s
       retries: 5
@@ -22,9 +18,7 @@ services:
   redis:
     image: redis:7-alpine
     container_name: lexicon-redis
-    restart: unless-stopped
-    ports:
-      - "6379:6379"
+    restart: always
     volumes:
       - redisdata:/data
     healthcheck:
@@ -37,38 +31,38 @@ services:
     build:
       context: .
       dockerfile: apps/api/Dockerfile
+      target: runner
     container_name: lexicon-api
-    restart: unless-stopped
+    restart: always
     depends_on:
       postgres:
         condition: service_healthy
       redis:
         condition: service_healthy
     environment:
-      PORT: 3000
+      PORT: 3021
       HOST: 0.0.0.0
-      DATABASE_URL: "postgresql://lexicon:lexicon_password@postgres:5432/lexicon_db?schema=public"
+      DATABASE_URL: "postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB}?schema=public"
       REDIS_URL: "redis://redis:6379"
-      JWT_SECRET: "expedition_super_secret_jwt_key_2026"
-      GEMINI_API_KEY: "${GEMINI_API_KEY:-}"
-      OPENROUTER_API_KEY: "${OPENROUTER_API_KEY:-}"
-      NODE_ENV: development
+      JWT_SECRET: "${JWT_SECRET}"
+      GEMINI_API_KEY: "${GEMINI_API_KEY}"
+      OPENROUTER_API_KEY: "${OPENROUTER_API_KEY}"
+      NODE_ENV: production
     ports:
-      - "3000:3000"
+      - "${API_PORT}:3021"
 
   web:
     build:
       context: .
       dockerfile: apps/web/Dockerfile
     container_name: lexicon-web
-    restart: unless-stopped
+    restart: always
     depends_on:
       - api
     ports:
-      - "5173:5173"
-    environment:
-      VITE_API_BASE_URL: "http://localhost:3000/api/v1"
+      - "${WEB_PORT}:3000"
 
 volumes:
   pgdata:
   redisdata:
+

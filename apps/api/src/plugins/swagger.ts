@@ -13,8 +13,8 @@ const swaggerPlugin: FastifyPluginAsync = async (fastify) => {
       },
       servers: [
         {
-          url: 'http://localhost:3000',
-          description: 'Development Server',
+          url: '/',
+          description: 'Current Host',
         },
       ],
       components: {

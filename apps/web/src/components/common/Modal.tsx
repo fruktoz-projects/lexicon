@@ -44,20 +44,20 @@ export const Modal: React.FC<ModalProps> = ({
   return (
     <div className="fixed inset-0 z-50 overflow-y-auto flex items-center justify-center p-3 sm:p-6 bg-black/70 backdrop-blur-sm animate-fade-in">
       <div
-        className={`w-full ${maxWidths[maxWidth]} bg-papyrus-card rounded-2xl sm:rounded-3xl shadow-2xl overflow-hidden flex flex-col max-h-[92vh] relative`}
+        className={`w-full ${maxWidths[maxWidth]} bg-surface rounded-2xl sm:rounded-3xl shadow-2xl overflow-hidden flex flex-col max-h-[92vh] relative`}
       >
         {/* Top Accent Line */}
-        <div className="h-1.5 bg-[#D4A843] w-full shrink-0" />
+        <div className="h-1.5 bg-accent w-full shrink-0" />
 
         {/* Modal Header */}
-        <div className="flex items-center justify-between px-5 sm:px-7 py-4 border-b border-papyrus-borderSubtle bg-papyrus-subtle shrink-0">
+        <div className="flex items-center justify-between px-5 sm:px-7 py-4 border-b border-border-subtle bg-surface-subtle shrink-0">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-2xl bg-[#E5C175] flex items-center justify-center text-papyrus-ink shadow-sm shrink-0 font-monument font-bold">
+            <div className="w-10 h-10 rounded-2xl bg-accent flex items-center justify-center text-accent-text shadow-sm shrink-0 font-monument font-bold">
               <span>L</span>
             </div>
             <div>
-              {title && <h3 className="text-base sm:text-lg font-monument font-bold text-papyrus-ink tracking-wide">{title}</h3>}
-              {subtitle && <p className="text-xs text-papyrus-muted mt-0.5 font-sans font-semibold">{subtitle}</p>}
+              {title && <h3 className="text-base sm:text-lg font-monument font-bold text-ink tracking-wide">{title}</h3>}
+              {subtitle && <p className="text-xs text-muted mt-0.5 font-sans font-semibold">{subtitle}</p>}
             </div>
           </div>
           <button
@@ -65,14 +65,14 @@ export const Modal: React.FC<ModalProps> = ({
               audio.playClickSound();
               onClose();
             }}
-            className="p-2 rounded-xl text-papyrus-muted hover:text-papyrus-ink hover:bg-papyrus-card border border-papyrus-border transition-colors"
+            className="p-2 rounded-xl text-muted hover:text-ink hover:bg-surface border border-border transition-colors"
           >
             <X size={20} />
           </button>
         </div>
 
         {/* Modal Body */}
-        <div className="p-5 sm:p-7 overflow-y-auto flex-1 bg-papyrus-card">{children}</div>
+        <div className="p-5 sm:p-7 overflow-y-auto flex-1 bg-surface">{children}</div>
       </div>
     </div>
   );

@@ -2,8 +2,6 @@ import {
   CefrLevel,
   ExerciseType,
   LearningPackDetail,
-  LearningPackSummary,
-  ProgressItemType,
   UserProfile,
   WritingSubmissionModel,
   ZoneType,

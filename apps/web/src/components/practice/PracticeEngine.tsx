@@ -142,12 +142,12 @@ export const PracticeEngine: React.FC<PracticeEngineProps> = ({ onFinish }) => {
 
   if (isLoading) {
     return (
-      <div className="min-h-[380px] flex flex-col items-center justify-center p-6 text-center bg-white rounded-3xl shadow-card">
-        <Loader2 size={36} className="text-[#8B5E3C] animate-spin mb-3" />
-        <h3 className="font-monument font-bold text-base sm:text-lg text-[#1C150D]">
+      <div className="min-h-[380px] flex flex-col items-center justify-center p-6 text-center bg-surface rounded-3xl shadow-card">
+        <Loader2 size={36} className="text-accent animate-spin mb-3" />
+        <h3 className="font-monument font-bold text-base sm:text-lg text-ink">
           Gyakorló kártyák összeállítása...
         </h3>
-        <p className="text-xs font-scribe text-[#7A6B55] mt-1 font-semibold">
+        <p className="text-xs font-scribe text-muted mt-1 font-semibold">
           Rendezés az esedékességi idő és a hibaminták alapján
         </p>
       </div>
@@ -156,12 +156,12 @@ export const PracticeEngine: React.FC<PracticeEngineProps> = ({ onFinish }) => {
 
   if (!currentItem) {
     return (
-      <div className="min-h-[380px] flex flex-col items-center justify-center p-6 text-center bg-white rounded-3xl shadow-card space-y-4">
-        <CheckCircle2 size={48} className="text-[#2E7D5B]" />
-        <h3 className="font-monument font-bold text-lg sm:text-xl text-[#1C150D]">
+      <div className="min-h-[380px] flex flex-col items-center justify-center p-6 text-center bg-surface rounded-3xl shadow-card space-y-4">
+        <CheckCircle2 size={48} className="text-status-success" />
+        <h3 className="font-monument font-bold text-lg sm:text-xl text-ink">
           Minden mai kártyát átismételtél!
         </h3>
-        <p className="text-xs sm:text-sm font-scribe text-[#7A6B55] max-w-md font-semibold">
+        <p className="text-xs sm:text-sm font-scribe text-muted max-w-md font-semibold">
           A felejtési görbe szerint mára nincs több esedékes kártyád. Új tananyagokat a Tananyagok menüpontban nyithatsz meg.
         </p>
         <Button variant="primary" onClick={loadSession}>
@@ -176,17 +176,17 @@ export const PracticeEngine: React.FC<PracticeEngineProps> = ({ onFinish }) => {
   return (
     <div className="max-w-3xl mx-auto space-y-4 sm:space-y-6">
       {/* Session Header & Progress */}
-      <div className="bg-white rounded-2xl p-4 sm:p-5 shadow-card">
+      <div className="bg-surface rounded-2xl p-4 sm:p-5 shadow-card">
         <div className="flex items-center justify-between gap-3 mb-2.5">
           <div className="flex items-center gap-2">
-            <span className="text-xs font-monument font-bold px-2.5 py-0.5 rounded-full bg-[#E5C175] text-papyrus-ink shadow-sm">
+            <span className="text-xs font-monument font-bold px-2.5 py-0.5 rounded-full bg-accent text-accent-text shadow-sm">
               {currentIndex + 1} / {items.length}
             </span>
-            <span className="text-xs font-mono text-[#7A6B55] hidden sm:inline font-bold">
+            <span className="text-xs font-mono text-muted hidden sm:inline font-bold">
               #{currentItem.id.slice(0, 8)}
             </span>
             {currentItem.isMistakeRetry && (
-              <span className="text-[10px] font-mono font-bold px-2 py-0.5 rounded-full bg-red-100 text-red-900 border border-red-300">
+                <span className="text-[10px] font-mono font-bold px-2 py-0.5 rounded-full bg-status-errorBg text-status-error border border-status-errorBorder">
                 Hibajavítás
               </span>
             )}
@@ -194,29 +194,29 @@ export const PracticeEngine: React.FC<PracticeEngineProps> = ({ onFinish }) => {
 
           {/* Quick Score */}
           <div className="flex items-center gap-2 sm:gap-3 text-xs font-mono">
-            <span className="text-[#2E7D5B] font-bold flex items-center gap-1">
+            <span className="text-status-success font-bold flex items-center gap-1">
               <CheckCircle2 size={15} /> {score.correct}
             </span>
-            <span className="text-red-700 font-bold flex items-center gap-1">
+            <span className="text-status-error font-bold flex items-center gap-1">
               <XCircle size={15} /> {score.incorrect}
             </span>
-            <span className="text-[#5C4A2F] font-bold bg-[#FAF0CD] px-2.5 py-0.5 rounded-lg border border-[#D4A843] shadow-sm">
+            <span className="text-ink font-bold bg-status-warningBg px-2.5 py-0.5 rounded-lg border border-status-warningBorder shadow-sm">
               +{score.xpEarned} XP
             </span>
           </div>
         </div>
 
         {/* Progress Bar */}
-        <div className="w-full h-2.5 bg-[#EAD9B8] rounded-full overflow-hidden">
+        <div className="w-full h-2.5 bg-surface-subtle rounded-full overflow-hidden">
           <div
-            className="h-full bg-brand transition-all duration-300 ease-out rounded-full"
+            className="h-full bg-accent transition-all duration-300 ease-out rounded-full"
             style={{ width: `${progressPercent}%` }}
           />
         </div>
       </div>
 
       {/* Main Practice Card */}
-      <div className="bg-white rounded-2xl sm:rounded-3xl p-5 sm:p-8 shadow-card min-h-[360px] flex flex-col justify-between">
+      <div className="bg-surface rounded-2xl sm:rounded-3xl p-5 sm:p-8 shadow-card min-h-[360px] flex flex-col justify-between">
         {/* Dynamic Exercise Renderer */}
         <div className="flex-1">
           {currentItem.exerciseType === ExerciseType.CLOZE && (
@@ -266,10 +266,10 @@ export const PracticeEngine: React.FC<PracticeEngineProps> = ({ onFinish }) => {
         </div>
 
         {/* Bottom Feedback Banner & Actions */}
-        <div className="mt-6 sm:mt-8 pt-4 border-t-2 border-[#C5A566]">
+        <div className="mt-6 sm:mt-8 pt-4 border-t-2 border-border">
           {!lastResult ? (
             <div className="flex flex-col sm:flex-row items-center justify-between gap-3">
-              <div className="hidden sm:flex items-center gap-3 text-xs text-[#7A6B55] font-mono">
+              <div className="hidden sm:flex items-center gap-3 text-xs text-muted font-mono">
                 <span className="flex items-center gap-1">
                   <span className="keyboard-badge">1-4</span> Válassz
                 </span>
@@ -298,33 +298,33 @@ export const PracticeEngine: React.FC<PracticeEngineProps> = ({ onFinish }) => {
           ) : (
             <div
               className={`p-4 sm:p-5 rounded-2xl border-2 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 animate-fade-in ${lastResult.isCorrect
-                  ? 'bg-[#E0F0E8] border-[#6BB38A] text-[#1C4C34] shadow-sm'
-                  : 'bg-red-50 border-red-300 text-red-950 shadow-sm'
+                  ? 'bg-status-successBg border-status-successBorder text-ink shadow-sm'
+                  : 'bg-status-errorBg border-status-errorBorder text-status-error shadow-sm'
                 }`}
             >
               <div className="space-y-1">
                 <div className="flex items-center gap-2 font-monument font-bold text-sm sm:text-base">
                   {lastResult.isCorrect ? (
                     <>
-                      <CheckCircle2 size={20} className="text-[#2E7D5B]" />
+                      <CheckCircle2 size={20} className="text-status-success" />
                       <span>Helyes válasz! SRS intervallum megnövelve.</span>
                     </>
                   ) : (
                     <>
-                      <XCircle size={20} className="text-red-600" />
+                      <XCircle size={20} className="text-status-error" />
                       <span>Nem pontos. A kártya bekerült a hibajavító sorba.</span>
                     </>
                   )}
                 </div>
 
                 {!lastResult.isCorrect && (
-                  <div className="text-xs font-mono mt-1 text-[#1C150D] font-medium">
-                    Helyes megoldás: <strong className="font-bold text-[#8B5E3C]">{lastResult.correctSolution}</strong>
+                  <div className="text-xs font-mono mt-1 text-ink font-medium">
+                    Helyes megoldás: <strong className="font-bold text-accent">{lastResult.correctSolution}</strong>
                   </div>
                 )}
 
                 {lastResult.explanationHu && (
-                  <p className="text-xs text-[#1C150D] font-sans mt-1 leading-relaxed bg-[#FBF4E4] p-2.5 rounded-xl border border-[#C5A566] shadow-sm">
+                  <p className="text-xs text-ink font-sans mt-1 leading-relaxed bg-surface-subtle p-2.5 rounded-xl border border-border shadow-sm">
                     💡 <strong>Magyarázat:</strong> {lastResult.explanationHu}
                   </p>
                 )}

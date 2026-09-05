@@ -48,7 +48,7 @@ export const App: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-papyrus-canvas flex flex-col font-sans antialiased text-papyrus-ink pb-20 lg:pb-0">
+    <div className="min-h-screen bg-canvas flex flex-col font-sans antialiased text-ink pb-20 lg:pb-0">
       {/* Offline Status Notice */}
       <OfflineBanner />
 
@@ -83,11 +83,11 @@ export const App: React.FC = () => {
       </main>
 
       {/* Footer */}
-      <footer className="border-t-2 border-papyrus-border bg-[#E6D4B4] py-3.5 sm:py-4 text-center text-xs text-papyrus-muted mt-auto">
+      <footer className="border-t-2 border-border bg-surface-subtle py-3.5 sm:py-4 text-center text-xs text-muted mt-auto">
         <div className="max-w-7xl mx-auto px-4 flex items-center justify-center gap-2 font-mono text-[11px]">
-          <span className="font-monument font-bold text-papyrus-ink">LEXICON</span>
+          <span className="font-monument font-bold text-ink">LEXICON</span>
           <span>•</span>
-          <span className="font-semibold text-papyrus-muted">v0.1.0</span>
+          <span className="font-semibold text-muted">v0.1.0</span>
         </div>
       </footer>
 

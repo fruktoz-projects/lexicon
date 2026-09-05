@@ -8,8 +8,8 @@ export const OfflineBanner: React.FC = () => {
   if (isOnline) return null;
 
   return (
-    <div className="bg-amber-100 border-b border-amber-300 text-amber-900 px-4 py-1.5 text-xs text-center flex items-center justify-center gap-2">
-      <WifiOff size={14} className="text-amber-800" />
+    <div className="bg-status-warningBg border-b border-status-warningBorder text-status-warning px-4 py-1.5 text-xs text-center flex items-center justify-center gap-2">
+      <WifiOff size={14} className="text-status-warning" />
       <span>
         <strong>Offline Mód Aktív:</strong> Az alkalmazás helyi memóriából és gyorsítótárból (PWA) fut. Minden gyakorlás automatikusan szinkronizálódik a kapcsolat helyreállásakor.
       </span>

@@ -8,10 +8,14 @@ COPY pnpm-workspace.yaml package.json tsconfig.base.json pnpm-lock.yaml ./
 COPY packages/types/package.json ./packages/types/
 COPY apps/api/package.json ./apps/api/
 
-RUN pnpm install --frozen-lockfile
+RUN pnpm install --no-frozen-lockfile
 
 COPY packages/types ./packages/types
 COPY apps/api ./apps/api
+
+# Build shared types package first (produces dist/ with .js + .d.ts)
+WORKDIR /app/packages/types
+RUN pnpm build
 
 WORKDIR /app/apps/api
 RUN pnpm db:generate
@@ -25,14 +29,18 @@ COPY pnpm-workspace.yaml package.json pnpm-lock.yaml ./
 COPY packages/types/package.json ./packages/types/
 COPY apps/api/package.json ./apps/api/
 
-RUN pnpm install --prod --frozen-lockfile
+RUN pnpm install --prod --no-frozen-lockfile
 
 COPY --from=builder /app/packages/types ./packages/types
 COPY --from=builder /app/apps/api/dist ./apps/api/dist
 COPY --from=builder /app/apps/api/prisma ./apps/api/prisma
-COPY --from=builder /app/apps/api/node_modules/.prisma ./apps/api/node_modules/.prisma
+COPY apps/api/docker-entrypoint.sh ./apps/api/docker-entrypoint.sh
 
 WORKDIR /app/apps/api
-EXPOSE 3000
+RUN sed -i 's/\r$//' docker-entrypoint.sh && chmod +x docker-entrypoint.sh
+RUN pnpm db:generate
 
+EXPOSE 3021
+
+ENTRYPOINT ["./docker-entrypoint.sh"]
 CMD ["node", "dist/server.js"]

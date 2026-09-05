@@ -47,29 +47,29 @@ export const WritingLab: React.FC = () => {
   return (
     <div className="space-y-4 sm:space-y-6">
       {/* Top Banner */}
-      <div className="bg-white rounded-2xl sm:rounded-3xl p-4 sm:p-6 shadow-card flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4">
+      <div className="bg-surface rounded-2xl sm:rounded-3xl p-4 sm:p-6 shadow-card flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4">
         <div>
           <div className="flex items-center gap-2">
-            <PenTool size={22} className="text-brand" />
-            <h2 className="text-lg sm:text-2xl font-monument font-bold text-[#1C150D]">
+            <PenTool size={22} className="text-accent" />
+            <h2 className="text-lg sm:text-2xl font-monument font-bold text-ink">
               Írásműhely (Writing Lab)
             </h2>
           </div>
-          <p className="text-xs sm:text-sm font-scribe text-[#7A6B55] mt-0.5 sm:mt-1 font-semibold">
+          <p className="text-xs sm:text-sm font-scribe text-muted mt-0.5 sm:mt-1 font-semibold">
             Kétpaneles fogalmazó asztal magyar nyelvű margóelemzésekkel és Hunglish szabálymagyarázatokkal
           </p>
         </div>
 
         {/* Tab Switcher */}
-        <div className="flex items-center gap-1 bg-papyrus-subtle p-1 rounded-2xl self-start sm:self-auto shadow-sm">
+        <div className="flex items-center gap-1 bg-surface-subtle p-1 rounded-2xl self-start sm:self-auto shadow-sm">
           <button
             onClick={() => {
               audio.playClickSound();
               setActiveTab('editor');
             }}
             className={`flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl text-xs font-monument font-bold transition-all ${activeTab === 'editor'
-                ? 'bg-[#E5C175] text-[#1C150D] shadow-sm'
-                : 'text-[#7A6B55] hover:text-[#1C150D]'
+                ? 'bg-accent text-accent-text shadow-sm'
+                : 'text-muted hover:text-ink'
               }`}
           >
             <PenTool size={13} />
@@ -83,8 +83,8 @@ export const WritingLab: React.FC = () => {
               fetchHistory();
             }}
             className={`flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl text-xs font-monument font-bold transition-all ${activeTab === 'history'
-                ? 'bg-[#E5C175] text-[#1C150D] shadow-sm'
-                : 'text-[#7A6B55] hover:text-[#1C150D]'
+                ? 'bg-accent text-accent-text shadow-sm'
+                : 'text-muted hover:text-ink'
               }`}
           >
             <History size={13} />
@@ -98,7 +98,7 @@ export const WritingLab: React.FC = () => {
         <div className="space-y-4 sm:space-y-6">
           {/* Quick Prompt Selector */}
           <div className="flex items-center gap-2 overflow-x-auto pb-1 scrollbar-none">
-            <span className="text-xs font-monument font-bold text-[#7A6B55] whitespace-nowrap">Témák:</span>
+            <span className="text-xs font-monument font-bold text-muted whitespace-nowrap">Témák:</span>
             {samplePrompts.map((p, idx) => (
               <button
                 key={idx}
@@ -107,8 +107,8 @@ export const WritingLab: React.FC = () => {
                   setSelectedPrompt(p.prompt);
                 }}
                 className={`px-3 py-1.5 rounded-xl text-xs whitespace-nowrap transition-all flex items-center gap-2 font-monument font-bold ${selectedPrompt === p.prompt
-                    ? 'bg-[#E5C175] text-[#1C150D] shadow-sm'
-                    : 'bg-white text-[#1C150D] shadow-sm hover:bg-papyrus-subtle'
+                    ? 'bg-accent text-accent-text shadow-sm'
+                    : 'bg-surface-subtle text-ink shadow-sm hover:bg-surface-subtle'
                   }`}
               >
                 <span>{p.title}</span>
@@ -125,37 +125,37 @@ export const WritingLab: React.FC = () => {
       {activeTab === 'history' && (
         <div className="space-y-4">
           {history.length === 0 ? (
-            <div className="p-8 text-center bg-white rounded-2xl text-[#7A6B55] font-scribe shadow-card font-semibold">
+            <div className="p-8 text-center bg-surface rounded-2xl text-muted font-scribe shadow-card font-semibold">
               Még nem küldtél be esszét értékelésre.
             </div>
           ) : (
             history.map((sub) => (
               <div
                 key={sub.id}
-                className="bg-white rounded-2xl p-4 sm:p-5 shadow-card space-y-3"
+                className="bg-surface rounded-2xl p-4 sm:p-5 shadow-card space-y-3"
               >
                 <div className="flex items-start justify-between gap-3">
                   <div>
-                    <span className="text-[11px] font-mono text-[#7A6B55] block mb-1 font-bold">
+                    <span className="text-[11px] font-mono text-muted block mb-1 font-bold">
                       {new Date(sub.createdAt).toLocaleDateString('hu-HU')} • ID: #{sub.id.slice(0, 8)}
                     </span>
-                    <h4 className="font-monument font-bold text-xs sm:text-sm text-[#1C150D]">
+                    <h4 className="font-monument font-bold text-xs sm:text-sm text-ink">
                       {sub.promptText}
                     </h4>
                   </div>
                   {sub.aiScore && (
-                    <span className="text-xs font-monument font-bold px-3 py-1 rounded-full bg-[#FAF0CD] text-[#5C4A2F] border border-[#D4A843] shrink-0 shadow-sm">
+                    <span className="text-xs font-monument font-bold px-3 py-1 rounded-full bg-status-warningBg text-ink border border-status-warningBorder shrink-0 shadow-sm">
                       {sub.aiScore} / 100 pont
                     </span>
                   )}
                 </div>
 
-                <div className="p-3 bg-[#EAD9B8] rounded-xl border border-[#C5A566] font-scribe text-xs sm:text-sm text-[#1C150D] italic">
+                <div className="p-3 bg-surface-subtle rounded-xl border border-border font-scribe text-xs sm:text-sm text-ink italic">
                   "{sub.submittedText}"
                 </div>
 
                 {sub.aiFeedback && (
-                  <div className="p-3 bg-[#FBF4E4] rounded-xl border border-[#C5A566] text-xs text-[#1C150D] font-sans">
+                  <div className="p-3 bg-surface-subtle rounded-xl border border-border text-xs text-ink font-sans">
                     <strong>AI Összefoglaló: </strong>
                     {sub.aiFeedback.overallAssessmentHu}
                   </div>

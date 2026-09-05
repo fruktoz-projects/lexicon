@@ -14,23 +14,23 @@ export const WaypointTimeline: React.FC = () => {
   ];
 
   return (
-    <div className="bg-papyrus-card rounded-2xl sm:rounded-3xl p-4 sm:p-7 shadow-card">
+    <div className="bg-surface rounded-2xl sm:rounded-3xl p-4 sm:p-7 shadow-card">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4 mb-5 sm:mb-6">
         <div>
-          <h2 className="text-lg sm:text-2xl font-monument font-bold text-papyrus-ink">
+          <h2 className="text-lg sm:text-2xl font-monument font-bold text-ink">
             CEFR Tanulási Út
           </h2>
-          <p className="text-xs sm:text-sm font-sans text-papyrus-muted mt-0.5 sm:mt-1 font-semibold">
+          <p className="text-xs sm:text-sm font-sans text-muted mt-0.5 sm:mt-1 font-semibold">
             Magyar anyanyelvűeknek szabott haladási ív
           </p>
         </div>
 
-        <div className="flex items-center gap-2 text-xs font-mono bg-papyrus-subtle px-3.5 py-1.5 rounded-xl self-start sm:self-auto shadow-subtle">
-          <span className="text-papyrus-muted font-sans font-bold">Jelenlegi:</span>
-          <strong className="text-papyrus-ink font-bold font-sans">{user?.currentCefr || 'B1'}</strong>
-          <ArrowRight size={13} className="text-brand" />
-          <span className="text-papyrus-muted font-sans font-bold">Cél:</span>
-          <strong className="text-brand font-bold font-sans">{user?.targetCefr || 'B2'}</strong>
+        <div className="flex items-center gap-2 text-xs font-mono bg-surface-subtle px-3.5 py-1.5 rounded-xl self-start sm:self-auto shadow-subtle">
+          <span className="text-muted font-sans font-bold">Jelenlegi:</span>
+          <strong className="text-ink font-bold font-sans">{user?.currentCefr || 'B1'}</strong>
+          <ArrowRight size={13} className="text-accent" />
+          <span className="text-muted font-sans font-bold">Cél:</span>
+          <strong className="text-accent font-bold font-sans">{user?.targetCefr || 'B2'}</strong>
         </div>
       </div>
 
@@ -44,23 +44,23 @@ export const WaypointTimeline: React.FC = () => {
             <div
               key={wp.level}
               className={`p-4 sm:p-5 rounded-2xl transition-all duration-200 flex flex-col justify-between ${isActive
-                  ? 'bg-papyrus-warm shadow-card ring-2 ring-status-warningBorder/30'
+                  ? 'bg-surface-subtle shadow-card ring-2 ring-status-warningBorder/30'
                   : isCompleted
                     ? 'bg-status-successBg shadow-subtle'
                     : isTarget
-                      ? 'bg-brand-subtle shadow-subtle'
-                      : 'bg-papyrus-subtle opacity-60'
+                      ? 'bg-accent-subtle shadow-subtle'
+                      : 'bg-surface-subtle opacity-60'
                 }`}
             >
               <div>
                 <div className="flex items-center justify-between mb-2 sm:mb-3">
                   <span
                     className={`text-[11px] font-sans font-bold px-2.5 py-0.5 rounded-full ${isActive
-                        ? 'bg-[#E5C175] text-papyrus-ink shadow-subtle'
+                        ? 'bg-accent text-accent-text shadow-subtle'
                         : isCompleted
                           ? 'bg-status-successBg text-status-success shadow-subtle border border-status-successBorder'
                           : isTarget
-                            ? 'bg-[#E5C175] text-papyrus-ink shadow-subtle'
+                            ? 'bg-accent text-accent-text shadow-subtle'
                             : 'bg-stone-300 text-stone-800'
                       }`}
                   >
@@ -72,17 +72,17 @@ export const WaypointTimeline: React.FC = () => {
                   ) : isActive ? (
                     <span className="flex h-3 w-3 relative">
                       <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-status-warning opacity-75"></span>
-                      <span className="relative inline-flex rounded-full h-3 w-3 bg-brand"></span>
+                      <span className="relative inline-flex rounded-full h-3 w-3 bg-accent"></span>
                     </span>
                   ) : (
-                    <Circle size={15} className="text-papyrus-muted/40" />
+                    <Circle size={15} className="text-muted/40" />
                   )}
                 </div>
 
-                <h4 className="font-monument font-bold text-sm sm:text-base text-papyrus-ink mb-1">
+                <h4 className="font-monument font-bold text-sm sm:text-base text-ink mb-1">
                   {wp.title}
                 </h4>
-                <p className="text-xs font-sans text-papyrus-muted leading-relaxed font-medium">
+                <p className="text-xs font-sans text-muted leading-relaxed font-medium">
                   {wp.desc}
                 </p>
               </div>

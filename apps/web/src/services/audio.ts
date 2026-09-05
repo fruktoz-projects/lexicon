@@ -3,25 +3,6 @@
  */
 class AudioService {
   private audioCtx: AudioContext | null = null;
-  private soundEnabled: boolean = true;
-
-  constructor() {
-    // Sound enabled by default
-    const saved = localStorage.getItem('lexicon_sound_enabled');
-    if (saved !== null) {
-      this.soundEnabled = saved === 'true';
-    }
-  }
-
-  public isSoundEnabled(): boolean {
-    return this.soundEnabled;
-  }
-
-  public toggleSound(): boolean {
-    this.soundEnabled = !this.soundEnabled;
-    localStorage.setItem('lexicon_sound_enabled', String(this.soundEnabled));
-    return this.soundEnabled;
-  }
 
   private getAudioContext(): AudioContext | null {
     if (!this.audioCtx && typeof window !== 'undefined') {
@@ -62,7 +43,6 @@ class AudioService {
    * Subtle tactile click sound for keyboard interaction
    */
   public playClickSound(): void {
-    if (!this.soundEnabled) return;
     try {
       const ctx = this.getAudioContext();
       if (!ctx) return;
@@ -86,7 +66,6 @@ class AudioService {
    * Harmonious success chord (Sage green reward)
    */
   public playSuccessSound(): void {
-    if (!this.soundEnabled) return;
     try {
       const ctx = this.getAudioContext();
       if (!ctx) return;
@@ -112,7 +91,6 @@ class AudioService {
    * Muted low tone for mistake review
    */
   public playMistakeSound(): void {
-    if (!this.soundEnabled) return;
     try {
       const ctx = this.getAudioContext();
       if (!ctx) return;

@@ -21,27 +21,26 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
   onSelectZone,
   onOpenWriting,
 }) => {
-  const user = useAuthStore((s) => s.user);
   const { setActiveTab } = useUiStore();
 
   return (
     <div className="space-y-6 sm:space-y-8 animate-fade-in">
       {/* Hero Banner */}
-      <div className="bg-papyrus-card rounded-2xl sm:rounded-3xl p-5 sm:p-9 shadow-card relative overflow-hidden">
+      <div className="bg-surface rounded-2xl sm:rounded-3xl p-5 sm:p-9 shadow-card relative overflow-hidden">
         {/* Top accent line */}
-        <div className="absolute top-0 left-0 right-0 h-1.5 bg-[#D4A843]" />
+        <div className="absolute top-0 left-0 right-0 h-1.5 bg-accent" />
 
         <div className="max-w-3xl space-y-3.5 sm:space-y-4">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-papyrus-subtle text-papyrus-muted text-xs font-sans font-bold">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-surface-subtle text-muted text-xs font-sans font-bold">
             <span>KONTRASZTÍV TANULÁS • MAGYAR → ANGOL</span>
           </div>
 
-          <h1 className="text-xl sm:text-3xl lg:text-4xl font-monument font-bold text-papyrus-ink tracking-tight leading-tight">
+          <h1 className="text-xl sm:text-3xl lg:text-4xl font-monument font-bold text-ink tracking-tight leading-tight">
             Üdvözöljük a Lexicon Munkanaplóban!
           </h1>
 
-          <p className="text-xs sm:text-base font-sans text-papyrus-muted leading-relaxed font-medium">
-            A Lexicon felszámolja a magyar anyanyelvből fakadó hibamintákat (<strong className="text-brand font-bold">Hunglish csapdák</strong>), elmélyíti a kifejezéscsomagokat (<strong className="text-papyrus-ink font-bold">kollokációk</strong>), és determinisztikus SRS memóriamotorral készít fel a magabiztos B2/C1 szintű angolra.
+          <p className="text-xs sm:text-base font-sans text-muted leading-relaxed font-medium">
+            A Lexicon felszámolja a magyar anyanyelvből fakadó hibamintákat (<strong className="text-accent font-bold">Hunglish csapdák</strong>), elmélyíti a kifejezéscsomagokat (<strong className="text-ink font-bold">kollokációk</strong>), és determinisztikus SRS memóriamotorral készít fel a magabiztos B2/C1 szintű angolra.
           </p>
 
           <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2.5 sm:gap-3 pt-2">
@@ -51,14 +50,14 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
               onClick={onStartPractice}
               className="flex items-center justify-center gap-2 font-sans font-bold"
             >
-              <Play size={17} className="fill-papyrus-ink text-papyrus-ink" />
+              <Play size={17} className="fill-ink text-ink" />
               <span>Napi SRS Gyakorlás Indítása</span>
             </Button>
 
             <Button
               variant="secondary"
               size="lg"
-              onClick={() => setActiveTab('writing')}
+              onClick={onOpenWriting || (() => setActiveTab('writing'))}
               className="flex items-center justify-center gap-2 font-sans font-bold"
             >
               <span>Írásműhely (Esszé)</span>

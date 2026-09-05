@@ -28,17 +28,17 @@ export const Button: React.FC<ButtonProps> = ({
 
   const variants = {
     primary:
-      'bg-[#E5C175] text-papyrus-ink hover:bg-[#DDB460] shadow-sm font-sans font-bold',
+      'bg-accent text-accent-text hover:bg-accent-hover shadow-sm font-sans font-bold',
     secondary:
-      'bg-papyrus-subtle text-papyrus-ink hover:bg-papyrus-card shadow-sm font-sans font-bold',
+      'bg-surface text-ink hover:bg-surface-subtle shadow-sm font-sans font-bold',
     outline:
-      'bg-transparent border border-papyrus-border text-papyrus-ink hover:bg-papyrus-subtle font-sans font-bold',
+      'bg-transparent border border-border text-ink hover:bg-surface-subtle font-sans font-bold',
     ghost:
-      'bg-transparent text-papyrus-muted hover:text-papyrus-ink hover:bg-papyrus-subtle font-sans font-semibold',
+      'bg-transparent text-muted hover:text-ink hover:bg-surface-subtle font-sans font-semibold',
     nile:
       'bg-status-successBg text-status-success hover:bg-emerald-200 shadow-sm border border-status-successBorder font-sans font-bold',
     gold:
-      'bg-status-warningBg text-amber-900 hover:bg-amber-200 shadow-sm border border-status-warningBorder font-sans font-bold',
+      'bg-status-warningBg text-status-warning hover:bg-amber-200 shadow-sm border border-status-warningBorder font-sans font-bold',
     danger:
       'bg-status-errorBg text-status-error hover:bg-red-200 shadow-sm border border-status-errorBorder font-sans font-bold',
   };
@@ -53,7 +53,7 @@ export const Button: React.FC<ButtonProps> = ({
     <button
       className={twMerge(
         clsx(
-          'inline-flex items-center justify-center transition-all duration-150 focus:outline-none focus:ring-2 focus:ring-brand/40 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none select-none shrink-0 active:scale-[0.98]',
+          'inline-flex items-center justify-center transition-all duration-150 focus:outline-none focus:ring-2 focus:ring-accent/40 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none select-none shrink-0 active:scale-[0.98]',
           variants[variant],
           sizes[size],
           className

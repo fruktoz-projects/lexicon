@@ -12,6 +12,13 @@ function hashPassword(password: string): string {
 async function main() {
   console.log('🌱 Starting Lexicon Expedition Database Seeding...');
 
+  // Check if database is already seeded
+  const existingUserCount = await prisma.user.count();
+  if (existingUserCount > 0 && process.env.FORCE_SEED !== 'true') {
+    console.log(`🌱 Database already contains data (${existingUserCount} user(s) found). Skipping seed.`);
+    return;
+  }
+
   // 1. Clean existing records
   await prisma.writingSubmission.deleteMany();
   await prisma.mistakeLog.deleteMany();

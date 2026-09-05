@@ -1,9 +1,11 @@
 import { FastifyPluginAsync } from 'fastify';
 import { LearningPackService } from '../services/learning-pack.service';
-import { CreateRemixPackPayload } from '@lexicon/types';
+import { AiGatewayService } from '../services/ai-gateway.service';
+import { CreateRemixPackPayload, GeneratePackRequestSchema } from '@lexicon/types';
 
 export const learningPackRoutes: FastifyPluginAsync = async (fastify) => {
   const packService = new LearningPackService(fastify.prisma);
+  const aiGateway = new AiGatewayService();
 
   fastify.get('/', { preHandler: [fastify.authenticate] }, async (request, reply) => {
     const { zone, cefr, limit, offset } = request.query as any;
@@ -30,6 +32,28 @@ export const learningPackRoutes: FastifyPluginAsync = async (fastify) => {
       return reply.send(pack);
     } catch (err: any) {
       return reply.status(404).send({ error: err.message || 'Learning pack not found' });
+    }
+  });
+
+  // POST /api/v1/learning-packs/generate - AI-powered learning pack generation
+  fastify.post('/generate', { preHandler: [fastify.authenticate] }, async (request, reply) => {
+    const parse = GeneratePackRequestSchema.safeParse(request.body);
+    if (!parse.success) {
+      return reply.status(400).send({ error: 'Validation Error', issues: parse.error.issues });
+    }
+
+    try {
+      const generatedDto = await aiGateway.generateLearningPack({
+        topic: parse.data.topic,
+        cefr: parse.data.cefr,
+        zone: parse.data.zone,
+        customFocus: parse.data.customFocus,
+      });
+
+      const pack = await packService.createPackFromDto(generatedDto);
+      return reply.status(201).send(pack);
+    } catch (err: any) {
+      return reply.status(500).send({ error: err.message || 'Failed to generate learning pack' });
     }
   });
 

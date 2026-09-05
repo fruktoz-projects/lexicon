@@ -64,9 +64,23 @@ export default defineConfig({
     host: true,
     proxy: {
       '/api': {
-        target: 'http://localhost:3000',
+        target: process.env.VITE_API_PROXY_TARGET || 'http://localhost:3021',
         changeOrigin: true,
       },
     },
+  },
+  preview: {
+    port: 3000,
+    host: '0.0.0.0',
+    proxy: {
+      '/api': {
+        target: process.env.VITE_API_PROXY_TARGET || 'http://api:3021',
+        changeOrigin: true,
+      },
+    },
+  },
+  build: {
+    outDir: 'dist',
+    emptyOutDir: true,
   },
 });

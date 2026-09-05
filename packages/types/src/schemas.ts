@@ -105,6 +105,7 @@ export const GeneratePackRequestSchema = z.object({
   zone: ZoneTypeSchema.optional(),
   customFocus: z.string().optional(),
 });
+export type GeneratePackRequestDto = z.infer<typeof GeneratePackRequestSchema>;
 
 export const PracticeSubmitSchema = z.object({
   itemId: z.string(),
@@ -118,3 +119,4 @@ export const WritingEvaluateSchema = z.object({
   submittedText: z.string().min(5),
   targetCefr: CefrLevelSchema.optional(),
 });
+export type WritingEvaluateRequestDto = z.infer<typeof WritingEvaluateSchema>;

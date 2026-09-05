@@ -18,7 +18,7 @@ export const ZoneCards: React.FC<ZoneCardsProps> = ({ onSelectZone }) => {
           title: 'Mindennapok',
           badge: '40%',
           icon: <Anchor size={22} className="text-zone-everyday" />,
-          accentBg: 'bg-brand-subtle border-papyrus-border',
+          accentBg: 'bg-accent-subtle border-border',
         };
       case ZoneType.BUSINESS:
         return {
@@ -32,7 +32,7 @@ export const ZoneCards: React.FC<ZoneCardsProps> = ({ onSelectZone }) => {
           title: 'IT & Technológia',
           badge: '20%',
           icon: <Cpu size={22} className="text-zone-it" />,
-          accentBg: 'bg-blue-50 border-blue-200',
+          accentBg: 'bg-indigo-50 border-indigo-200',
         };
       case ZoneType.ACADEMIC:
         return {
@@ -50,10 +50,10 @@ export const ZoneCards: React.FC<ZoneCardsProps> = ({ onSelectZone }) => {
     <div className="space-y-4">
       <div className="flex items-center justify-between">
         <div>
-          <h3 className="text-lg sm:text-xl font-monument font-bold text-papyrus-ink">
+          <h3 className="text-lg sm:text-xl font-monument font-bold text-ink">
             4 Tartalmi Zóna
           </h3>
-          <p className="text-xs sm:text-sm font-sans text-papyrus-muted font-semibold">
+          <p className="text-xs sm:text-sm font-sans text-muted font-semibold">
             Funkcionális tanulási területek súlyozással
           </p>
         </div>
@@ -72,32 +72,32 @@ export const ZoneCards: React.FC<ZoneCardsProps> = ({ onSelectZone }) => {
                 audio.playClickSound();
                 onSelectZone(z);
               }}
-              className="bg-papyrus-card rounded-2xl p-5 shadow-card hover:shadow-card-hover transition-all duration-200 cursor-pointer flex flex-col justify-between group"
+              className="bg-surface rounded-2xl p-5 shadow-card hover:shadow-card-hover transition-all duration-200 cursor-pointer flex flex-col justify-between group"
             >
               <div>
                 <div className="flex items-start justify-between mb-3.5">
                   <div className={`p-3 rounded-2xl border ${meta.accentBg} group-hover:scale-105 transition-transform shadow-subtle`}>
                     {meta.icon}
                   </div>
-                  <span className="text-[11px] font-sans font-bold px-2.5 py-0.5 rounded-full bg-papyrus-subtle text-papyrus-ink border border-papyrus-border">
+                  <span className="text-[11px] font-sans font-bold px-2.5 py-0.5 rounded-full bg-surface-subtle text-ink border border-border">
                     {meta.badge}
                   </span>
                 </div>
 
-                <h4 className="font-monument font-bold text-base text-papyrus-ink group-hover:text-brand transition-colors mb-0.5">
+                <h4 className="font-monument font-bold text-base text-ink group-hover:text-accent transition-colors mb-0.5">
                   {meta.title}
                 </h4>
-                <p className="text-xs font-mono text-papyrus-muted font-bold mb-2">{detail.name}</p>
-                <p className="text-xs text-papyrus-muted line-clamp-2 leading-relaxed font-sans">
+                <p className="text-xs font-mono text-muted font-bold mb-2">{detail.name}</p>
+                <p className="text-xs text-muted line-clamp-2 leading-relaxed font-sans">
                   {detail.descriptionHu}
                 </p>
               </div>
 
-              <div className="mt-4 pt-3 border-t border-papyrus-border flex items-center justify-between text-xs">
-                <span className="font-mono text-papyrus-muted font-bold">
+              <div className="mt-4 pt-3 border-t border-border flex items-center justify-between text-xs">
+                <span className="font-mono text-muted font-bold">
                   {zonePacks.length} tananyag
                 </span>
-                <span className="flex items-center gap-1 text-brand font-sans font-bold group-hover:translate-x-1 transition-transform">
+                <span className="flex items-center gap-1 text-accent font-sans font-bold group-hover:translate-x-1 transition-transform">
                   Megnyitás <ChevronRight size={14} />
                 </span>
               </div>

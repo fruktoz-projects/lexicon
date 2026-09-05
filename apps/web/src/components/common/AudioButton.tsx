@@ -45,8 +45,8 @@ export const AudioButton: React.FC<AudioButtonProps> = ({
       onClick={handleSpeak}
       className={twMerge(
         clsx(
-          'inline-flex items-center gap-1.5 rounded-full text-[#8B5E3C] hover:text-[#1C150D] hover:bg-[#FAF0CD] bg-[#8B5E3C]/10 border border-[#8B5E3C]/30 transition-all duration-150 active:scale-95 focus:outline-none focus:ring-2 focus:ring-[#8B5E3C]/40',
-          isPlaying && 'bg-[#FAF0CD] text-[#1C150D] scale-105 shadow-sm font-bold border-[#8B5E3C]',
+          'inline-flex items-center gap-1.5 rounded-full text-accent hover:text-ink hover:bg-accent-subtle bg-accent/10 border border-accent/30 transition-all duration-150 active:scale-95 focus:outline-none focus:ring-2 focus:ring-accent/40',
+          isPlaying && 'bg-accent-subtle text-ink scale-105 shadow-sm font-bold border-accent',
           btnSizes[size],
           className
         )

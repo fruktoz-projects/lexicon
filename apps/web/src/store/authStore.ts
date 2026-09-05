@@ -30,9 +30,9 @@ export const useAuthStore = create<AuthState>((set) => {
   }
 
   return {
-    token: savedToken || 'demo_jwt_token_2026',
-    user: initialUser,
-    isAuthenticated: true,
+    token: savedToken || null,
+    user: savedToken ? initialUser : null,
+    isAuthenticated: Boolean(savedToken && savedUserJson),
 
     login: (token, user) => {
       localStorage.setItem(TOKEN_KEY, token);

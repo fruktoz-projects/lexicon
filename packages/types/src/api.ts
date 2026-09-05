@@ -2,9 +2,6 @@ import { CefrLevel, ExerciseType, ProgressItemType, ZoneType } from './enums';
 import {
   UserProfile,
   LearningPackSummary,
-  LearningPackDetail,
-  ExerciseModel,
-  WritingFeedbackPayload,
   WritingSubmissionModel,
   MistakeLogModel,
 } from './models';
@@ -36,6 +33,19 @@ export interface CreateRemixPackPayload {
   chunkCount?: number;
   trapCount?: number;
   exerciseCount?: number;
+}
+
+export interface GeneratePackPayload {
+  topic: string;
+  cefr: CefrLevel;
+  zone?: ZoneType | string;
+  customFocus?: string;
+}
+
+export interface WritingEvaluatePayload {
+  promptText: string;
+  submittedText: string;
+  targetCefr?: CefrLevel;
 }
 
 // SRS Practice Types

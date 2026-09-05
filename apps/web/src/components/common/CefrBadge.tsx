@@ -18,9 +18,9 @@ export const CefrBadge: React.FC<CefrBadgeProps> = ({
 }) => {
   const levelStyles: Record<string, { bg: string; text: string; border: string; labelHu: string }> = {
     A1: { bg: 'bg-stone-100', text: 'text-stone-800', border: 'border-stone-400', labelHu: 'Kezdő' },
-    A2: { bg: 'bg-emerald-50', text: 'text-emerald-900', border: 'border-emerald-400', labelHu: 'Alapfok' },
-    B1: { bg: 'bg-amber-50', text: 'text-amber-900', border: 'border-amber-400', labelHu: 'Középhaladó' },
-    B2: { bg: 'bg-papyrus-warm', text: 'text-brand-dark', border: 'border-status-warningBorder', labelHu: 'Haladó' },
+    A2: { bg: 'bg-status-successBg', text: 'text-status-success', border: 'border-status-successBorder', labelHu: 'Alapfok' },
+    B1: { bg: 'bg-status-warningBg', text: 'text-status-warning', border: 'border-status-warningBorder', labelHu: 'Középhaladó' },
+    B2: { bg: 'bg-accent-subtle', text: 'text-accent', border: 'border-accent-soft', labelHu: 'Haladó' },
     C1: { bg: 'bg-blue-50', text: 'text-blue-900', border: 'border-blue-300', labelHu: 'Felsőfokú' },
     C2: { bg: 'bg-rose-50', text: 'text-rose-950', border: 'border-rose-400', labelHu: 'Mesterfokú' },
   };

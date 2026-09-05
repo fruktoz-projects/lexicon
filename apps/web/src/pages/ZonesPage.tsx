@@ -71,15 +71,15 @@ export const ZonesPage: React.FC<ZonesPageProps> = ({
   return (
     <div className="space-y-5 sm:space-y-7 animate-fade-in">
       {/* Header Banner */}
-      <div className="bg-papyrus-card rounded-2xl sm:rounded-3xl p-5 sm:p-7 shadow-card flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+      <div className="bg-surface rounded-2xl sm:rounded-3xl p-5 sm:p-7 shadow-card flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
           <div className="flex items-center gap-2">
-            <Layers size={22} className="text-brand" />
-            <h2 className="text-lg sm:text-2xl font-monument font-bold text-papyrus-ink">
+            <Layers size={22} className="text-accent" />
+            <h2 className="text-lg sm:text-2xl font-monument font-bold text-ink">
               Tananyagok & Tartalmi Zónák
             </h2>
           </div>
-          <p className="text-xs sm:text-sm font-sans text-papyrus-muted mt-0.5 sm:mt-1 font-semibold">
+          <p className="text-xs sm:text-sm font-sans text-muted mt-0.5 sm:mt-1 font-semibold">
             Válassz szakterületet és CEFR szintet a tanulási modulok felfedezéséhez
           </p>
         </div>
@@ -112,16 +112,16 @@ export const ZonesPage: React.FC<ZonesPageProps> = ({
       </div>
 
       {/* Remix Info Card */}
-      <div className="p-4 sm:p-5 rounded-2xl bg-papyrus-warm shadow-subtle flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+      <div className="p-4 sm:p-5 rounded-2xl bg-surface-subtle shadow-subtle flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-xl bg-papyrus-subtle flex items-center justify-center text-brand shrink-0">
+          <div className="w-10 h-10 rounded-xl bg-surface-subtle flex items-center justify-center text-accent shrink-0">
             <Shuffle size={20} />
           </div>
           <div>
-            <h4 className="font-sans font-bold text-xs sm:text-sm text-papyrus-ink">
+            <h4 className="font-sans font-bold text-xs sm:text-sm text-ink">
               Moduláris tudásfelelevenítő rendszer
             </h4>
-            <p className="text-xs font-sans text-papyrus-muted mt-0.5 font-medium leading-relaxed">
+            <p className="text-xs font-sans text-muted mt-0.5 font-medium leading-relaxed">
               Az AI tananyagok almoduljai (szavak, kollokációk, Hunglish csapdák) szinten belül szabadon variálhatóak. Készíts véletlenszerű ismétlő összeállítást a meglévő tudás felelevenítésére.
             </p>
           </div>
@@ -132,14 +132,14 @@ export const ZonesPage: React.FC<ZonesPageProps> = ({
             audio.playClickSound();
             openRemixModal();
           }}
-          className="px-4 py-2 rounded-xl text-xs font-sans font-bold bg-[#E5C175] hover:bg-[#DDB460] text-papyrus-ink shadow-sm shrink-0 transition-all active:scale-95"
+          className="px-4 py-2 rounded-xl text-xs font-sans font-bold bg-accent hover:bg-accent-hover text-accent-text shadow-sm shrink-0 transition-all active:scale-95"
         >
           Remix összeállítása
         </button>
       </div>
 
       {/* Filter Toolbar */}
-      <div className="bg-papyrus-card rounded-2xl p-3.5 sm:p-4 space-y-3 shadow-card">
+      <div className="bg-surface rounded-2xl p-3.5 sm:p-4 space-y-3 shadow-card">
         {/* Zone Pills */}
         <div className="flex items-center gap-1.5 overflow-x-auto pb-1 scrollbar-none">
           {zoneTabs.map((tab) => {
@@ -152,8 +152,8 @@ export const ZonesPage: React.FC<ZonesPageProps> = ({
                   setSelectedZone(tab.id);
                 }}
                 className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-sans font-bold whitespace-nowrap transition-all ${isSelected
-                    ? 'bg-[#E5C175] text-papyrus-ink shadow-sm'
-                    : 'bg-papyrus-subtle text-papyrus-ink hover:bg-papyrus-card'
+                    ? 'bg-accent text-accent-text shadow-sm'
+                    : 'bg-surface-subtle text-ink hover:bg-surface'
                   }`}
               >
                 <span>{tab.icon}</span>
@@ -164,8 +164,8 @@ export const ZonesPage: React.FC<ZonesPageProps> = ({
         </div>
 
         {/* CEFR Level Pills */}
-        <div className="flex items-center gap-2 pt-2 border-t border-papyrus-borderSubtle">
-          <span className="text-xs font-sans font-bold text-papyrus-muted flex items-center gap-1">
+        <div className="flex items-center gap-2 pt-2 border-t border-border-subtle">
+          <span className="text-xs font-sans font-bold text-muted flex items-center gap-1">
             <Filter size={12} /> Szint:
           </span>
           <div className="flex items-center gap-1.5 overflow-x-auto scrollbar-none">
@@ -179,8 +179,8 @@ export const ZonesPage: React.FC<ZonesPageProps> = ({
                     setSelectedCefr(lvl);
                   }}
                   className={`px-2.5 py-0.5 rounded-full text-xs font-sans font-bold transition-all whitespace-nowrap ${isSelected
-                      ? 'bg-[#E5C175] text-papyrus-ink shadow-sm'
-                      : 'bg-papyrus-subtle text-papyrus-ink hover:bg-papyrus-card'
+                      ? 'bg-accent text-accent-text shadow-sm'
+                      : 'bg-surface-subtle text-ink hover:bg-surface'
                     }`}
                 >
                   {lvl === 'all' ? 'Minden' : lvl}
@@ -193,16 +193,16 @@ export const ZonesPage: React.FC<ZonesPageProps> = ({
 
       {/* Grid of Packs */}
       {isLoading ? (
-        <div className="p-8 text-center bg-papyrus-card rounded-2xl text-papyrus-muted text-sm font-sans shadow-card font-semibold">
+        <div className="p-8 text-center bg-surface rounded-2xl text-muted text-sm font-sans shadow-card font-semibold">
           Tananyagok betöltése...
         </div>
       ) : packs.length === 0 ? (
-        <div className="p-8 sm:p-12 text-center bg-papyrus-card rounded-3xl shadow-card space-y-3">
-          <Layers size={40} className="text-papyrus-muted/40 mx-auto" />
-          <h4 className="font-monument font-bold text-sm sm:text-base text-papyrus-ink">
+        <div className="p-8 sm:p-12 text-center bg-surface rounded-3xl shadow-card space-y-3">
+          <Layers size={40} className="text-muted/40 mx-auto" />
+          <h4 className="font-monument font-bold text-sm sm:text-base text-ink">
             Nincs találat a kiválasztott szűrőkre.
           </h4>
-          <p className="text-xs font-sans text-papyrus-muted max-w-sm mx-auto font-medium">
+          <p className="text-xs font-sans text-muted max-w-sm mx-auto font-medium">
             Hozz létre egy új tananyagot az „Új tananyag (AI)" vagy az „Ismétlő remix" gombbal.
           </p>
         </div>

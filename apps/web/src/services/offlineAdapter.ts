@@ -1,7 +1,9 @@
 import {
+  AnalyticsOverviewResponse,
   AuthResponse,
   CefrLevel,
   CreateRemixPackPayload,
+  ExerciseType,
   GeneratePackPayload,
   LearningPackDetail,
   LearningPacksQuery,
@@ -158,7 +160,7 @@ export const offlineAdapter = {
           {
             id: `${packId}_ex_1`,
             packId,
-            type: 'cloze',
+            type: ExerciseType.CLOZE,
             prompt: 'Egészítsd ki a mondatot a megfelelő kifejezéssel:',
             payload: {
               sentenceWithGap: 'We need to _______ in order to ensure stable releases.',
@@ -192,59 +194,87 @@ export const offlineAdapter = {
 
   writing: {
     evaluate: async (data: WritingEvaluatePayload): Promise<WritingFeedbackDto> => {
+      const targetCefr = data.targetCefr || CefrLevel.B2;
       const feedback: WritingFeedbackDto = {
-        id: `sub_${Date.now()}`,
-        userId: 'usr_local',
-        promptText: data.promptText,
-        submittedText: data.submittedText,
-        targetCefr: data.targetCefr,
-        aiScore: 84,
-        aiFeedback: {
-          score: 84,
-          suggestedCefr: data.targetCefr,
-          overallAssessmentHu: 'Gondolatmeneted világos és szakmailag releváns. A mondatszerkezetek jó szintet képviselnek, néhány magyaros tükörfordítás és prepozíciós pontatlanság javításra szorul.',
-          positives: [
-            'Helyes szakmai terminológia és kifejezéshasználat.',
-            'Világos érvelési ív és logikus bekezdésszerkezet.',
-          ],
-          errors: [
-            {
-              original: 'running application in Docker',
-              replacement: 'running applications in Docker',
-              explanationHu: 'Megszámlálható főneveknél határozatlan többes szám vagy névelő szükséges („applications”).',
-              ruleHu: 'Főnévi egyeztetés & számlálhatóság',
-            },
-            {
-              original: 'According to me',
-              replacement: 'In my opinion / From my perspective',
-              explanationHu: 'Az „according to” kifejezést külső forrásra használjuk, saját véleményre az „in my opinion” a természetes angol forma.',
-              ruleHu: 'Véleménykifejezés vs Hivatkozás',
-            },
-          ],
-        },
-        createdAt: new Date().toISOString(),
+        score: 84,
+        suggestedCefr: targetCefr,
+        overallAssessmentHu:
+          'Gondolatmeneted világos és szakmailag releváns. A mondatszerkezetek jó szintet képviselnek, néhány magyaros tükörfordítás és prepozíciós pontatlanság javításra szorul.',
+        positives: [
+          'Helyes szakmai terminológia és kifejezéshasználat.',
+          'Világos érvelési ív és logikus bekezdésszerkezet.',
+        ],
+        errors: [
+          {
+            original: 'running application in Docker',
+            replacement: 'running applications in Docker',
+            explanationHu: 'Megszámlálható főneveknél határozatlan többes szám vagy névelő szükséges („applications”).',
+            ruleHu: 'Főnévi egyeztetés & számlálhatóság',
+          },
+          {
+            original: 'According to me',
+            replacement: 'In my opinion / From my perspective',
+            explanationHu: 'Az „according to” kifejezést külső forrásra használjuk, saját véleményre az „in my opinion” a természetes angol forma.',
+            ruleHu: 'Véleménykifejezés vs Hivatkozás',
+          },
+        ],
       };
 
-      useOfflineStore.getState().addSubmission({
-        id: feedback.id,
-        promptText: feedback.promptText,
-        submittedText: feedback.submittedText,
-        aiScore: feedback.aiScore,
-        aiFeedback: feedback.aiFeedback,
-        createdAt: feedback.createdAt,
-      });
+      useOfflineStore.getState().saveLocalWritingSubmission(
+        data.promptText,
+        data.submittedText,
+        feedback
+      );
 
       return feedback;
     },
 
     getHistory: async (): Promise<WritingSubmissionModel[]> => {
-      return useOfflineStore.getState().submissions;
+      return useOfflineStore.getState().writingSubmissions;
     },
   },
 
   analytics: {
-    getOverview: async () => {
-      return useOfflineStore.getState().getAnalyticsOverview();
+    getOverview: async (): Promise<AnalyticsOverviewResponse> => {
+      const state = useOfflineStore.getState();
+      const packs = state.packs;
+      const progress = state.progress;
+      const mistakeLogs = state.mistakeLogs;
+      const submissions = state.writingSubmissions;
+
+      const stageCounts = { stage0: 0, stage1: 0, stage2: 0, stage3: 0, stage4: 0, stage5: 0 };
+      Object.values(progress).forEach((p) => {
+        const key = `stage${Math.min(Math.max(p.srsStage, 0), 5)}` as keyof typeof stageCounts;
+        stageCounts[key] = (stageCounts[key] || 0) + 1;
+      });
+
+      const zoneProgress = {
+        [ZoneType.EVERYDAY]: { total: 10, mastered: 5, percentage: 50 },
+        [ZoneType.BUSINESS]: { total: 10, mastered: 3, percentage: 30 },
+        [ZoneType.IT]: { total: 10, mastered: 7, percentage: 70 },
+        [ZoneType.ACADEMIC]: { total: 10, mastered: 2, percentage: 20 },
+      };
+
+      return {
+        user: {
+          id: 'usr_local',
+          email: 'local@lexicon.hu',
+          currentCefr: CefrLevel.B1,
+          targetCefr: CefrLevel.B2,
+          streakDays: 7,
+          lastActiveAt: new Date().toISOString(),
+          createdAt: new Date().toISOString(),
+          updatedAt: new Date().toISOString(),
+        },
+        totalPacksCompleted: packs.length,
+        totalVocabMastered: stageCounts.stage5 * 2,
+        totalChunksMastered: stageCounts.stage5,
+        srsDistribution: stageCounts,
+        zoneProgress,
+        recentMistakes: mistakeLogs.slice(0, 5),
+        commonMistakePatterns: [],
+        recentWritings: submissions.slice(0, 5),
+      };
     },
   },
 };

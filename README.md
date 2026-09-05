@@ -49,21 +49,26 @@ A **Lexicon** elhagyja a sablonos AI wrapper kliséket (lebegő chatbot buborék
 - **Backend:** Fastify + TypeScript + Prisma ORM + PostgreSQL 16 + Redis 7 / BullMQ + Fastify JWT + Swagger UI
 - **Frontend:** React 19 + Vite + TypeScript + Tailwind CSS + TanStack Query v5 + Zustand + Lucide Icons + PWA (`vite-plugin-pwa`)
 - **Hang & Kiejtés:** Web Speech API TTS + Web Audio API szintetizált visszajelzések
-- **Infrastruktúra:** Docker Compose + Caddy Reverse Proxy & SSL
-
+- **Infrastruktúra:** Docker Compose (PostgreSQL 16, Redis 7, Fastify API)
+ 
 ---
-
+ 
 ## 🚀 Indítás és Futtatás
-
-### 1. Docker Compose segítségével (Ajánlott teljes veremhez)
-
+ 
+### 1. Docker Compose segítségével (Teljes verem: DB + Cache + API + Web)
+ 
 ```bash
-# Fejlesztői környezet (PostgreSQL, Redis, Fastify API, Vite Web)
-docker compose up -d
-
-# Vagy éles környezet (Caddy + API + DB + Redis)
-docker compose -f docker-compose.prod.yml up -d
+# Teljes verem építése és indítása a háttérben
+docker compose up -d --build
+ 
+# Konténerek naplózásának követése
+docker compose logs -f api
 ```
+ 
+- Web Alkalmazás (React PWA + Vite Preview): [http://localhost:3000](http://localhost:3000) (Port: 3000 vagy a beállított `WEB_PORT`)
+- API Szerver közvetlenül: [http://localhost:3021](http://localhost:3021)
+- Swagger Dokumentáció: [http://localhost:3021/docs](http://localhost:3021/docs) vagy [http://localhost:3000/docs](http://localhost:3000/docs)
+- **Demo Belépés:** `expedition@lexicon.hu` / `password123`
 
 ### 2. Helyi Futtatás (pnpm)
 
@@ -71,18 +76,17 @@ docker compose -f docker-compose.prod.yml up -d
 # Függőségek telepítése
 pnpm install
 
-# Adatbázis migráció és seedelés
+# Adatbázis inicializálás és seedelés
 pnpm --filter @lexicon/api db:push
 pnpm --filter @lexicon/api db:seed
 
-# Párhuzamos fejlesztői szerver indítása (Frontend: 5173, Backend: 3000)
+# Párhuzamos fejlesztői szerver indítása (Frontend: 5173, Backend: 3021)
 pnpm dev
 ```
 
 - Web Alkalmazás: [http://localhost:5173](http://localhost:5173)
-- API Szerver: [http://localhost:3000](http://localhost:3000)
-- Swagger Dokumentáció: [http://localhost:3000/docs](http://localhost:3000/docs)
-- **Demo Belépés:** `expedition@lexicon.hu` / `password123`
+- API Szerver: [http://localhost:3021](http://localhost:3021)
+- Swagger Dokumentáció: [http://localhost:3021/docs](http://localhost:3021/docs)
 
 ---
 
@@ -107,7 +111,5 @@ project/
 │           └── pages/          # Munkanapló, Zónák, Gyakorlás, Írás, Analitika
 ├── packages/
 │   └── types/                  # Megosztott TypeScript típusok és Zod sémák
-├── docker-compose.yml           # Lokális fejlesztési konténerek
-├── docker-compose.prod.yml      # Éles Caddy + API + DB környezet
-└── Caddyfile                   # Fordított proxy és PWA statikus kiszolgálás
+└── docker-compose.yml           # Konténerek (PostgreSQL, Redis, Fastify API, React Web)
 ```

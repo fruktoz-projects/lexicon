@@ -55,22 +55,24 @@ Ensure at least:
 - 1 Writing prompt in Hungarian asking for an English short essay.`;
 
     if (this.geminiClient) {
-      try {
-        const response = await this.geminiClient.models.generateContent({
-          model: 'gemini-1.5-flash',
-          contents: [
-            { role: 'user', parts: [{ text: `${systemPrompt}\n\n${userPrompt}\n\nRespond ONLY with a valid JSON object.` }] },
-          ],
-          config: {
-            responseMimeType: 'application/json',
-          },
-        });
+      for (const model of [env.GEMINI_PRIMARY_MODEL, env.GEMINI_FALLBACK_MODEL]) {
+        try {
+          const response = await this.geminiClient.models.generateContent({
+            model,
+            contents: [
+              { role: 'user', parts: [{ text: `${systemPrompt}\n\n${userPrompt}\n\nRespond ONLY with a valid JSON object.` }] },
+            ],
+            config: {
+              responseMimeType: 'application/json',
+            },
+          });
 
-        const rawText = response.text || '';
-        const parsed = JSON.parse(rawText);
-        return LearningPackGenerationSchema.parse(parsed);
-      } catch (err) {
-        console.warn('Gemini API call failed or timed out, falling back to deterministic generator:', err);
+          const rawText = response.text || '';
+          const parsed = JSON.parse(rawText);
+          return LearningPackGenerationSchema.parse(parsed);
+        } catch (err) {
+          console.warn(`Gemini model "${model}" failed for generateLearningPack, trying next:`, err);
+        }
       }
     }
 
@@ -109,20 +111,22 @@ Evaluate the submission and produce a structured JSON with:
 Respond ONLY with valid JSON.`;
 
     if (this.geminiClient) {
-      try {
-        const response = await this.geminiClient.models.generateContent({
-          model: 'gemini-1.5-flash',
-          contents: [{ role: 'user', parts: [{ text: systemPrompt }] }],
-          config: {
-            responseMimeType: 'application/json',
-          },
-        });
+      for (const model of [env.GEMINI_PRIMARY_MODEL, env.GEMINI_FALLBACK_MODEL]) {
+        try {
+          const response = await this.geminiClient.models.generateContent({
+            model,
+            contents: [{ role: 'user', parts: [{ text: systemPrompt }] }],
+            config: {
+              responseMimeType: 'application/json',
+            },
+          });
 
-        const rawText = response.text || '';
-        const parsed = JSON.parse(rawText);
-        return WritingFeedbackSchema.parse(parsed);
-      } catch (err) {
-        console.warn('Gemini Writing Evaluation fallback:', err);
+          const rawText = response.text || '';
+          const parsed = JSON.parse(rawText);
+          return WritingFeedbackSchema.parse(parsed);
+        } catch (err) {
+          console.warn(`Gemini model "${model}" failed for evaluateWriting, trying next:`, err);
+        }
       }
     }
 

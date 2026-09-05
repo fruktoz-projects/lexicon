@@ -4,54 +4,46 @@
 
 @layer base {
   body {
-    background-color: #D8C194;
-    color: #1C150D;
+    background-color: #F8FAFC;
+    color: #0F172A;
     font-feature-settings: "cv02", "cv03", "cv04", "cv11";
   }
 
-  /* Papyrus Scrollbar */
+  /* Lumina Scrollbar */
   ::-webkit-scrollbar {
     width: 8px;
     height: 8px;
   }
 
   ::-webkit-scrollbar-track {
-    background: #CDB384;
+    background: #F1F5F9;
   }
 
   ::-webkit-scrollbar-thumb {
-    background: #A88A4E;
+    background: #CBD5E1;
     border-radius: 4px;
-    border: 1px solid #BDA372;
   }
 
   ::-webkit-scrollbar-thumb:hover {
-    background: #8B5E3C;
+    background: #94A3B8;
   }
 }
 
 @layer components {
 
-  /* Papyrus Card */
-  .papyrus-card {
-    background-color: #FAF5EB;
-    border: 2px solid #C5A566;
+  /* Surface Card — minimal white surface with soft charcoal shadow */
+  .surface-card {
+    background-color: #FFFFFF;
+    border: 1px solid #E5E7EB;
     border-radius: 18px;
-    box-shadow: 0 8px 20px rgba(45, 30, 12, 0.15), 0 2px 8px rgba(45, 30, 12, 0.08);
+    box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04), 0 1px 4px rgba(15, 23, 42, 0.06);
     transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
   }
 
-  .papyrus-card:hover {
-    border-color: #8B5E3C;
-    box-shadow: 0 12px 28px rgba(45, 30, 12, 0.22), 0 4px 12px rgba(45, 30, 12, 0.12);
+  .surface-card:hover {
+    border-color: #DDD6FE;
+    box-shadow: 0 2px 8px rgba(15, 23, 42, 0.08), 0 4px 12px rgba(15, 23, 42, 0.10);
     transform: translateY(-2px);
-  }
-
-  /* Inner Sunken Parchment Container */
-  .papyrus-inner-box {
-    background-color: #F0E5D3;
-    border: 1.5px solid #C5A566;
-    border-radius: 14px;
   }
 
   /* Keyboard Badge for SRS Practice */
@@ -64,9 +56,9 @@
     font-weight: 700;
     padding: 2px 7px;
     border-radius: 6px;
-    background-color: #EAD9B8;
-    color: #1C150D;
-    border: 1.5px solid #C5A566;
-    box-shadow: 0 1px 0 0 #967A42;
+    background-color: #F1F5F9;
+    color: #64748B;
+    border: 1.5px solid #E5E7EB;
+    box-shadow: 0 1px 0 0 #DDD6FE;
   }
 }

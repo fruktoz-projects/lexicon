@@ -74,19 +74,19 @@ export const LexicalVault: React.FC = () => {
   };
 
   return (
-    <div className="bg-papyrus-card rounded-2xl sm:rounded-3xl p-5 sm:p-7 shadow-card space-y-4 sm:space-y-5">
+    <div className="bg-surface rounded-2xl sm:rounded-3xl p-5 sm:p-7 shadow-card space-y-4 sm:space-y-5">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
         <div>
-          <h3 className="text-base sm:text-xl font-monument font-bold text-papyrus-ink flex items-center gap-2">
-            <BookOpen size={20} className="text-brand" />
+          <h3 className="text-base sm:text-xl font-monument font-bold text-ink flex items-center gap-2">
+            <BookOpen size={20} className="text-accent" />
             <span>Szókincs & Kollokáció Tár</span>
           </h3>
-          <p className="text-xs sm:text-sm font-sans text-papyrus-muted mt-0.5 font-semibold">
+          <p className="text-xs sm:text-sm font-sans text-muted mt-0.5 font-semibold">
             Az összes felfedezett szó, kifejezéscsomag és kollokáció kiejtéssel és kontextussal
           </p>
         </div>
 
-        <span className="text-xs font-sans font-bold px-3.5 py-1 rounded-full bg-papyrus-subtle text-papyrus-ink border border-papyrus-border self-start sm:self-auto shadow-subtle">
+        <span className="text-xs font-sans font-bold px-3.5 py-1 rounded-full bg-surface-subtle text-ink border border-border self-start sm:self-auto shadow-subtle">
           {filtered.length} elem
         </span>
       </div>
@@ -94,20 +94,20 @@ export const LexicalVault: React.FC = () => {
       {/* Search & Filters */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5 sm:gap-3">
         <div className="relative sm:col-span-1">
-          <Search size={15} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-papyrus-muted" />
+          <Search size={15} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-muted" />
           <input
             type="text"
             placeholder="Keresés angolul vagy magyarul..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="w-full pl-9 pr-3 py-2 text-xs rounded-xl border-2 border-papyrus-border bg-white text-papyrus-ink font-medium focus:ring-2 focus:ring-brand/20 focus:border-brand focus:outline-none"
+            className="w-full pl-9 pr-3 py-2 text-xs rounded-xl border-2 border-border bg-surface text-ink font-medium focus:ring-2 focus:ring-accent/20 focus:border-accent focus:outline-none"
           />
         </div>
 
         <select
           value={selectedZone}
           onChange={(e) => setSelectedZone(e.target.value)}
-          className="px-3 py-2 text-xs rounded-xl border-2 border-papyrus-border bg-white text-papyrus-ink focus:outline-none font-sans font-bold"
+          className="px-3 py-2 text-xs rounded-xl border-2 border-border bg-surface text-ink focus:outline-none font-sans font-bold"
         >
           <option value="all">Minden Zóna</option>
           <option value={ZoneType.EVERYDAY}>Mindennapok</option>
@@ -116,13 +116,13 @@ export const LexicalVault: React.FC = () => {
           <option value={ZoneType.ACADEMIC}>Akadémiai angol</option>
         </select>
 
-        <div className="flex items-center gap-1 bg-papyrus-subtle p-1 rounded-xl border border-papyrus-border">
+        <div className="flex items-center gap-1 bg-surface-subtle p-1 rounded-xl border border-border">
           <button
             onClick={() => {
               audio.playClickSound();
               setSelectedType('all');
             }}
-            className={`flex-1 py-1 text-xs rounded-lg font-sans transition-all ${selectedType === 'all' ? 'bg-papyrus-card text-papyrus-ink shadow-subtle font-bold border border-papyrus-border' : 'text-papyrus-muted font-bold'
+            className={`flex-1 py-1 text-xs rounded-lg font-sans transition-all ${selectedType === 'all' ? 'bg-surface text-ink shadow-subtle font-bold border border-border' : 'text-muted font-bold'
               }`}
           >
             Összes
@@ -132,7 +132,7 @@ export const LexicalVault: React.FC = () => {
               audio.playClickSound();
               setSelectedType('vocab');
             }}
-            className={`flex-1 py-1 text-xs rounded-lg font-sans transition-all ${selectedType === 'vocab' ? 'bg-papyrus-card text-papyrus-ink shadow-subtle font-bold border border-papyrus-border' : 'text-papyrus-muted font-bold'
+            className={`flex-1 py-1 text-xs rounded-lg font-sans transition-all ${selectedType === 'vocab' ? 'bg-surface text-ink shadow-subtle font-bold border border-border' : 'text-muted font-bold'
               }`}
           >
             Szavak
@@ -142,7 +142,7 @@ export const LexicalVault: React.FC = () => {
               audio.playClickSound();
               setSelectedType('chunk');
             }}
-            className={`flex-1 py-1 text-xs rounded-lg font-sans transition-all ${selectedType === 'chunk' ? 'bg-papyrus-card text-papyrus-ink shadow-subtle font-bold border border-papyrus-border' : 'text-papyrus-muted font-bold'
+            className={`flex-1 py-1 text-xs rounded-lg font-sans transition-all ${selectedType === 'chunk' ? 'bg-surface text-ink shadow-subtle font-bold border border-border' : 'text-muted font-bold'
               }`}
           >
             Kollokációk
@@ -152,7 +152,7 @@ export const LexicalVault: React.FC = () => {
 
       {/* Grid of items */}
       {filtered.length === 0 ? (
-        <div className="p-6 text-center text-papyrus-muted font-sans font-medium text-sm">
+        <div className="p-6 text-center text-muted font-sans font-medium text-sm">
           Nincs találat a megadott keresési feltételekre.
         </div>
       ) : (
@@ -160,35 +160,35 @@ export const LexicalVault: React.FC = () => {
           {filtered.map((item) => (
             <div
               key={item.id}
-              className="p-4 rounded-2xl bg-white shadow-card hover:shadow-card-hover transition-all flex flex-col justify-between"
+              className="p-4 rounded-2xl bg-surface shadow-card hover:shadow-card-hover transition-all flex flex-col justify-between"
             >
               <div>
                 <div className="flex items-start justify-between gap-2 mb-1.5">
                   <div className="flex items-center gap-2">
-                    <h4 className="font-scribe font-bold text-base sm:text-lg text-papyrus-ink">{item.english}</h4>
+                    <h4 className="font-scribe font-bold text-base sm:text-lg text-ink">{item.english}</h4>
                     <AudioButton text={item.english} size="sm" />
                   </div>
                   <CefrBadge level={item.cefr} size="sm" />
                 </div>
 
                 {item.phonetics && (
-                  <span className="text-[11px] font-mono text-papyrus-muted block mb-1 font-semibold">
+                  <span className="text-[11px] font-mono text-muted block mb-1 font-semibold">
                     {item.phonetics}
                   </span>
                 )}
 
-                <p className="text-xs font-bold text-brand mb-2 font-sans">{item.hungarian}</p>
+                <p className="text-xs font-bold text-accent mb-2 font-sans">{item.hungarian}</p>
 
                 {item.detail && (
-                  <p className="text-xs text-papyrus-muted italic font-scribe leading-relaxed line-clamp-2 font-medium">
+                  <p className="text-xs text-muted italic font-scribe leading-relaxed line-clamp-2 font-medium">
                     "{item.detail}"
                   </p>
                 )}
               </div>
 
-              <div className="mt-3 pt-2 border-t border-papyrus-border flex items-center justify-between text-[10px] font-mono text-papyrus-muted font-semibold">
+              <div className="mt-3 pt-2 border-t border-border flex items-center justify-between text-[10px] font-mono text-muted font-semibold">
                 <span>{zoneLabel(item.zone)}</span>
-                <span className="px-2 py-0.5 rounded-full bg-papyrus-subtle text-papyrus-ink font-sans uppercase font-bold border border-papyrus-border">
+                <span className="px-2 py-0.5 rounded-full bg-surface-subtle text-ink font-sans uppercase font-bold border border-border">
                   {item.type === 'vocab' ? 'Szó' : 'Kollokáció'}
                 </span>
               </div>

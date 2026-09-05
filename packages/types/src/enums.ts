@@ -36,7 +36,7 @@ export const ZONE_DETAILS = {
     description: 'Small talk, travel, daily routines, social interactions.',
     descriptionHu: 'Kötetlen beszélgetés, utazás, napi rutin, társasági érintkezések.',
     icon: 'Compass',
-    color: '#B85D3B',
+    color: '#0EA5E9',
   },
   [ZoneType.BUSINESS]: {
     name: 'The Business Quarter',
@@ -45,7 +45,7 @@ export const ZONE_DETAILS = {
     description: 'Meetings, formal emails, negotiations, budgeting, client management.',
     descriptionHu: 'Megbeszélések, hivatalos e-mailek, tárgyalások, költségvetés, ügyfélkezelés.',
     icon: 'Briefcase',
-    color: '#4A6F54',
+    color: '#7C3AED',
   },
   [ZoneType.IT]: {
     name: 'The IT Terminal',
@@ -54,7 +54,7 @@ export const ZONE_DETAILS = {
     description: 'System architecture, bug reporting, code reviews, debugging, CI/CD, APIs.',
     descriptionHu: 'Rendszerarchitektúra, hibajegyek, kódellenőrzés, hibakeresés, CI/CD, API-k.',
     icon: 'Terminal',
-    color: '#3B6E8C',
+    color: '#4F46E5',
   },
   [ZoneType.ACADEMIC]: {
     name: 'The Academic Hall',
@@ -63,8 +63,7 @@ export const ZONE_DETAILS = {
     description: 'Analytical reading, essays, business informatics, structured argumentation.',
     descriptionHu: 'Elemző olvasás, esszék, gazdaságinformatika, strukturált érvelés.',
     icon: 'BookOpen',
-    color: '#7D5A86',
+    color: '#10B981',
   },
 } as const;
 
-export const SRS_INTERVAL_DAYS = [0, 1, 3, 7, 14, 30] as const;

@@ -45,16 +45,16 @@ export const TranslationExercise: React.FC<TranslationExerciseProps> = ({
 
   return (
     <div className="space-y-5 sm:space-y-6">
-      <div className="text-xs sm:text-sm font-monument font-bold text-[#7A6B55] uppercase tracking-wider">
+      <div className="text-xs sm:text-sm font-monument font-bold text-muted uppercase tracking-wider">
         {prompt}
       </div>
 
       {/* Hungarian Source Box */}
-      <div className="p-5 sm:p-7 bg-[#EAD9B8] rounded-2xl border-2 border-[#C5A566] text-center shadow-inner">
-        <span className="text-[11px] font-monument uppercase tracking-wider text-[#7A6B55] block mb-1 font-bold">
+      <div className="p-5 sm:p-7 bg-surface-subtle rounded-2xl border-2 border-border text-center shadow-inner">
+        <span className="text-[11px] font-monument uppercase tracking-wider text-muted block mb-1 font-bold">
           Magyar Forrásszöveg:
         </span>
-        <div className="text-lg sm:text-2xl font-scribe font-bold text-[#1C150D]">
+        <div className="text-lg sm:text-2xl font-scribe font-bold text-ink">
           "{payload.sourceHu}"
         </div>
       </div>
@@ -62,7 +62,7 @@ export const TranslationExercise: React.FC<TranslationExerciseProps> = ({
       {/* Hints */}
       {payload.hints && payload.hints.length > 0 && (
         <div className="flex items-center gap-1.5 sm:gap-2 flex-wrap justify-center">
-          <span className="text-xs font-mono text-[#7A6B55] flex items-center gap-1 font-bold">
+          <span className="text-xs font-mono text-muted flex items-center gap-1 font-bold">
             <HelpCircle size={13} /> Súgó:
           </span>
           {payload.hints.map((hint, idx) => (
@@ -71,7 +71,7 @@ export const TranslationExercise: React.FC<TranslationExerciseProps> = ({
               type="button"
               disabled={disabled}
               onClick={() => handleUseHint(hint)}
-              className="text-xs font-mono px-3 py-1 rounded-full bg-[#FBF4E4] hover:bg-white text-[#1C150D] border border-[#C5A566] hover:border-[#8B5E3C] shadow-sm transition-colors font-semibold"
+              className="text-xs font-mono px-3 py-1 rounded-full bg-surface-subtle hover:bg-surface text-ink border border-border hover:border-accent shadow-sm transition-colors font-semibold"
             >
               + {hint}
             </button>
@@ -90,9 +90,9 @@ export const TranslationExercise: React.FC<TranslationExerciseProps> = ({
             value={userAnswer}
             onChange={(e) => onChange(e.target.value)}
             onKeyDown={handleKeyDown}
-            className="w-full p-3.5 sm:p-4 text-base sm:text-lg font-scribe font-bold rounded-xl sm:rounded-2xl border-2 border-[#C5A566] bg-white text-[#1C150D] placeholder:text-[#9A8B73] focus:border-[#8B5E3C] focus:ring-0 focus:outline-none shadow-sm"
+            className="w-full p-3.5 sm:p-4 text-base sm:text-lg font-scribe font-bold rounded-xl sm:rounded-2xl border-2 border-border bg-surface text-ink placeholder:text-muted focus:border-accent focus:ring-0 focus:outline-none shadow-inner"
           />
-          <div className="absolute right-3 top-1/2 -translate-y-1/2 hidden sm:flex items-center gap-1 text-xs text-[#7A6B55] font-mono">
+          <div className="absolute right-3 top-1/2 -translate-y-1/2 hidden sm:flex items-center gap-1 text-xs text-muted font-mono">
             <span>Nyomj</span>
             <span className="keyboard-badge">Enter</span>
             <span>-t</span>

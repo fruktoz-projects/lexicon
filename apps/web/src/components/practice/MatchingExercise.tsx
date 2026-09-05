@@ -54,14 +54,14 @@ export const MatchingExercise: React.FC<MatchingExerciseProps> = ({
 
   return (
     <div className="space-y-5 sm:space-y-6">
-      <div className="text-xs sm:text-sm font-monument font-bold text-[#7A6B55] uppercase tracking-wider">
+      <div className="text-xs sm:text-sm font-monument font-bold text-muted uppercase tracking-wider">
         {prompt}
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
         {/* Left column (English) */}
         <div className="space-y-2.5">
-          <div className="text-xs font-monument uppercase text-[#7A6B55] tracking-wider font-bold">
+          <div className="text-xs font-monument uppercase text-muted tracking-wider font-bold">
             Angol Kifejezések:
           </div>
           {payload.pairs?.map((p) => {
@@ -75,10 +75,10 @@ export const MatchingExercise: React.FC<MatchingExerciseProps> = ({
                 disabled={disabled || isDone}
                 onClick={() => handleSelectLeft(p.left)}
                 className={`w-full p-3 sm:p-3.5 rounded-xl text-left text-xs sm:text-sm font-scribe font-bold transition-all active:scale-98 shadow-sm ${isDone
-                    ? 'bg-[#E0F0E8] border border-[#6BB38A] text-[#1C4C34] opacity-60 line-through'
+                    ? 'bg-status-successBg border border-status-successBorder text-ink opacity-60 line-through'
                     : isSelected
-                      ? 'bg-[#E5C175] text-[#1C150D] shadow-md scale-102'
-                      : 'bg-white text-[#1C150D] hover:bg-papyrus-subtle'
+                      ? 'bg-accent text-accent-text shadow-md scale-102'
+                      : 'bg-surface-subtle text-ink hover:bg-surface-subtle'
                   }`}
               >
                 {p.left}
@@ -89,7 +89,7 @@ export const MatchingExercise: React.FC<MatchingExerciseProps> = ({
 
         {/* Right column (Hungarian) */}
         <div className="space-y-2.5">
-          <div className="text-xs font-monument uppercase text-[#7A6B55] tracking-wider font-bold">
+          <div className="text-xs font-monument uppercase text-muted tracking-wider font-bold">
             Magyar Jelentések:
           </div>
           {shuffledRights.map((right, idx) => {
@@ -102,10 +102,10 @@ export const MatchingExercise: React.FC<MatchingExerciseProps> = ({
                 disabled={disabled || isDone || !selectedLeft}
                 onClick={() => handleSelectRight(right)}
                 className={`w-full p-3 sm:p-3.5 rounded-xl text-left text-xs sm:text-sm font-sans font-semibold transition-all active:scale-98 shadow-sm ${isDone
-                    ? 'bg-[#E0F0E8] border border-[#6BB38A] text-[#1C4C34] opacity-60 line-through'
+                    ? 'bg-status-successBg border border-status-successBorder text-ink opacity-60 line-through'
                     : selectedLeft
-                      ? 'bg-white text-[#1C150D] hover:bg-[#FAF0CD] cursor-pointer'
-                      : 'bg-papyrus-subtle/60 text-[#7A6B55]/60 cursor-not-allowed'
+                      ? 'bg-surface text-ink hover:bg-surface-subtle cursor-pointer'
+                      : 'bg-surface-subtle/60 text-muted/60 cursor-not-allowed'
                   }`}
               >
                 {right}

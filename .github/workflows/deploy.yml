@@ -1,0 +1,37 @@
+name: Deploy Lexicon
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  deploy:
+    runs-on: self-hosted
+
+    steps:
+      - name: Deploy Lexicon Services
+        run: |
+          # 1. Beállítjuk a safe.directory-t a valódi útvonalra
+          git config --global --add safe.directory /home/fruktoz/projects/lexicon
+
+          # 2. Belépünk a projekt mappájába
+          cd /home/fruktoz/projects/lexicon
+
+          # 3. Kód frissítése a GitHubról
+          git fetch origin main
+          git reset --hard origin/main
+
+          # 4. Változások ellenőrzése
+          CHANGED_FILES=$(git diff --name-only HEAD@{1} HEAD || true)
+          echo "Megváltozott fájlok:"
+          echo "$CHANGED_FILES"
+
+          # 5. Konténerek frissítése
+          # apps/web/ és apps/api/ a fő alkalmazások, packages/ a shared types csomag
+          if echo "$CHANGED_FILES" | grep -E -q 'Dockerfile|docker-compose|package\.json|pnpm-lock\.yaml|apps/web/|apps/api/|packages/'; then
+            echo "--> Infra / App változott: Rebuild..."
+            docker compose up -d --build api web
+          else
+            echo "--> Csak kisebb változás: API restart..."
+            docker compose restart api
+          fi

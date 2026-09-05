@@ -106,10 +106,10 @@ export const PackDetailModal: React.FC<PackDetailModalProps> = ({
     >
       <div className="space-y-5">
         {/* Header Metadata Bar */}
-        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 p-3.5 bg-papyrus-subtle rounded-2xl border border-papyrus-border">
+        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 p-3.5 bg-surface-subtle rounded-2xl border border-border">
           <div className="flex items-center gap-2 flex-wrap">
             <CefrBadge level={pack.cefr} size="md" showLabel />
-            <span className="text-xs font-sans px-3 py-1 rounded-full bg-papyrus-card text-papyrus-ink border border-papyrus-border font-bold shadow-subtle">
+            <span className="text-xs font-sans px-3 py-1 rounded-full bg-surface text-ink border border-border font-bold shadow-subtle">
               Fókusz: {pack.focus}
             </span>
           </div>
@@ -123,19 +123,19 @@ export const PackDetailModal: React.FC<PackDetailModalProps> = ({
             }}
             className="w-full sm:w-auto flex items-center justify-center gap-1.5 font-sans font-bold"
           >
-            <Play size={14} className="fill-papyrus-ink text-papyrus-ink" />
+            <Play size={14} className="fill-ink text-ink" />
             <span>Gyakorlás Indítása</span>
           </Button>
         </div>
 
         {/* Expedition Station Stepper (Process Bar) */}
-        <div className="bg-papyrus-subtle p-3.5 rounded-2xl border border-papyrus-borderSubtle space-y-2.5">
+        <div className="bg-surface-subtle p-3.5 rounded-2xl border border-border-subtle space-y-2.5">
           <div className="flex items-center justify-between text-xs font-sans">
-            <div className="flex items-center gap-1.5 text-papyrus-ink font-bold">
-              <Compass size={16} className="text-brand" />
+            <div className="flex items-center gap-1.5 text-ink font-bold">
+              <Compass size={16} className="text-accent" />
               <span>Tanulási Állomássáv ({visitedStations.size}/{stations.length} kész)</span>
             </div>
-            <span className="font-mono text-brand font-bold">{progressPercent}%</span>
+            <span className="font-mono text-accent font-bold">{progressPercent}%</span>
           </div>
 
           {/* Stepper Buttons Horizontal Bar */}
@@ -149,19 +149,19 @@ export const PackDetailModal: React.FC<PackDetailModalProps> = ({
                   key={st.id}
                   onClick={() => handleSelectStation(st.id)}
                   className={`p-2.5 rounded-xl border text-left transition-all duration-150 flex items-center justify-between gap-1.5 shadow-subtle ${isActive
-                      ? 'bg-[#E5C175] text-papyrus-ink border-transparent shadow-sm scale-[1.02]'
+                      ? 'bg-accent text-accent-text border-transparent shadow-sm scale-[1.02]'
                       : isVisited
-                        ? 'bg-papyrus-warm border-status-warningBorder text-papyrus-ink'
-                        : 'bg-papyrus-card border-transparent text-papyrus-muted hover:text-papyrus-ink'
+                        ? 'bg-surface-subtle border-status-warningBorder text-ink'
+                        : 'bg-surface border-transparent text-muted hover:text-ink'
                     }`}
                 >
                   <div className="flex items-center gap-2 min-w-0">
                     <span
                       className={`w-5 h-5 rounded-full flex items-center justify-center text-[10px] font-mono font-bold shrink-0 ${isActive
-                          ? 'bg-papyrus-warm text-papyrus-ink'
+                          ? 'bg-surface-subtle text-ink'
                           : isVisited
                             ? 'bg-status-successBg text-status-success border border-status-successBorder'
-                            : 'bg-papyrus-subtle text-papyrus-muted'
+                            : 'bg-surface-subtle text-muted'
                         }`}
                     >
                       {isVisited && !isActive ? <CheckCircle2 size={12} /> : idx + 1}
@@ -171,7 +171,7 @@ export const PackDetailModal: React.FC<PackDetailModalProps> = ({
 
                   {st.count !== undefined && st.count > 0 && (
                     <span
-                      className={`px-1.5 py-0.5 rounded-full text-[10px] font-mono font-bold shrink-0 ${isActive ? 'bg-papyrus-warm text-papyrus-ink' : 'bg-papyrus-subtle text-papyrus-ink'
+                      className={`px-1.5 py-0.5 rounded-full text-[10px] font-mono font-bold shrink-0 ${isActive ? 'bg-surface-subtle text-ink' : 'bg-surface-subtle text-ink'
                         }`}
                     >
                       {st.count}
@@ -191,8 +191,8 @@ export const PackDetailModal: React.FC<PackDetailModalProps> = ({
 
           {activeStation === 'vocab' && (
             <div className="space-y-3">
-              <div className="text-xs font-sans font-bold text-papyrus-muted flex items-center gap-1.5">
-                <Layers size={14} className="text-brand" />
+              <div className="text-xs font-sans font-bold text-muted flex items-center gap-1.5">
+                <Layers size={14} className="text-accent" />
                 <span>Kiemelt szókincs kiejtéssel és kollokációkkal:</span>
               </div>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-4">
@@ -205,8 +205,8 @@ export const PackDetailModal: React.FC<PackDetailModalProps> = ({
 
           {activeStation === 'chunks' && (
             <div className="space-y-3">
-              <div className="text-xs font-sans font-bold text-papyrus-muted flex items-center gap-1.5">
-                <Link2 size={14} className="text-brand" />
+              <div className="text-xs font-sans font-bold text-muted flex items-center gap-1.5">
+                <Link2 size={14} className="text-accent" />
                 <span>Anyanyelvi kifejezéscsomagok és szövegkörnyezetek:</span>
               </div>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-4">
@@ -219,8 +219,8 @@ export const PackDetailModal: React.FC<PackDetailModalProps> = ({
 
           {activeStation === 'traps' && (
             <div className="space-y-3">
-              <div className="text-xs font-sans font-bold text-papyrus-muted flex items-center gap-1.5">
-                <AlertTriangle size={14} className="text-brand" />
+              <div className="text-xs font-sans font-bold text-muted flex items-center gap-1.5">
+                <AlertTriangle size={14} className="text-accent" />
                 <span>Magyar-angol tükörfordítási hibaminták és javítási szabályok:</span>
               </div>
               <div className="space-y-3 sm:space-y-4">
@@ -236,7 +236,7 @@ export const PackDetailModal: React.FC<PackDetailModalProps> = ({
               {pack.readingMaterials?.length > 0 ? (
                 <ReadingModule reading={pack.readingMaterials[0]} />
               ) : (
-                <div className="p-8 text-center bg-papyrus-subtle rounded-2xl border border-papyrus-border text-papyrus-muted text-sm font-sans font-medium">
+                <div className="p-8 text-center bg-surface-subtle rounded-2xl border border-border text-muted text-sm font-sans font-medium">
                   Ebben a tananyagban nincs különálló olvasmány feladvány.
                 </div>
               )}
@@ -245,7 +245,7 @@ export const PackDetailModal: React.FC<PackDetailModalProps> = ({
         </div>
 
         {/* Stepper Navigation Footer Bar */}
-        <div className="flex items-center justify-between gap-3 pt-3 border-t border-papyrus-border">
+        <div className="flex items-center justify-between gap-3 pt-3 border-t border-border">
           <Button
             size="md"
             variant="secondary"
@@ -257,7 +257,7 @@ export const PackDetailModal: React.FC<PackDetailModalProps> = ({
             <span>Előző állomás</span>
           </Button>
 
-          <span className="text-xs font-sans font-bold text-papyrus-muted hidden sm:inline">
+          <span className="text-xs font-sans font-bold text-muted hidden sm:inline">
             {currentIdx + 1} / {stations.length}. állomás: {currentStationConfig.label}
           </span>
 

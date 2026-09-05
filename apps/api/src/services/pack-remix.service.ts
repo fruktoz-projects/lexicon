@@ -90,7 +90,7 @@ export class PackRemixService {
       exercises: sampledExercises.map((e) => ({
         type: e.type as any,
         prompt: e.prompt,
-        payload: e.payload,
+        payload: (e.payload ?? {}) as Record<string, unknown>,
         solution: e.solution,
       })),
       reading: sampledReading

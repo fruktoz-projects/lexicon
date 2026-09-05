@@ -38,7 +38,8 @@ export const AuthPage: React.FC<AuthPageProps> = ({ onSuccess }) => {
       audio.playSuccessSound();
       onSuccess();
     } catch (err: any) {
-      setError(err.message || 'Hitelesítési hiba történt');
+      const msg = err.response?.data?.error || err.message || 'Hitelesítési hiba történt';
+      setError(msg);
       audio.playMistakeSound();
     } finally {
       setIsLoading(false);
@@ -46,23 +47,23 @@ export const AuthPage: React.FC<AuthPageProps> = ({ onSuccess }) => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center p-4 bg-[#D8C194]">
-      <div className="w-full max-w-md bg-white rounded-3xl p-6 sm:p-9 shadow-xl space-y-6">
+    <div className="min-h-screen flex items-center justify-center p-4 bg-canvas">
+      <div className="w-full max-w-md bg-surface rounded-3xl p-6 sm:p-9 shadow-xl space-y-6 border border-border">
         {/* Brand Header */}
         <div className="text-center space-y-2">
-          <div className="w-14 h-14 rounded-2xl bg-[#E5C175] flex items-center justify-center text-[#1C150D] mx-auto shadow-md font-bold">
+          <div className="w-14 h-14 rounded-2xl bg-accent flex items-center justify-center text-accent-text mx-auto shadow-md font-bold">
             <span className="text-2xl font-monument font-bold">L</span>
           </div>
-          <h2 className="text-2xl sm:text-3xl font-monument font-black tracking-wider text-[#1C150D]">
+          <h2 className="text-2xl sm:text-3xl font-monument font-black tracking-wider text-ink">
             LEXICON
           </h2>
-          <p className="text-xs font-scribe text-[#7A6B55] tracking-wider font-semibold">
+          <p className="text-xs font-scribe text-muted tracking-wider font-semibold">
             Kontrasztív Magyar–Angol Tanulórendszer
           </p>
         </div>
 
         {/* Segmented Tab Switcher */}
-        <div className="p-1.5 bg-[#F2E8D5] rounded-2xl grid grid-cols-2 gap-1.5">
+        <div className="p-1.5 bg-surface-subtle rounded-2xl grid grid-cols-2 gap-1.5">
           <button
             type="button"
             onClick={() => {
@@ -70,8 +71,8 @@ export const AuthPage: React.FC<AuthPageProps> = ({ onSuccess }) => {
               setIsLogin(true);
             }}
             className={`py-2.5 px-3 rounded-xl text-xs font-monument font-bold transition-all duration-200 flex items-center justify-center gap-1.5 ${isLogin
-                ? 'bg-[#E5C175] text-[#1C150D] shadow-sm'
-                : 'text-[#7A6B55] hover:text-[#1C150D] hover:bg-white/60'
+                ? 'bg-accent text-accent-text shadow-sm'
+                : 'text-muted hover:text-ink hover:bg-surface/60'
               }`}
           >
             <KeyRound size={14} />
@@ -85,8 +86,8 @@ export const AuthPage: React.FC<AuthPageProps> = ({ onSuccess }) => {
               setIsLogin(false);
             }}
             className={`py-2.5 px-3 rounded-xl text-xs font-monument font-bold transition-all duration-200 flex items-center justify-center gap-1.5 ${!isLogin
-                ? 'bg-[#E5C175] text-[#1C150D] shadow-sm'
-                : 'text-[#7A6B55] hover:text-[#1C150D] hover:bg-white/60'
+                ? 'bg-accent text-accent-text shadow-sm'
+                : 'text-muted hover:text-ink hover:bg-surface/60'
               }`}
           >
             <UserPlus size={14} />
@@ -95,7 +96,7 @@ export const AuthPage: React.FC<AuthPageProps> = ({ onSuccess }) => {
         </div>
 
         {error && (
-          <div className="p-3.5 bg-red-100 border border-red-300 rounded-xl text-xs text-red-950 font-sans font-semibold shadow-sm flex items-center gap-2">
+          <div className="p-3.5 bg-status-errorBg border-status-errorBorder rounded-xl text-xs text-status-error font-sans font-semibold shadow-sm flex items-center gap-2">
             <span>⚠️</span>
             <span>{error}</span>
           </div>
@@ -103,7 +104,7 @@ export const AuthPage: React.FC<AuthPageProps> = ({ onSuccess }) => {
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label className="block text-xs font-monument font-bold text-[#1C150D] mb-1.5">
+            <label className="block text-xs font-monument font-bold text-ink mb-1.5">
               E-mail cím
             </label>
             <input
@@ -112,12 +113,12 @@ export const AuthPage: React.FC<AuthPageProps> = ({ onSuccess }) => {
               placeholder="pl. nev@ceg.hu"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="w-full px-4 py-2.5 rounded-xl border-2 border-[#C5A566] bg-white text-xs sm:text-sm text-[#1C150D] focus:border-[#8B5E3C] focus:ring-2 focus:ring-[#8B5E3C]/20 focus:outline-none shadow-sm font-medium"
+              className="w-full px-4 py-2.5 rounded-xl border-2 border-border bg-surface text-xs sm:text-sm text-ink focus:border-accent focus:ring-2 focus:ring-accent/20 focus:outline-none shadow-inner font-medium"
             />
           </div>
 
           <div>
-            <label className="block text-xs font-monument font-bold text-[#1C150D] mb-1.5">
+            <label className="block text-xs font-monument font-bold text-ink mb-1.5">
               Jelszó
             </label>
             <input
@@ -126,20 +127,20 @@ export const AuthPage: React.FC<AuthPageProps> = ({ onSuccess }) => {
               placeholder="••••••••"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="w-full px-4 py-2.5 rounded-xl border-2 border-[#C5A566] bg-white text-xs sm:text-sm text-[#1C150D] focus:border-[#8B5E3C] focus:ring-2 focus:ring-[#8B5E3C]/20 focus:outline-none shadow-sm font-medium"
+              className="w-full px-4 py-2.5 rounded-xl border-2 border-border bg-surface text-xs sm:text-sm text-ink focus:border-accent focus:ring-2 focus:ring-accent/20 focus:outline-none shadow-inner font-medium"
             />
           </div>
 
           {!isLogin && (
             <div className="grid grid-cols-2 gap-3 pt-1">
               <div>
-                <label className="block text-[11px] font-monument font-bold text-[#1C150D] mb-1">
+                <label className="block text-[11px] font-monument font-bold text-ink mb-1">
                   Jelenlegi szint
                 </label>
                 <select
                   value={currentCefr}
                   onChange={(e) => setCurrentCefr(e.target.value as CefrLevel)}
-                  className="w-full px-3 py-2 rounded-xl border-2 border-[#C5A566] bg-white text-xs text-[#1C150D] focus:outline-none font-monument font-bold shadow-sm"
+                  className="w-full px-3 py-2 rounded-xl border-2 border-border bg-surface text-xs text-ink focus:outline-none font-monument font-bold shadow-inner"
                 >
                   <option value={CefrLevel.A2}>A2 — Kezdő</option>
                   <option value={CefrLevel.B1}>B1 — Középhaladó</option>
@@ -148,13 +149,13 @@ export const AuthPage: React.FC<AuthPageProps> = ({ onSuccess }) => {
               </div>
 
               <div>
-                <label className="block text-[11px] font-monument font-bold text-[#1C150D] mb-1">
+                <label className="block text-[11px] font-monument font-bold text-ink mb-1">
                   Cél CEFR
                 </label>
                 <select
                   value={targetCefr}
                   onChange={(e) => setTargetCefr(e.target.value as CefrLevel)}
-                  className="w-full px-3 py-2 rounded-xl border-2 border-[#C5A566] bg-white text-xs text-[#1C150D] focus:outline-none font-monument font-bold shadow-sm"
+                  className="w-full px-3 py-2 rounded-xl border-2 border-border bg-surface text-xs text-ink focus:outline-none font-monument font-bold shadow-inner"
                 >
                   <option value={CefrLevel.B2}>B2 — Haladó</option>
                   <option value={CefrLevel.C1}>C1 — Felsőfokú</option>
@@ -182,7 +183,7 @@ export const AuthPage: React.FC<AuthPageProps> = ({ onSuccess }) => {
           </Button>
         </form>
 
-        <div className="p-3 bg-[#EAD9B8] rounded-xl border border-[#C5A566] text-center text-xs text-[#5C4A2F] font-scribe font-semibold">
+        <div className="p-3 bg-surface-subtle rounded-xl border border-border text-center text-xs text-ink font-scribe font-semibold">
           <span className="font-monument font-bold">Demo fiók: </span>
           <span className="font-mono">expedition@lexicon.hu</span> / <span className="font-mono font-bold">password123</span>
         </div>
