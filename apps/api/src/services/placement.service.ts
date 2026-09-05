@@ -1,7 +1,7 @@
 import { PrismaClient } from '@prisma/client';
 import { AiGatewayService } from './ai-gateway.service';
 import { CefrLevel, PlacementTestModel, PlacementTestQuestion } from '@lexicon/types';
-import { v4 as uuidv4 } from 'uuid';
+import crypto from 'crypto';
 
 export class PlacementService {
   constructor(
@@ -24,14 +24,14 @@ export class PlacementService {
       Return ONLY the JSON array, no markdown blocks.
     `;
 
-    const aiResponse = await this.aiGateway.callProvider(prompt);
+    const aiResponse = await this.aiGateway.generateText(prompt);
     
     let questions: PlacementTestQuestion[] = [];
     try {
       const cleanJson = aiResponse.replace(/```json/g, '').replace(/```/g, '').trim();
       const parsed = JSON.parse(cleanJson);
       questions = parsed.map((q: any) => ({
-        id: uuidv4(),
+        id: crypto.randomUUID(),
         question: q.question,
         options: q.options,
         correctAnswer: q.correctAnswer
@@ -102,7 +102,7 @@ export class PlacementService {
       Return ONLY the JSON object, no markdown blocks.
     `;
 
-    const aiResponse = await this.aiGateway.callProvider(prompt);
+    const aiResponse = await this.aiGateway.generateText(prompt);
     
     let evaluatedCefr: CefrLevel = CefrLevel.B1;
     let aiFeedback = '';

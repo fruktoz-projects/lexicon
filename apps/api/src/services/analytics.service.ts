@@ -112,6 +112,8 @@ export class AnalyticsService {
         email: user.email,
         targetCefr: user.targetCefr as CefrLevel,
         currentCefr: user.currentCefr as CefrLevel,
+        dailyGoalMinutes: user.dailyGoalMinutes,
+        preferredZones: user.preferredZones,
         streakDays: user.streakDays,
         lastActiveAt: user.lastActiveAt?.toISOString() ?? null,
         createdAt: user.createdAt.toISOString(),

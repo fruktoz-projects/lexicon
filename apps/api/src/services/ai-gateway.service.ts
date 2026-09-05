@@ -134,6 +134,32 @@ Respond ONLY with valid JSON.`;
     return this.getFallbackWritingEvaluation(submittedText, targetCefr);
   }
 
+  /**
+   * Generic method to call the AI provider for a text/JSON prompt.
+   */
+  async generateText(prompt: string): Promise<string> {
+    if (!this.geminiClient) {
+      throw new Error('AI Provider is not configured (Missing API Key)');
+    }
+
+    for (const model of [env.GEMINI_PRIMARY_MODEL, env.GEMINI_FALLBACK_MODEL]) {
+      try {
+        const response = await this.geminiClient.models.generateContent({
+          model,
+          contents: [{ role: 'user', parts: [{ text: prompt }] }],
+          config: {
+            responseMimeType: 'application/json',
+          },
+        });
+        return response.text || '';
+      } catch (err) {
+        console.warn(`Gemini model "${model}" failed for generateText, trying next:`, err);
+      }
+    }
+    
+    throw new Error('All AI models failed to generate a response.');
+  }
+
   private getFallbackLearningPack(
     topic: string,
     cefr: CefrLevel,
