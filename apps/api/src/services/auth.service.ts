@@ -32,7 +32,7 @@ export class AuthService {
     });
 
     if (existing) {
-      throw new Error('User with this email already exists');
+      throw new Error('Ezzel az e-mail címmel már regisztráltak');
     }
 
     const passwordHash = this.hashPassword(password);
@@ -68,12 +68,12 @@ export class AuthService {
     });
 
     if (!user) {
-      throw new Error('Invalid email or password');
+      throw new Error('Helytelen e-mail cím vagy jelszó');
     }
 
     const valid = this.verifyPassword(password, user.passwordHash);
     if (!valid) {
-      throw new Error('Invalid email or password');
+      throw new Error('Helytelen e-mail cím vagy jelszó');
     }
 
     // Update streak and lastActiveAt

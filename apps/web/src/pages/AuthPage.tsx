@@ -12,8 +12,8 @@ interface AuthPageProps {
 
 export const AuthPage: React.FC<AuthPageProps> = ({ onSuccess }) => {
   const [isLogin, setIsLogin] = useState(true);
-  const [email, setEmail] = useState('expedition@lexicon.hu');
-  const [password, setPassword] = useState('password123');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const [targetCefr, setTargetCefr] = useState<CefrLevel>(CefrLevel.B2);
   const [currentCefr, setCurrentCefr] = useState<CefrLevel>(CefrLevel.B1);
   const [isLoading, setIsLoading] = useState(false);
@@ -183,10 +183,7 @@ export const AuthPage: React.FC<AuthPageProps> = ({ onSuccess }) => {
           </Button>
         </form>
 
-        <div className="p-3 bg-surface-subtle rounded-xl border border-border text-center text-xs text-ink font-scribe font-semibold">
-          <span className="font-monument font-bold">Demo fiók: </span>
-          <span className="font-mono">expedition@lexicon.hu</span> / <span className="font-mono font-bold">password123</span>
-        </div>
+
       </div>
     </div>
   );

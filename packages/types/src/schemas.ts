@@ -86,17 +86,16 @@ export const WritingFeedbackSchema = z.object({
 
 export type WritingFeedbackDto = z.infer<typeof WritingFeedbackSchema>;
 
-// Auth schemas
 export const RegisterRequestSchema = z.object({
-  email: z.string().email(),
-  password: z.string().min(6),
+  email: z.string().email({ message: 'Érvénytelen e-mail cím formátum' }),
+  password: z.string().min(6, { message: 'A jelszónak legalább 6 karakterből kell állnia' }),
   targetCefr: CefrLevelSchema.default(CefrLevel.B2),
   currentCefr: CefrLevelSchema.default(CefrLevel.A2),
 });
 
 export const LoginRequestSchema = z.object({
-  email: z.string().email(),
-  password: z.string().min(1),
+  email: z.string().email({ message: 'Érvénytelen e-mail cím formátum' }),
+  password: z.string().min(1, { message: 'A jelszó megadása kötelező' }),
 });
 
 export const GeneratePackRequestSchema = z.object({

@@ -8,7 +8,7 @@ export const authRoutes: FastifyPluginAsync = async (fastify) => {
   fastify.post('/register', async (request, reply) => {
     const parse = RegisterRequestSchema.safeParse(request.body);
     if (!parse.success) {
-      return reply.status(400).send({ error: 'Validation Error', issues: parse.error.issues });
+      return reply.status(400).send({ error: parse.error.issues[0].message });
     }
 
     try {
@@ -23,7 +23,7 @@ export const authRoutes: FastifyPluginAsync = async (fastify) => {
   fastify.post('/login', async (request, reply) => {
     const parse = LoginRequestSchema.safeParse(request.body);
     if (!parse.success) {
-      return reply.status(400).send({ error: 'Validation Error', issues: parse.error.issues });
+      return reply.status(400).send({ error: parse.error.issues[0].message });
     }
 
     try {
