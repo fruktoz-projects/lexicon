@@ -1,5 +1,5 @@
 import { FastifyPluginAsync } from 'fastify';
-import { LoginRequestSchema, RegisterRequestSchema } from '@lexicon/types';
+import { LoginRequestSchema, RegisterRequestSchema, UpdateProfileRequestSchema } from '@lexicon/types';
 import { AuthService } from '../services/auth.service';
 
 export const authRoutes: FastifyPluginAsync = async (fastify) => {
@@ -41,6 +41,20 @@ export const authRoutes: FastifyPluginAsync = async (fastify) => {
       return reply.send(user);
     } catch (err: any) {
       return reply.status(404).send({ error: err.message || 'User not found' });
+    }
+  });
+
+  fastify.put('/profile', { preHandler: [fastify.authenticate] }, async (request, reply) => {
+    const parse = UpdateProfileRequestSchema.safeParse(request.body);
+    if (!parse.success) {
+      return reply.status(400).send({ error: parse.error.issues[0].message });
+    }
+
+    try {
+      const user = await authService.updateProfile(request.user.id, parse.data);
+      return reply.send(user);
+    } catch (err: any) {
+      return reply.status(500).send({ error: err.message || 'Failed to update profile' });
     }
   });
 };

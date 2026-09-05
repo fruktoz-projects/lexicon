@@ -53,6 +53,8 @@ export class AuthService {
       email: user.email,
       targetCefr: user.targetCefr as CefrLevel,
       currentCefr: user.currentCefr as CefrLevel,
+      dailyGoalMinutes: user.dailyGoalMinutes,
+      preferredZones: user.preferredZones,
       streakDays: user.streakDays,
       lastActiveAt: user.lastActiveAt?.toISOString() ?? null,
       createdAt: user.createdAt.toISOString(),
@@ -104,6 +106,8 @@ export class AuthService {
       email: updatedUser.email,
       targetCefr: updatedUser.targetCefr as CefrLevel,
       currentCefr: updatedUser.currentCefr as CefrLevel,
+      dailyGoalMinutes: updatedUser.dailyGoalMinutes,
+      preferredZones: updatedUser.preferredZones,
       streakDays: updatedUser.streakDays,
       lastActiveAt: updatedUser.lastActiveAt?.toISOString() ?? null,
       createdAt: updatedUser.createdAt.toISOString(),
@@ -125,6 +129,36 @@ export class AuthService {
       email: user.email,
       targetCefr: user.targetCefr as CefrLevel,
       currentCefr: user.currentCefr as CefrLevel,
+      dailyGoalMinutes: user.dailyGoalMinutes,
+      preferredZones: user.preferredZones,
+      streakDays: user.streakDays,
+      lastActiveAt: user.lastActiveAt?.toISOString() ?? null,
+      createdAt: user.createdAt.toISOString(),
+      updatedAt: user.updatedAt.toISOString(),
+    };
+  }
+
+  async updateProfile(userId: string, data: {
+    targetCefr?: CefrLevel;
+    dailyGoalMinutes?: number;
+    preferredZones?: string[];
+  }): Promise<UserProfile> {
+    const user = await this.prisma.user.update({
+      where: { id: userId },
+      data: {
+        targetCefr: data.targetCefr as any,
+        dailyGoalMinutes: data.dailyGoalMinutes,
+        preferredZones: data.preferredZones,
+      },
+    });
+
+    return {
+      id: user.id,
+      email: user.email,
+      targetCefr: user.targetCefr as CefrLevel,
+      currentCefr: user.currentCefr as CefrLevel,
+      dailyGoalMinutes: user.dailyGoalMinutes,
+      preferredZones: user.preferredZones,
       streakDays: user.streakDays,
       lastActiveAt: user.lastActiveAt?.toISOString() ?? null,
       createdAt: user.createdAt.toISOString(),

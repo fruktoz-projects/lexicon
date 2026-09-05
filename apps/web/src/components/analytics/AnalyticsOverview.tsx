@@ -2,9 +2,12 @@ import React, { useState, useEffect } from 'react';
 import { AnalyticsOverviewResponse, ZoneType, ZONE_DETAILS } from '@lexicon/types';
 import { api } from '../../services/api';
 import { MistakePatternAnalysis } from './MistakePatternAnalysis';
-import { LexicalVault } from './LexicalVault';
+import { RecentMistakes } from './RecentMistakes';
 import { CefrBadge } from '../common/CefrBadge';
 import { useOfflineStore } from '../../store/offlineStore';
+import { ProfileSettings } from './ProfileSettings';
+import { PlacementTestModal } from './PlacementTestModal';
+import { LexicalVault } from './LexicalVault';
 import {
   TrendingUp,
   Target,
@@ -20,6 +23,7 @@ import {
 export const AnalyticsOverview: React.FC = () => {
   const [data, setData] = useState<AnalyticsOverviewResponse | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [isPlacementTestOpen, setIsPlacementTestOpen] = useState(false);
   const packs = useOfflineStore((s) => s.packs);
   const progress = useOfflineStore((s) => s.progress);
   const mistakeLogs = useOfflineStore((s) => s.mistakeLogs);
@@ -71,7 +75,13 @@ export const AnalyticsOverview: React.FC = () => {
   const totalSrsItems = Object.values(data.srsDistribution).reduce((a, b) => a + b, 0) || 1;
 
   return (
-    <div className="space-y-5 sm:space-y-7">
+    <div className="space-y-5 sm:space-y-7 pb-10">
+      <ProfileSettings 
+        user={data.user as any} 
+        onUpdate={(updatedUser) => setData({ ...data, user: updatedUser as any })}
+        onStartPlacementTest={() => setIsPlacementTestOpen(true)}
+      />
+
       {/* Top Header Card */}
       <div className="bg-surface rounded-2xl sm:rounded-3xl p-5 sm:p-7 shadow-card flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4">
         <div>
@@ -277,11 +287,24 @@ export const AnalyticsOverview: React.FC = () => {
         </div>
       </div>
 
+      {/* Recent Mistakes */}
+      <RecentMistakes mistakes={(data as any).recentMistakes || []} />
+
       {/* Mistake Pattern Analysis */}
       <MistakePatternAnalysis patterns={(data as any).commonMistakePatterns || (data as any).frequentMistakes || []} />
 
       {/* Full Lexical Vault Component */}
       <LexicalVault />
+
+      {isPlacementTestOpen && (
+        <PlacementTestModal 
+          onClose={() => setIsPlacementTestOpen(false)} 
+          onComplete={(newCefr) => {
+            setIsPlacementTestOpen(false);
+            setData({ ...data, user: { ...data.user, currentCefr: newCefr } as any });
+          }}
+        />
+      )}
     </div>
   );
 };

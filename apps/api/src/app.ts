@@ -10,6 +10,7 @@ import { learningPackRoutes } from './routes/learning-pack.routes';
 import { practiceRoutes } from './routes/practice.routes';
 import { writingRoutes } from './routes/writing.routes';
 import { analyticsRoutes } from './routes/analytics.routes';
+import { placementRoutes } from './routes/placement.routes';
 
 export async function buildApp(): Promise<FastifyInstance> {
   const app = fastify({
@@ -45,6 +46,7 @@ export async function buildApp(): Promise<FastifyInstance> {
   await app.register(practiceRoutes, { prefix: '/api/v1/practice' });
   await app.register(writingRoutes, { prefix: '/api/v1/writing' });
   await app.register(analyticsRoutes, { prefix: '/api/v1/analytics' });
+  await app.register(placementRoutes, { prefix: '/api/v1/placement' });
 
   return app;
 }

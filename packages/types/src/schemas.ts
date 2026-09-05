@@ -119,3 +119,16 @@ export const WritingEvaluateSchema = z.object({
   targetCefr: CefrLevelSchema.optional(),
 });
 export type WritingEvaluateRequestDto = z.infer<typeof WritingEvaluateSchema>;
+
+export const UpdateProfileRequestSchema = z.object({
+  targetCefr: CefrLevelSchema.optional(),
+  dailyGoalMinutes: z.number().int().min(5).max(120).optional(),
+  preferredZones: z.array(z.string()).optional(),
+});
+export type UpdateProfileRequestDto = z.infer<typeof UpdateProfileRequestSchema>;
+
+export const EvaluatePlacementTestRequestSchema = z.object({
+  testId: z.string().uuid(),
+  answers: z.record(z.string(), z.string()), // questionId -> answer
+});
+export type EvaluatePlacementTestRequestDto = z.infer<typeof EvaluatePlacementTestRequestSchema>;

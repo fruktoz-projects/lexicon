@@ -30,11 +30,14 @@ model User {
   passwordHash       String
   targetCefr         CefrLevel           @default(B2)
   currentCefr        CefrLevel           @default(A2)
+  dailyGoalMinutes   Int                 @default(15)
+  preferredZones     String[]            @default([])
   streakDays         Int                 @default(0)
   lastActiveAt       DateTime?
   progressEntries    UserProgress[]
   mistakeLogs        MistakeLog[]
   writingSubmissions WritingSubmission[]
+  placementTests     PlacementTest[]
   createdAt          DateTime            @default(now())
   updatedAt          DateTime            @updatedAt
 }
@@ -154,4 +157,17 @@ model WritingSubmission {
   aiScore       Int?
   aiFeedback    Json     // Format: { errors: [{ original: string, replacement: string, explanationHu: string, ruleHu: string }] }
   createdAt     DateTime @default(now())
+}
+
+model PlacementTest {
+  id              String     @id @default(uuid())
+  userId          String
+  user            User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  questionsJson   Json       // Array of generated questions
+  answersJson     Json?      // User's provided answers
+  score           Int?       
+  evaluatedCefr   CefrLevel? // The AI determined CEFR level
+  aiFeedback      String?    // Detailed explanation of the result
+  createdAt       DateTime   @default(now())
+  completedAt     DateTime?
 }

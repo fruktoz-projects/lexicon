@@ -74,6 +74,18 @@ export const api = {
       const res = await apiClient.get('/auth/me');
       return res.data;
     },
+
+    updateProfile: async (data: {
+      targetCefr?: string;
+      dailyGoalMinutes?: number;
+      preferredZones?: string[];
+    }): Promise<UserProfile> => {
+      if (isOffline()) {
+        throw new Error('Profil módosítása csak online módban lehetséges');
+      }
+      const res = await apiClient.put('/auth/profile', data);
+      return res.data;
+    },
   },
 
   // Learning Packs
@@ -149,7 +161,7 @@ export const api = {
     },
   },
 
-  // Analytics & Progress
+  // Analytics
   analytics: {
     getOverview: async (): Promise<AnalyticsOverviewResponse> => {
       if (isOffline()) {
@@ -159,4 +171,18 @@ export const api = {
       return res.data;
     },
   },
+
+  // Placement Test
+  placement: {
+    generate: async (): Promise<any> => {
+      if (isOffline()) throw new Error('Szintfelmérő csak online érhető el.');
+      const res = await apiClient.post('/placement/generate', {}, { timeout: AI_TIMEOUT });
+      return res.data;
+    },
+    evaluate: async (testId: string, answers: Record<string, string>): Promise<any> => {
+      if (isOffline()) throw new Error('Szintfelmérő csak online érhető el.');
+      const res = await apiClient.post('/placement/evaluate', { testId, answers }, { timeout: AI_TIMEOUT });
+      return res.data;
+    }
+  }
 };

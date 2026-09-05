@@ -5,6 +5,8 @@ export interface UserProfile {
   email: string;
   targetCefr: CefrLevel;
   currentCefr: CefrLevel;
+  dailyGoalMinutes: number;
+  preferredZones: string[];
   streakDays: number;
   lastActiveAt?: string | null;
   createdAt: string;
@@ -178,4 +180,23 @@ export interface WritingSubmissionModel {
   aiScore?: number | null;
   aiFeedback?: WritingFeedbackPayload | null;
   createdAt: string;
+}
+
+export interface PlacementTestQuestion {
+  id: string;
+  question: string;
+  options: string[];
+  correctAnswer: string;
+}
+
+export interface PlacementTestModel {
+  id: string;
+  userId: string;
+  questionsJson: PlacementTestQuestion[];
+  answersJson?: Record<string, string> | null;
+  score?: number | null;
+  evaluatedCefr?: CefrLevel | null;
+  aiFeedback?: string | null;
+  createdAt: string;
+  completedAt?: string | null;
 }
