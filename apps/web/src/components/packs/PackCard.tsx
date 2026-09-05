@@ -15,14 +15,23 @@ export const PackCard: React.FC<PackCardProps> = ({ pack, onOpen }) => {
     color: '#6D28D9',
   };
 
+  const isNew = pack.createdAt 
+    ? new Date(pack.createdAt).toDateString() === new Date().toDateString() 
+    : false;
+
   return (
     <div
       onClick={() => {
         audio.playClickSound();
         onOpen(pack.id);
       }}
-      className="bg-surface rounded-2xl p-5 shadow-card hover:shadow-card-hover transition-all duration-200 cursor-pointer flex flex-col justify-between group"
+      className={`bg-surface rounded-2xl p-5 shadow-card hover:shadow-card-hover transition-all duration-200 cursor-pointer flex flex-col justify-between group relative border-2 ${isNew ? 'border-accent/50' : 'border-transparent'}`}
     >
+      {isNew && (
+        <div className="absolute -top-2 -right-2 bg-accent text-accent-text text-[10px] font-monument font-bold px-2.5 py-1 rounded-lg shadow-md uppercase tracking-wider animate-bounce-slow">
+          Új!
+        </div>
+      )}
       <div>
         <div className="flex items-center justify-between gap-2 mb-3">
           <CefrBadge level={pack.cefr} size="sm" />
