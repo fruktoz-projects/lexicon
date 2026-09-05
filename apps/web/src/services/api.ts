@@ -28,6 +28,9 @@ export const apiClient = axios.create({
   },
 });
 
+// AI-powered endpoints (Gemini API) need a longer timeout
+const AI_TIMEOUT = 120000;
+
 // Request interceptor: attach token
 apiClient.interceptors.request.use((config) => {
   const token = useAuthStore.getState().token;
@@ -95,7 +98,7 @@ export const api = {
       if (isOffline()) {
         return offlineAdapter.packs.generate(payload);
       }
-      const res = await apiClient.post('/learning-packs/generate', payload);
+      const res = await apiClient.post('/learning-packs/generate', payload, { timeout: AI_TIMEOUT });
       return res.data;
     },
 
@@ -133,7 +136,7 @@ export const api = {
       if (isOffline()) {
         return offlineAdapter.writing.evaluate(data);
       }
-      const res = await apiClient.post('/writing/evaluate', data);
+      const res = await apiClient.post('/writing/evaluate', data, { timeout: AI_TIMEOUT });
       return res.data;
     },
 
