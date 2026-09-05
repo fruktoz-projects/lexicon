@@ -11,13 +11,14 @@ jobs:
     steps:
       - name: Deploy Lexicon Services
         run: |
-          # 1. Beállítjuk a safe.directory-t a valódi útvonalra
-          git config --global --add safe.directory /home/fruktoz/projects/lexicon
+          # 1. Kikapcsoljuk a tulajdonos-ellenőrzést minden mappára a konténeren belül
+          git config --global --add safe.directory "*"
 
-          # 2. Belépünk a projekt mappájába
-          cd /home/fruktoz/projects/lexicon
+          # 2. Belépünk a projekt mappájába (ellenőrizzük, létezik-e)
+          cd /home/fruktoz/projects/lexicon || { echo "A mappa nem található!"; exit 1; }
 
-          # 3. Kód frissítése a GitHubról
+          # 3. Kód frissítése az új organization URL-ről
+          git remote set-url origin https://github.com/fruktoz-projects/lexicon.git
           git fetch origin main
           git reset --hard origin/main
 
@@ -27,11 +28,10 @@ jobs:
           echo "$CHANGED_FILES"
 
           # 5. Konténerek frissítése
-          # apps/web/ és apps/api/ a fő alkalmazások, packages/ a shared types csomag
           if echo "$CHANGED_FILES" | grep -E -q 'Dockerfile|docker-compose|package\.json|pnpm-lock\.yaml|apps/web/|apps/api/|packages/'; then
             echo "--> Infra / App változott: Rebuild..."
             docker compose up -d --build api web
           else
             echo "--> Csak kisebb változás: API restart..."
             docker compose restart api
-          fi
+          fi
