@@ -47,7 +47,7 @@ export const PracticeEngine: React.FC<PracticeEngineProps> = ({ onFinish }) => {
   const loadSession = useCallback(async () => {
     setIsLoading(true);
     try {
-      const sess = await api.practice.getSession(8);
+      const sess = await api.practice.getSession(20);
       startSession(sess.sessionId, sess.items);
     } catch (err) {
       console.error('Failed to load session:', err);
@@ -230,6 +230,17 @@ export const PracticeEngine: React.FC<PracticeEngineProps> = ({ onFinish }) => {
           )}
 
           {currentItem.exerciseType === ExerciseType.TRANSLATION_HU_TO_EN && (
+            <TranslationExercise
+              prompt={currentItem.prompt}
+              payload={currentItem.payload}
+              userAnswer={currentAnswer}
+              onChange={setAnswer}
+              onSubmit={handleSubmit}
+              disabled={Boolean(lastResult)}
+            />
+          )}
+
+          {currentItem.exerciseType === ExerciseType.TRANSLATION_EN_TO_HU && (
             <TranslationExercise
               prompt={currentItem.prompt}
               payload={currentItem.payload}

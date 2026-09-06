@@ -1,8 +1,16 @@
-import React from 'react';
-import { Clock, Layers, ChevronRight } from 'lucide-react';
+import React, { useEffect, useState } from 'react';
+import { Clock, Layers, ChevronRight, CheckCircle2, TrendingUp } from 'lucide-react';
 import { LearningPackSummary, ZONE_DETAILS, ZoneType } from '@lexicon/types';
 import { CefrBadge } from '../common/CefrBadge';
 import { audio } from '../../services/audio';
+import { api } from '../../services/api';
+
+interface PackProgress {
+  totalItems: number;
+  practicedCount: number;
+  masteredCount: number;
+  completionPercent: number;
+}
 
 interface PackCardProps {
   pack: LearningPackSummary;
@@ -15,9 +23,18 @@ export const PackCard: React.FC<PackCardProps> = ({ pack, onOpen }) => {
     color: '#6D28D9',
   };
 
-  const isNew = pack.createdAt 
-    ? new Date(pack.createdAt).toDateString() === new Date().toDateString() 
+  const [progress, setProgress] = useState<PackProgress | null>(null);
+
+  useEffect(() => {
+    api.packs.getProgress(pack.id).then(setProgress).catch(() => {});
+  }, [pack.id]);
+
+  const isNew = pack.createdAt
+    ? new Date(pack.createdAt).toDateString() === new Date().toDateString()
     : false;
+
+  const hasProgress = progress && progress.practicedCount > 0;
+  const isCompleted = progress && progress.completionPercent >= 100;
 
   return (
     <div
@@ -25,13 +42,31 @@ export const PackCard: React.FC<PackCardProps> = ({ pack, onOpen }) => {
         audio.playClickSound();
         onOpen(pack.id);
       }}
-      className={`bg-surface rounded-2xl p-5 shadow-card hover:shadow-card-hover transition-all duration-200 cursor-pointer flex flex-col justify-between group relative border-2 ${isNew ? 'border-accent/50' : 'border-transparent'}`}
+      className={`bg-surface rounded-2xl p-5 shadow-card hover:shadow-card-hover transition-all duration-200 cursor-pointer flex flex-col justify-between group relative border-2 ${
+        isCompleted
+          ? 'border-status-success/40'
+          : hasProgress
+          ? 'border-accent/30'
+          : isNew
+          ? 'border-accent/50'
+          : 'border-transparent'
+      }`}
     >
-      {isNew && (
+      {/* Status badge */}
+      {isCompleted ? (
+        <div className="absolute -top-2 -right-2 bg-status-success text-white text-[10px] font-monument font-bold px-2.5 py-1 rounded-lg shadow-md uppercase tracking-wider flex items-center gap-1">
+          <CheckCircle2 size={10} /> Kész!
+        </div>
+      ) : hasProgress ? (
+        <div className="absolute -top-2 -right-2 bg-accent text-accent-text text-[10px] font-monument font-bold px-2.5 py-1 rounded-lg shadow-md uppercase tracking-wider flex items-center gap-1">
+          <TrendingUp size={10} /> Folyamatban
+        </div>
+      ) : isNew ? (
         <div className="absolute -top-2 -right-2 bg-accent text-accent-text text-[10px] font-monument font-bold px-2.5 py-1 rounded-lg shadow-md uppercase tracking-wider animate-bounce-slow">
           Új!
         </div>
-      )}
+      ) : null}
+
       <div>
         <div className="flex items-center justify-between gap-2 mb-3">
           <CefrBadge level={pack.cefr} size="sm" />
@@ -44,9 +79,33 @@ export const PackCard: React.FC<PackCardProps> = ({ pack, onOpen }) => {
           {pack.title}
         </h4>
 
-        <p className="text-xs text-muted line-clamp-2 leading-relaxed mb-4 font-sans font-medium">
+        <p className="text-xs text-muted line-clamp-2 leading-relaxed mb-3 font-sans font-medium">
           {pack.focus}
         </p>
+
+        {/* Progress bar */}
+        {progress && progress.totalItems > 0 && (
+          <div className="mb-3">
+            <div className="flex items-center justify-between text-[10px] font-mono text-muted mb-1">
+              <span>{progress.practicedCount}/{progress.totalItems} elem gyakorolva</span>
+              <span className="font-bold text-accent">{progress.completionPercent}%</span>
+            </div>
+            <div className="w-full h-1.5 bg-surface-subtle rounded-full overflow-hidden">
+              <div
+                className={`h-full rounded-full transition-all duration-500 ${
+                  isCompleted ? 'bg-status-success' : 'bg-accent'
+                }`}
+                style={{ width: `${progress.completionPercent}%` }}
+              />
+            </div>
+            {progress.masteredCount > 0 && (
+              <div className="flex items-center gap-1 text-[10px] font-mono text-status-success mt-1">
+                <CheckCircle2 size={10} />
+                <span>{progress.masteredCount} elem elsajátítva</span>
+              </div>
+            )}
+          </div>
+        )}
       </div>
 
       <div className="pt-3 border-t border-border flex items-center justify-between text-xs text-muted">
@@ -68,3 +127,4 @@ export const PackCard: React.FC<PackCardProps> = ({ pack, onOpen }) => {
     </div>
   );
 };
+

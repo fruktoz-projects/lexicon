@@ -66,22 +66,29 @@ export interface ContrastiveNoteModel {
 }
 
 export interface ClozePayload {
-  sentenceWithGap: string;
+  sentenceWithGap?: string;
+  sentence?: string;      // AI alias for sentenceWithGap
   options: string[];
+  blank?: string;         // The expected answer word
 }
 
 export interface TranslationHuToEnPayload {
-  sourceHu: string;
+  sourceHu?: string;
+  sourceEn?: string;      // Used for EN->HU direction
   hints?: string[];
+  hint?: string;          // Single hint from AI
+  phonetics?: string;
+  collocations?: string[];
 }
 
 export interface TranslationEnToHuPayload {
   sourceEn: string;
   hints?: string[];
+  hint?: string;
 }
 
 export interface MultipleChoicePayload {
-  question: string;
+  question?: string;
   options: string[];
 }
 
@@ -92,7 +99,7 @@ export interface MatchingPair {
 }
 
 export interface MatchingPayload {
-  pairs: MatchingPair[];
+  pairs: MatchingPair[] | string[][];
 }
 
 export type ExercisePayload =

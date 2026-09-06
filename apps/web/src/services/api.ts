@@ -106,6 +106,15 @@ export const api = {
       return res.data;
     },
 
+    getProgress: async (id: string): Promise<{ totalItems: number; practicedCount: number; masteredCount: number; completionPercent: number }> => {
+      try {
+        const res = await apiClient.get(`/learning-packs/${id}/progress`);
+        return res.data;
+      } catch {
+        return { totalItems: 0, practicedCount: 0, masteredCount: 0, completionPercent: 0 };
+      }
+    },
+
     generate: async (payload: GeneratePackPayload): Promise<LearningPackDetail> => {
       if (isOffline()) {
         return offlineAdapter.packs.generate(payload);
@@ -189,15 +198,19 @@ export const api = {
   // Admin
   admin: {
     getPacks: async (query?: LearningPacksQuery) => {
-      const res = await apiClient.get('/packs', { params: query });
+      const res = await apiClient.get('/admin/packs', { params: query });
       return res.data;
     },
     deletePack: async (id: string) => {
-      const res = await apiClient.delete(`/packs/${id}`);
+      const res = await apiClient.delete(`/admin/packs/${id}`);
       return res.data;
     },
     updatePack: async (id: string, data: Partial<LearningPackDetail>) => {
-      const res = await apiClient.put(`/packs/${id}`, data);
+      const res = await apiClient.put(`/admin/packs/${id}`, data);
+      return res.data;
+    },
+    generatePack: async (payload: GeneratePackPayload): Promise<LearningPackDetail> => {
+      const res = await apiClient.post('/admin/generate-pack', payload, { timeout: AI_TIMEOUT });
       return res.data;
     },
   }

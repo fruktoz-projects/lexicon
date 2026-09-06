@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { LearningPackDetail } from '@lexicon/types';
 import { Modal } from '../common/Modal';
 import { CefrBadge } from '../common/CefrBadge';
@@ -19,8 +19,10 @@ import {
   ChevronRight,
   ChevronLeft,
   Compass,
+  TrendingUp,
 } from 'lucide-react';
 import { audio } from '../../services/audio';
+import { api } from '../../services/api';
 
 interface PackDetailModalProps {
   pack: LearningPackDetail | null;
@@ -47,6 +49,13 @@ export const PackDetailModal: React.FC<PackDetailModalProps> = ({
 }) => {
   const [activeStation, setActiveStation] = useState<StationType>('lesson');
   const [visitedStations, setVisitedStations] = useState<Set<StationType>>(new Set(['lesson']));
+  const [packProgress, setPackProgress] = useState<{ totalItems: number; practicedCount: number; masteredCount: number; completionPercent: number } | null>(null);
+
+  useEffect(() => {
+    if (pack?.id) {
+      api.packs.getProgress(pack.id).then(setPackProgress).catch(() => {});
+    }
+  }, [pack?.id]);
 
   if (!pack) return null;
 
@@ -114,6 +123,33 @@ export const PackDetailModal: React.FC<PackDetailModalProps> = ({
             </span>
           </div>
 
+          {/* Pack Progress Summary */}
+          {packProgress && packProgress.totalItems > 0 && (
+            <div className="flex flex-col gap-1 w-full sm:w-auto sm:min-w-[180px]">
+              <div className="flex items-center justify-between text-[10px] font-mono text-muted">
+                <span className="flex items-center gap-1">
+                  <TrendingUp size={10} className="text-accent" />
+                  {packProgress.practicedCount}/{packProgress.totalItems} elem
+                </span>
+                <span className="font-bold text-accent">{packProgress.completionPercent}%</span>
+              </div>
+              <div className="w-full h-1.5 bg-surface rounded-full overflow-hidden">
+                <div
+                  className={`h-full rounded-full transition-all duration-500 ${
+                    packProgress.completionPercent >= 100 ? 'bg-status-success' : 'bg-accent'
+                  }`}
+                  style={{ width: `${packProgress.completionPercent}%` }}
+                />
+              </div>
+              {packProgress.masteredCount > 0 && (
+                <div className="flex items-center gap-1 text-[10px] font-mono text-status-success">
+                  <CheckCircle2 size={10} />
+                  <span>{packProgress.masteredCount} elem elsajátítva</span>
+                </div>
+              )}
+            </div>
+          )}
+
           <Button
             size="sm"
             variant="primary"
@@ -121,7 +157,7 @@ export const PackDetailModal: React.FC<PackDetailModalProps> = ({
               onClose();
               onStartPractice();
             }}
-            className="w-full sm:w-auto flex items-center justify-center gap-1.5 font-sans font-bold"
+            className="w-full sm:w-auto flex items-center justify-center gap-1.5 font-sans font-bold shrink-0"
           >
             <Play size={14} className="fill-ink text-ink" />
             <span>Gyakorlás Indítása</span>

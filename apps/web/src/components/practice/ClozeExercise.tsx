@@ -17,7 +17,13 @@ export const ClozeExercise: React.FC<ClozeExerciseProps> = ({
   onSelect,
   disabled,
 }) => {
-  const parts = (payload.sentenceWithGap || '').split('_______');
+  // Support both payload.sentenceWithGap (old) and payload.sentence with ___ (new AI format)
+  const rawSentence = payload.sentenceWithGap || payload.sentence || '';
+  const parts = rawSentence.split(/_{3,}/);
+  if (parts.length === 1) {
+    // Try splitting on ___ literal
+    parts.push('');
+  }
 
   return (
     <div className="space-y-5 sm:space-y-6">

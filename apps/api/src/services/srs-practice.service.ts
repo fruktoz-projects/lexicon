@@ -17,8 +17,9 @@ export class SrsPracticeService {
 
   /**
    * Assembles a customized SRS practice session prioritizing due items, mistake retries, and new items.
+   * Items are shuffled so every session feels different.
    */
-  async assembleSession(userId: string, limit: number = 10): Promise<PracticeSessionResponse> {
+  async assembleSession(userId: string, limit: number = 20): Promise<PracticeSessionResponse> {
     const now = new Date();
 
     // 1. Fetch due progress items (nextReviewAt <= now)
@@ -36,15 +37,14 @@ export class SrsPracticeService {
     // 2. Fetch recent mistakes for this user
     const recentMistakes = await this.prisma.mistakeLog.findMany({
       where: { userId },
-      take: 5,
+      take: 8,
       orderBy: { createdAt: 'desc' },
       include: { exercise: true },
     });
 
-    // 3. Assemble exercise items
+    // 3. Assemble session items from due progress
     const sessionItems: PracticeSessionItem[] = [];
 
-    // Add due exercises / vocab
     for (const prog of dueProgress) {
       if (prog.itemType === ProgressItemType.EXERCISE) {
         const ex = await this.prisma.exercise.findUnique({ where: { id: prog.itemId } });
@@ -95,7 +95,7 @@ export class SrsPracticeService {
       }
     }
 
-    // Add mistake retries if not already in session
+    // 4. Add mistake retries if not already in session
     for (const mist of recentMistakes) {
       if (sessionItems.length >= limit) break;
       if (mist.exercise && !sessionItems.some((item) => item.id === mist.exercise.id)) {
@@ -112,20 +112,20 @@ export class SrsPracticeService {
       }
     }
 
-    // 4. Fill remaining capacity with new exercises from packs
+    // 5. Fill remaining capacity with NEW items from packs (never seen before)
     if (sessionItems.length < limit) {
+      const existingIds = new Set([...dueItemIds, ...sessionItems.map((s) => s.id)]);
       const remainingNeeded = limit - sessionItems.length;
-      const existingIds = [...dueItemIds, ...sessionItems.map((s) => s.id)];
 
+      // New exercises
       const newExercises = await this.prisma.exercise.findMany({
-        where: {
-          id: { notIn: existingIds },
-        },
-        take: remainingNeeded,
-        orderBy: { createdAt: 'asc' },
+        where: { id: { notIn: [...existingIds] } },
+        take: Math.ceil(remainingNeeded * 0.5),
+        orderBy: { createdAt: 'desc' },
       });
 
       for (const ex of newExercises) {
+        existingIds.add(ex.id);
         sessionItems.push({
           id: ex.id,
           sourceType: ProgressItemType.EXERCISE,
@@ -136,9 +136,56 @@ export class SrsPracticeService {
           srsStage: 0,
         });
       }
+
+      // New vocab items
+      const newVocab = await this.prisma.vocabularyItem.findMany({
+        where: { id: { notIn: [...existingIds] } },
+        take: Math.ceil(remainingNeeded * 0.3),
+        orderBy: { createdAt: 'desc' },
+      });
+
+      for (const v of newVocab) {
+        existingIds.add(v.id);
+        sessionItems.push({
+          id: v.id,
+          sourceType: ProgressItemType.VOCAB,
+          exerciseType: ExerciseType.TRANSLATION_HU_TO_EN,
+          prompt: `Mi az angol megfelelője? "${v.translationHu}"`,
+          payload: {
+            sourceHu: v.translationHu,
+            phonetics: v.phonetics,
+            collocations: v.collocations,
+          },
+          solution: v.term,
+          srsStage: 0,
+        });
+      }
+
+      // New chunks
+      const newChunks = await this.prisma.chunk.findMany({
+        where: { id: { notIn: [...existingIds] } },
+        take: Math.ceil(remainingNeeded * 0.2),
+        orderBy: { createdAt: 'desc' },
+      });
+
+      for (const c of newChunks) {
+        existingIds.add(c.id);
+        sessionItems.push({
+          id: c.id,
+          sourceType: ProgressItemType.CHUNK,
+          exerciseType: ExerciseType.TRANSLATION_HU_TO_EN,
+          prompt: `Fordítsd le a kifejezést angolra: "${c.meaningHu}"`,
+          payload: {
+            sourceHu: c.meaningHu,
+            contextSentence: c.contextSentence,
+          },
+          solution: c.phrase,
+          srsStage: 0,
+        });
+      }
     }
 
-    // If still empty (e.g. fresh DB before seeding or user completed all), pull any available exercises
+    // 6. Fallback: if still empty, pull any available items from the whole DB
     if (sessionItems.length === 0) {
       const fallbackExercises = await this.prisma.exercise.findMany({
         take: limit,
@@ -158,18 +205,29 @@ export class SrsPracticeService {
       }
     }
 
+    // 7. Shuffle to randomize question order every session (Fisher-Yates)
+    const shuffled = [...sessionItems];
+    for (let i = shuffled.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+    }
+
+    // 8. Cap to limit
+    const finalItems = shuffled.slice(0, limit);
+
     return {
       sessionId: `srs_sess_${Date.now()}`,
       dueCount: dueProgress.length,
-      newCount: sessionItems.filter((s) => s.srsStage === 0 && !s.isMistakeRetry).length,
-      mistakesCount: sessionItems.filter((s) => s.isMistakeRetry).length,
-      items: sessionItems,
+      newCount: finalItems.filter((s) => s.srsStage === 0 && !s.isMistakeRetry).length,
+      mistakesCount: finalItems.filter((s) => s.isMistakeRetry).length,
+      items: finalItems,
     };
   }
 
   /**
    * Evaluates user answer deterministically and updates SRS intervals without calling LLM
    */
+
   async submitAnswer(params: {
     userId: string;
     itemId: string;

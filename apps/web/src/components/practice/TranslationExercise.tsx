@@ -49,14 +49,19 @@ export const TranslationExercise: React.FC<TranslationExerciseProps> = ({
         {prompt}
       </div>
 
-      {/* Hungarian Source Box */}
+      {/* Source Text Box - handles both HU->EN and EN->HU */}
       <div className="p-5 sm:p-7 bg-surface-subtle rounded-2xl border-2 border-border text-center shadow-inner">
         <span className="text-[11px] font-monument uppercase tracking-wider text-muted block mb-1 font-bold">
-          Magyar Forrásszöveg:
+          {payload.sourceEn ? 'Angol Forrásszöveg:' : 'Magyar Forrásszöveg:'}
         </span>
         <div className="text-lg sm:text-2xl font-scribe font-bold text-ink">
-          "{payload.sourceHu}"
+          "{payload.sourceEn || payload.sourceHu}"
         </div>
+        {(payload.hint) && (
+          <div className="mt-2 text-xs font-mono text-muted italic">
+            💡 {payload.hint}
+          </div>
+        )}
       </div>
 
       {/* Hints */}
@@ -86,7 +91,7 @@ export const TranslationExercise: React.FC<TranslationExerciseProps> = ({
             ref={inputRef}
             type="text"
             disabled={disabled}
-            placeholder="Írd be az angol fordítást..."
+            placeholder={payload.sourceEn ? 'Írd be a magyar fordítást...' : 'Írd be az angol fordítást...'}
             value={userAnswer}
             onChange={(e) => onChange(e.target.value)}
             onKeyDown={handleKeyDown}

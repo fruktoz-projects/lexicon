@@ -23,6 +23,33 @@ function normalizeLearningPackJson(raw: any): any {
       if (ex.payload === null || ex.payload === undefined) ex.payload = {};
       if (typeof ex.solution !== 'string') ex.solution = JSON.stringify(ex.solution ?? '');
       if (typeof ex.type === 'string') ex.type = ex.type.toUpperCase().replace(/ /g, '_');
+
+      // Normalize CLOZE payload: map 'sentence' -> 'sentenceWithGap' for frontend compatibility
+      if (ex.type === 'CLOZE' && ex.payload.sentence && !ex.payload.sentenceWithGap) {
+        ex.payload.sentenceWithGap = ex.payload.sentence;
+      }
+
+      // Normalize MATCHING payload: convert string[][] -> MatchingPair[]
+      if (ex.type === 'MATCHING' && Array.isArray(ex.payload.pairs)) {
+        const rawPairs = ex.payload.pairs;
+        if (rawPairs.length > 0 && Array.isArray(rawPairs[0])) {
+          // AI returned [["English", "Magyar"], ...] format
+          ex.payload.pairs = rawPairs.map((pair: string[], idx: number) => ({
+            id: `pair_${idx}`,
+            left: pair[0] || '',
+            right: pair[1] || '',
+          }));
+        } else if (rawPairs.length > 0 && typeof rawPairs[0] === 'object' && !rawPairs[0].id) {
+          // Has objects but no id field
+          ex.payload.pairs = rawPairs.map((pair: any, idx: number) => ({
+            id: `pair_${idx}`,
+            left: pair.left || pair.english || pair.en || '',
+            right: pair.right || pair.hungarian || pair.hu || '',
+          }));
+        }
+      }
+
+
       return ex;
     });
   }
@@ -106,7 +133,8 @@ RULES:
 1. Hungarian-facing fields (translationHu, meaningHu, explanationHu, hunglishTrap, correctUsage) MUST be in natural Hungarian.
 2. English-facing fields (term, examples, collocations, bodyText, solution) MUST be in authentic English.
 3. Highlight real Hunglish traps in contrastiveNotes.
-4. MAXIMUM VARIETY — never repeat textbook examples.
+4. MAXIMUM VARIETY — never repeat textbook examples, always use fresh creative sentences.
+5. Each vocabulary item MUST have at least 3 collocations and 2 example sentences.
 
 Respond with ONLY a valid JSON object (no markdown, no code blocks) with this exact shape:
 {
@@ -115,38 +143,45 @@ Respond with ONLY a valid JSON object (no markdown, no code blocks) with this ex
   "topic": "string",
   "focus": "string",
   "estimatedMinutes": number,
-  "lesson": { "title": "string", "contentMd": "string (min 100 chars, in Hungarian with English examples)" },
+  "lesson": { "title": "string", "contentMd": "string (min 300 chars, in Hungarian with embedded English examples, use markdown headings and bullet points)" },
   "vocabulary": [
-    { "term": "string", "phonetics": "string", "translationHu": "string (REQUIRED, Hungarian)", "definitionEn": "string", "collocations": ["string"], "examples": ["string (REQUIRED, English sentence)"] }
+    { "term": "string", "phonetics": "string (IPA)", "translationHu": "string (REQUIRED, Hungarian)", "definitionEn": "string (English definition)", "collocations": ["string1", "string2", "string3", "string4"], "examples": ["English sentence 1", "English sentence 2"] }
   ],
   "chunks": [
-    { "phrase": "string", "meaningHu": "string (REQUIRED, Hungarian)", "contextSentence": "string (REQUIRED, English)" }
+    { "phrase": "string (fixed English phrase/idiom)", "meaningHu": "string (REQUIRED, Hungarian)", "contextSentence": "string (REQUIRED, full English sentence using the phrase)" }
   ],
   "contrastiveNotes": [
-    { "hunglishTrap": "string (REQUIRED)", "correctUsage": "string (REQUIRED)", "explanationHu": "string (REQUIRED, Hungarian)" }
+    { "hunglishTrap": "string (REQUIRED, the typical Hungarian error in English)", "correctUsage": "string (REQUIRED, the correct English form)", "explanationHu": "string (REQUIRED, explanation in Hungarian why the error occurs)" }
   ],
   "exercises": [
     {
       "type": "CLOZE or MULTIPLE_CHOICE or MATCHING or TRANSLATION_HU_TO_EN or TRANSLATION_EN_TO_HU",
-      "prompt": "string (Hungarian instruction)",
+      "prompt": "string (instruction in Hungarian)",
       "payload": { "key": "value" },
-      "solution": "plain text string (NOT an object, NOT an array)"
+      "solution": "plain text string (NEVER an object or array)"
     }
   ],
   "reading": {
     "title": "string",
-    "bodyText": "string (min 100 chars authentic English)",
-    "questions": [ { "question": "string", "options": ["A","B","C","D"], "answer": "string (must exactly match one option)" } ]
+    "bodyText": "string (min 200 chars authentic English text with topic-relevant vocabulary)",
+    "questions": [ { "question": "string", "options": ["string1","string2","string3","string4"], "answer": "string (must exactly match one of the options)" } ]
   },
-  "writingPrompt": "string (Hungarian, asking for English essay)"
+  "writingPrompt": "string (instruction in Hungarian, asking for a 100-150 word English essay using vocabulary from this pack)"
 }
 
 IMPORTANT payload formats:
-- CLOZE: {"sentence": "The ___ is critical", "blank": "answer"}
-- MULTIPLE_CHOICE: {"options": ["A","B","C","D"]}
-- MATCHING: {"pairs": [["English","Magyar"]]}
-- TRANSLATION_*: {"hint": "optional hint"}
-Minimum: 4 vocabulary, 3 chunks, 2 contrastiveNotes, 4 exercises, 2 reading questions.`;
+- CLOZE: {"sentence": "The ___ is critical for performance", "blank": "correct word", "options": ["word1","word2","word3","word4"]}
+- MULTIPLE_CHOICE: {"options": ["A) ...","B) ...","C) ...","D) ..."]}
+- MATCHING: {"pairs": [["English phrase 1","Magyar fordítás 1"],["English phrase 2","Magyar fordítás 2"],["English phrase 3","Magyar fordítás 3"],["English phrase 4","Magyar fordítás 4"]]}
+- TRANSLATION_HU_TO_EN: {"sourceHu": "Hungarian text to translate", "hint": "optional grammar hint"}
+- TRANSLATION_EN_TO_HU: {"sourceEn": "English text to translate", "hint": "optional hint"}
+
+MINIMUM REQUIREMENTS (strictly enforced):
+- vocabulary: MINIMUM 8 items (target 10), each with 3-4 collocations
+- chunks: MINIMUM 6 items (target 8)
+- contrastiveNotes: MINIMUM 5 items (target 6)
+- exercises: MINIMUM 8 items (target 10), must include at least: 2x CLOZE, 2x MULTIPLE_CHOICE, 1x MATCHING, 2x TRANSLATION_HU_TO_EN, 1x TRANSLATION_EN_TO_HU
+- reading.questions: MINIMUM 3 questions`;
 
     if (this.geminiClient) {
       for (const model of [env.GEMINI_PRIMARY_MODEL, env.GEMINI_FALLBACK_MODEL]) {
