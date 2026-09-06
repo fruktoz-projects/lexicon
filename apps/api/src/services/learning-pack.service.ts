@@ -253,4 +253,23 @@ export class LearningPackService {
       })),
     };
   }
+
+  async deletePack(id: string): Promise<void> {
+    await this.prisma.learningPack.delete({
+      where: { id },
+    });
+  }
+
+  async updatePack(id: string, data: Partial<LearningPackDetail>): Promise<LearningPackDetail> {
+    await this.prisma.learningPack.update({
+      where: { id },
+      data: {
+        title: data.title,
+        focus: data.focus,
+      },
+    });
+    // A full update would involve nested writes, but for simplicity we'll just allow basic title/focus updates 
+    // or assume we use Prisma's deep update if necessary.
+    return this.getPackById(id);
+  }
 }

@@ -51,6 +51,21 @@ services:
     ports:
       - "${API_PORT}:3021"
 
+  prisma-studio:
+    build:
+      context: .
+      dockerfile: apps/api/Dockerfile
+      target: runner
+    container_name: lexicon-prisma-studio
+    restart: always
+    depends_on:
+      - postgres
+    environment:
+      DATABASE_URL: "postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB}?schema=public"
+    ports:
+      - "5556:5556"
+    entrypoint: ["npx", "prisma", "studio", "--port", "5556", "--hostname", "0.0.0.0"]
+
   web:
     build:
       context: .

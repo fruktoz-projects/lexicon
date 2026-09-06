@@ -184,5 +184,21 @@ export const api = {
       const res = await apiClient.post('/placement/evaluate', { testId, answers }, { timeout: AI_TIMEOUT });
       return res.data;
     }
+  },
+
+  // Admin
+  admin: {
+    getPacks: async (query?: LearningPacksQuery) => {
+      const res = await apiClient.get('/packs', { params: query });
+      return res.data;
+    },
+    deletePack: async (id: string) => {
+      const res = await apiClient.delete(`/packs/${id}`);
+      return res.data;
+    },
+    updatePack: async (id: string, data: Partial<LearningPackDetail>) => {
+      const res = await apiClient.put(`/packs/${id}`, data);
+      return res.data;
+    },
   }
 };

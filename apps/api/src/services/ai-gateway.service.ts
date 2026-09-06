@@ -37,13 +37,15 @@ CRITICAL PEDAGOGICAL RULES (L1 Anchor -> L2 Target):
 1. All lesson explanations, grammar notes, translations (translationHu, meaningHu, explanationHu), and prompts MUST BE IN HIGH-QUALITY NATURAL HUNGARIAN.
 2. All vocabulary target terms, definitions (for B2+), collocations, example sentences, English reading body, chunks, and exercise solutions MUST BE IN AUTHENTIC NATURAL ENGLISH.
 3. Contrastive Notes must highlight real "Hunglish traps" (false friends, missing prepositions, word order errors, Hungarian transfer errors).
-4. Output strictly valid JSON matching the requested schema without markdown formatting or code blocks.`;
+4. Output strictly valid JSON matching the requested schema without markdown formatting or code blocks.
+5. ENSURE MAXIMUM VARIETY: Every time you generate a pack, use completely different vocabulary items, unique reading scenarios, and novel exercise sentences. Do not repeat standard textbook examples. Be creative and highly varied!`;
 
     const userPrompt = `Generate a LearningPack JSON for:
 Topic: "${topic}"
 CEFR: "${cefr}"
 Zone: "${zone}"
 Focus: "${customFocus}"
+Generation ID/Seed: "${Date.now()}-${Math.random().toString(36).substring(7)}"
 
 Ensure at least:
 - 1 detailed Lesson in Hungarian with English embedded examples.
@@ -64,6 +66,7 @@ Ensure at least:
             ],
             config: {
               responseMimeType: 'application/json',
+              temperature: 0.9,
             },
           });
 
@@ -75,9 +78,7 @@ Ensure at least:
         }
       }
     }
-
-    // High quality deterministic fallback generator conforming to Schema
-    return this.getFallbackLearningPack(topic, cefr, zone, customFocus);
+    throw new Error('Hiba történt a generálás során. Kérlek ellenőrizd az API kulcsot vagy próbáld újra később.');
   }
 
   /**
@@ -129,9 +130,7 @@ Respond ONLY with valid JSON.`;
         }
       }
     }
-
-    // Pedagogical deterministic evaluation fallback
-    return this.getFallbackWritingEvaluation(submittedText, targetCefr);
+    throw new Error('Hiba történt az értékelés során. Kérlek ellenőrizd az API kulcsot vagy próbáld újra később.');
   }
 
   /**
@@ -160,203 +159,4 @@ Respond ONLY with valid JSON.`;
     throw new Error('All AI models failed to generate a response.');
   }
 
-  private getFallbackLearningPack(
-    topic: string,
-    cefr: CefrLevel,
-    zone: string,
-    focus: string
-  ): LearningPackGenerationDto {
-    return {
-      title: `${topic} — Expedition Master Pack`,
-      cefr: cefr,
-      topic: zone,
-      focus: focus,
-      estimatedMinutes: 25,
-      lesson: {
-        title: `${topic}: Elméleti Áttekintés és Tipikus Hunglish Csapdák`,
-        contentMd: `# ${topic} — Szakmai Útmutató (${cefr})\n\nA modern szakmai és hétköznapi kommunikációban a(z) **${topic}** témakör megkerülhetetlen. A magyar anyanyelvű tanulók leggyakrabban a szó szerinti tükörfordítások (*false friends*) és a hiányzó vagy hibás vonzatok (*prepositions*) miatt vétenek hibákat.\n\n### Fő Alapelvek:\n1. **Kollokációk használata:** Mindig kifejezéscsomagokban (*chunks*) tanuljunk, ne elszigetelt szavakban.\n2. **Igei vonzatok rögzítése:** Például magyarul *„részt venni valamiben”* $\\rightarrow$ angolul *„participate in something”* vagy *„take part in”*.\n3. **Professzionális regiszter:** Törekedjünk a CEFR ${cefr} szintű választékos kifejezésmódra!`,
-      },
-      vocabulary: [
-        {
-          term: 'streamline',
-          phonetics: '/ˈstriːm.laɪn/',
-          translationHu: 'áramvonalasít, egyszerűsít, hatékonyabbá tesz',
-          definitionEn: 'To make an organization, process, or system more effective by simplifying it.',
-          collocations: ['streamline the process', 'streamline operations', 'streamline communication'],
-          examples: ['We need to streamline the deployment workflow to save developer hours.'],
-        },
-        {
-          term: 'bottleneck',
-          phonetics: '/ˈbɒt.əl.nek/',
-          translationHu: 'szűk keresztmetszet, akadály',
-          definitionEn: 'A point of congestion in a system that occurs when workload arrives too quickly.',
-          collocations: ['identify a bottleneck', 'eliminate bottlenecks', 'performance bottleneck'],
-          examples: ['Database query latency is the primary bottleneck in our current architecture.'],
-        },
-        {
-          term: 'mitigate',
-          phonetics: '/ˈmɪt.ɪ.ɡeɪt/',
-          translationHu: 'mérsékel, enyhít, csökkent (kockázatot/kárt)',
-          definitionEn: 'To make something less severe, harmful, or painful.',
-          collocations: ['mitigate risks', 'mitigate the impact', 'mitigate vulnerability'],
-          examples: ['Implementing automated tests will mitigate the risk of regressions.'],
-        },
-        {
-          term: 'feasibility',
-          phonetics: '/ˌfiː.zəˈbɪl.ə.ti/',
-          translationHu: 'megvalósíthatóság, életképesség',
-          definitionEn: 'The state or degree of being easily or conveniently done.',
-          collocations: ['feasibility study', 'assess the feasibility', 'technical feasibility'],
-          examples: ['We conducted a feasibility study before committing to the cloud migration.'],
-        },
-      ],
-      chunks: [
-        {
-          phrase: 'bring to the table',
-          meaningHu: 'hozzáadni az értékhez / képességet nyújtani',
-          contextSentence: 'Her extensive backend experience is exactly what she brings to the table.',
-        },
-        {
-          phrase: 'get the ball rolling',
-          meaningHu: 'elindítani a folyamatot / beindítani a dolgokat',
-          contextSentence: 'Let us schedule a quick sync to get the ball rolling on this initiative.',
-        },
-        {
-          phrase: 'keep someone in the loop',
-          meaningHu: 'folyamatosan tájékoztatni valakit / képben tartani',
-          contextSentence: 'Please keep the stakeholders in the loop regarding timeline adjustments.',
-        },
-      ],
-      contrastiveNotes: [
-        {
-          hunglishTrap: 'according to me',
-          correctUsage: 'in my opinion / from my perspective',
-          explanationHu: 'Az „according to” kifejezést külső forrásokra, szakértőkre vagy adatokra használjuk (pl. „according to the report”), önmagunkra helytelen.',
-        },
-        {
-          hunglishTrap: 'responsible for do something',
-          correctUsage: 'responsible for doing something',
-          explanationHu: 'A „for” prepozíció után mindig -ing végződésű igealak (gerund) következik!',
-        },
-      ],
-      exercises: [
-        {
-          type: ExerciseType.CLOZE,
-          prompt: 'Válaszd ki a mondatba illő helyes szakkifejezést:',
-          payload: {
-            sentenceWithGap: 'Automated CI/CD pipelines help us _______ the release cycle and reduce human errors.',
-            options: ['streamline', 'mitigate', 'bottleneck', 'feasibility'],
-          },
-          solution: 'streamline',
-        },
-        {
-          type: ExerciseType.TRANSLATION_HU_TO_EN,
-          prompt: 'Fordítsd le a kifejezést angolra (ügyelj a vonzatra!):',
-          payload: {
-            sourceHu: 'csökkenteni a kockázatokat',
-            hints: ['mitigate', 'risks'],
-          },
-          solution: 'mitigate the risks',
-        },
-        {
-          type: ExerciseType.CLOZE,
-          prompt: 'Egészítsd ki a hiányzó kifejezéssel:',
-          payload: {
-            sentenceWithGap: 'Please keep everyone _______ regarding any architectural changes.',
-            options: ['in the loop', 'bring to table', 'on the ball', 'out of line'],
-          },
-          solution: 'in the loop',
-        },
-        {
-          type: ExerciseType.MULTIPLE_CHOICE,
-          prompt: 'Melyik a nyelvtanilag helyes forma a véleménykifejezésre?',
-          payload: {
-            question: 'Which phrase is natural and correct for expressing personal viewpoint?',
-            options: ['In my opinion', 'According to me', 'By my opinion', 'As my mind'],
-          },
-          solution: 'In my opinion',
-        },
-      ],
-      reading: {
-        title: `Strategic Agility and Engineering Excellence in ${topic}`,
-        bodyText: `In fast-paced modern environments, technical excellence alone is insufficient without transparent communication and streamlined workflows. High-performing teams continuously identify operational bottlenecks, conduct rigorous feasibility studies before major architectural shifts, and actively mitigate systemic risks. Crucially, keeping cross-functional stakeholders in the loop ensures collective alignment and accelerates decision-making cycles.`,
-        questions: [
-          {
-            question: 'What is essential alongside technical excellence?',
-            options: ['Transparent communication & streamlined workflows', 'Working overtime', 'Ignoring bottlenecks', 'Eliminating all testing'],
-            answer: 'Transparent communication & streamlined workflows',
-          },
-          {
-            question: 'Why is keeping stakeholders in the loop beneficial according to the text?',
-            options: ['It accelerates decision-making cycles and ensures alignment', 'It replaces technical documentation', 'It stops code reviews', 'It eliminates all costs'],
-            answer: 'It accelerates decision-making cycles and ensures alignment',
-          },
-        ],
-      },
-      writingPrompt: `Írj egy 5-8 mondatos angol összefoglalót arról, hogyan segít a folyamatok egyszerűsítése (streamlining) és a kockázatok enyhítése (mitigating risks) a sikeres projektátadásban.`,
-    };
-  }
-
-  private getFallbackWritingEvaluation(submittedText: string, targetCefr: CefrLevel): WritingFeedbackDto {
-    const textLower = submittedText.toLowerCase();
-    const errors: WritingFeedbackDto['errors'] = [];
-    const positives: string[] = [];
-
-    // Detect common Hungarian traps
-    if (textLower.includes('according to me')) {
-      errors.push({
-        original: 'according to me',
-        replacement: 'in my opinion / from my perspective',
-        explanationHu: 'Az „according to me” tipikus hunglish tükörfordítás. Használj inkább „In my opinion”-t vagy „From my point of view”-t.',
-        ruleHu: 'Véleménykifejezés és külső forrás hivatkozás szabálya',
-      });
-    }
-
-    if (textLower.includes('make a research') || textLower.includes('made a research')) {
-      errors.push({
-        original: 'make a research',
-        replacement: 'conduct research / do research',
-        explanationHu: 'A „research” nem számlálható főnév és a „do/conduct” igével kollokál, nem a „make”-kel.',
-        ruleHu: 'Megszámlálhatatlan főnevek és igei kollokációk',
-      });
-    }
-
-    if (textLower.includes('information are') || textLower.includes('informations')) {
-      errors.push({
-        original: 'informations',
-        replacement: 'information is',
-        explanationHu: 'Az „information” angolban mindig egyes számú és megszámlálhatatlan!',
-        ruleHu: 'Megszámlálhatatlan főnevek egyeztetése',
-      });
-    }
-
-    if (textLower.includes('responsible for do')) {
-      errors.push({
-        original: 'responsible for do',
-        replacement: 'responsible for doing',
-        explanationHu: 'A „for” prepozíció után mindig -ing végződésű gerund áll.',
-        ruleHu: 'Prepozíció + Gerund szabály',
-      });
-    }
-
-    if (submittedText.length > 100) {
-      positives.push('Kiváló mondathosszúság és gondolati tagolás.');
-    }
-    if (textLower.includes('however') || textLower.includes('furthermore') || textLower.includes('therefore')) {
-      positives.push('Dicséretes kötőszó-használat (linking words), ami emeli a szöveg koherenciáját.');
-    }
-    if (textLower.includes('streamline') || textLower.includes('mitigate') || textLower.includes('essential')) {
-      positives.push('Gazdag, B2/C1 szintű szakmai szókincs.');
-    }
-
-    const calculatedScore = Math.max(50, Math.min(95, 88 - errors.length * 8 + (positives.length > 1 ? 5 : 0)));
-
-    return {
-      score: calculatedScore,
-      overallAssessmentHu: `Az írásbeli kifejezőkészséged stabil alapokat mutat, a gondolatmenet jól követhető. Néhány kifejezésbeli finomhangolással és a magyar tükörfordítások elkerülésével a szöveged elérheti a magas szintű (${targetCefr}) természetességet.`,
-      errors,
-      positives: positives.length > 0 ? positives : ['Jó strukturált mondatfelépítés', 'Megfelelő témaköri szókincs'],
-      suggestedCefr: calculatedScore >= 80 ? targetCefr : CefrLevel.B1,
-    };
-  }
 }

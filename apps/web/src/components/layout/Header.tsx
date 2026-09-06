@@ -8,6 +8,7 @@ import {
   Plus,
   Home,
   LogOut,
+  Settings,
 } from 'lucide-react';
 import { useAuthStore } from '../../store/authStore';
 import { useUiStore, ActiveTab } from '../../store/uiStore';
@@ -25,6 +26,11 @@ const NAV_ITEMS: { id: ActiveTab; label: string; icon: React.ReactNode }[] = [
 export const Header: React.FC = () => {
   const { user, logout } = useAuthStore();
   const { activeTab, setActiveTab, openGeneratorModal } = useUiStore();
+
+  const navItems = [...NAV_ITEMS];
+  if (user?.role === 'ADMIN') {
+    navItems.push({ id: 'admin', label: 'Admin', icon: <Settings size={16} /> });
+  }
 
   const handleLogout = () => {
     audio.playClickSound();
@@ -106,7 +112,7 @@ export const Header: React.FC = () => {
 
             {/* Desktop Navigation */}
             <nav className="hidden lg:flex items-center gap-1 bg-surface-subtle border border-border/60 p-1.5 rounded-2xl shadow-inner">
-              {NAV_ITEMS.map((item) => renderNavButton(item, false))}
+              {navItems.map((item) => renderNavButton(item, false))}
             </nav>
 
             {/* Right Action Bar */}
@@ -155,7 +161,7 @@ export const Header: React.FC = () => {
       {/* Mobile Bottom Navigation */}
       <nav className="lg:hidden fixed bottom-0 left-0 right-0 z-50 bg-surface-subtle border-t-2 border-border shadow-[0_-4px_14px_rgba(15,23,42,0.1)] pb-safe">
         <div className="flex items-center justify-around p-1.5 max-w-md mx-auto">
-          {NAV_ITEMS.map((item) => renderNavButton(item, true))}
+          {navItems.map((item) => renderNavButton(item, true))}
         </div>
       </nav>
     </>

@@ -7,7 +7,14 @@ export const adminRoutes: FastifyPluginAsync = async (fastify) => {
   const aiGateway = new AiGatewayService();
   const packService = new LearningPackService(fastify.prisma);
 
-  fastify.post('/generate-pack', { preHandler: [fastify.authenticate] }, async (request, reply) => {
+  const isAdmin = (request: any, reply: any, done: any) => {
+    if (request.user?.role !== 'ADMIN') {
+      return reply.status(403).send({ error: 'Forbidden: Admin access required' });
+    }
+    done();
+  };
+
+  fastify.post('/generate-pack', { preHandler: [fastify.authenticate, isAdmin] }, async (request, reply) => {
     const parse = GeneratePackRequestSchema.safeParse(request.body);
     if (!parse.success) {
       return reply.status(400).send({ error: 'Validation Error', issues: parse.error.issues });
@@ -24,6 +31,36 @@ export const adminRoutes: FastifyPluginAsync = async (fastify) => {
     } catch (err: any) {
       request.log.error(err);
       return reply.status(500).send({ error: err.message || 'Failed to generate pack' });
+    }
+  });
+
+  fastify.get('/packs', { preHandler: [fastify.authenticate, isAdmin] }, async (request, reply) => {
+    try {
+      const packs = await packService.listPacks({ limit: 100 });
+      return reply.send(packs);
+    } catch (err: any) {
+      request.log.error(err);
+      return reply.status(500).send({ error: err.message || 'Failed to fetch packs' });
+    }
+  });
+
+  fastify.put('/packs/:id', { preHandler: [fastify.authenticate, isAdmin] }, async (request: any, reply) => {
+    try {
+      const updated = await packService.updatePack(request.params.id, request.body as any);
+      return reply.send(updated);
+    } catch (err: any) {
+      request.log.error(err);
+      return reply.status(500).send({ error: err.message || 'Failed to update pack' });
+    }
+  });
+
+  fastify.delete('/packs/:id', { preHandler: [fastify.authenticate, isAdmin] }, async (request: any, reply) => {
+    try {
+      await packService.deletePack(request.params.id);
+      return reply.status(204).send();
+    } catch (err: any) {
+      request.log.error(err);
+      return reply.status(500).send({ error: err.message || 'Failed to delete pack' });
     }
   });
 };

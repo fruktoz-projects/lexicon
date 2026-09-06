@@ -1,7 +1,7 @@
 import { create } from 'zustand';
 import { ZoneType } from '@lexicon/types';
 
-export type ActiveTab = 'dashboard' | 'zones' | 'practice' | 'writing' | 'analytics';
+export type ActiveTab = 'dashboard' | 'zones' | 'practice' | 'writing' | 'analytics' | 'admin';
 
 interface UiState {
   activeTab: ActiveTab;

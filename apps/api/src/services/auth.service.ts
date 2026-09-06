@@ -51,6 +51,7 @@ export class AuthService {
     return {
       id: user.id,
       email: user.email,
+      role: user.role as any,
       targetCefr: user.targetCefr as CefrLevel,
       currentCefr: user.currentCefr as CefrLevel,
       dailyGoalMinutes: user.dailyGoalMinutes,
@@ -104,6 +105,7 @@ export class AuthService {
     return {
       id: updatedUser.id,
       email: updatedUser.email,
+      role: updatedUser.role as any,
       targetCefr: updatedUser.targetCefr as CefrLevel,
       currentCefr: updatedUser.currentCefr as CefrLevel,
       dailyGoalMinutes: updatedUser.dailyGoalMinutes,
@@ -127,6 +129,7 @@ export class AuthService {
     return {
       id: user.id,
       email: user.email,
+      role: user.role as any,
       targetCefr: user.targetCefr as CefrLevel,
       currentCefr: user.currentCefr as CefrLevel,
       dailyGoalMinutes: user.dailyGoalMinutes,
@@ -155,6 +158,7 @@ export class AuthService {
     return {
       id: user.id,
       email: user.email,
+      role: user.role as any,
       targetCefr: user.targetCefr as CefrLevel,
       currentCefr: user.currentCefr as CefrLevel,
       dailyGoalMinutes: user.dailyGoalMinutes,

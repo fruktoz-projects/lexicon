@@ -1,8 +1,9 @@
-import { CefrLevel, ExerciseType, ProgressItemType, ZoneType } from './enums';
+import { CefrLevel, ExerciseType, ProgressItemType, ZoneType, Role } from './enums';
 
 export interface UserProfile {
   id: string;
   email: string;
+  role: Role;
   targetCefr: CefrLevel;
   currentCefr: CefrLevel;
   dailyGoalMinutes: number;

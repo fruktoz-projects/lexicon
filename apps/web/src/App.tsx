@@ -7,6 +7,7 @@ import { PracticePage } from './pages/PracticePage';
 import { WritingPage } from './pages/WritingPage';
 import { AnalyticsPage } from './pages/AnalyticsPage';
 import { AuthPage } from './pages/AuthPage';
+import { AdminDashboardPage } from './pages/AdminDashboardPage';
 import { PackGeneratorModal } from './components/packs/PackGeneratorModal';
 import { useAuthStore } from './store/authStore';
 import { useOfflineStore } from './store/offlineStore';
@@ -14,7 +15,7 @@ import { useUiStore } from './store/uiStore';
 import { ZoneType } from '@lexicon/types';
 
 export const App: React.FC = () => {
-  const { isAuthenticated } = useAuthStore();
+  const { isAuthenticated, user } = useAuthStore();
   const { setOnlineStatus } = useOfflineStore();
   const {
     activeTab,
@@ -80,6 +81,8 @@ export const App: React.FC = () => {
         {activeTab === 'writing' && <WritingPage />}
 
         {activeTab === 'analytics' && <AnalyticsPage />}
+
+        {activeTab === 'admin' && user?.role === 'ADMIN' && <AdminDashboardPage />}
       </main>
 
       {/* Footer */}

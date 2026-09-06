@@ -7,6 +7,11 @@ export enum CefrLevel {
   C2 = 'C2',
 }
 
+export enum Role {
+  USER = 'USER',
+  ADMIN = 'ADMIN',
+}
+
 export enum ExerciseType {
   CLOZE = 'CLOZE',
   MULTIPLE_CHOICE = 'MULTIPLE_CHOICE',

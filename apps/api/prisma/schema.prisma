@@ -24,10 +24,16 @@ enum ExerciseType {
   TRANSLATION_EN_TO_HU
 }
 
+enum Role {
+  USER
+  ADMIN
+}
+
 model User {
   id                 String              @id @default(uuid())
   email              String              @unique
   passwordHash       String
+  role               Role                @default(USER)
   targetCefr         CefrLevel           @default(B2)
   currentCefr        CefrLevel           @default(A2)
   dailyGoalMinutes   Int                 @default(15)
