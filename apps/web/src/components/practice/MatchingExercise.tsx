@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { MatchingPayload } from '@lexicon/types';
 import { audio } from '../../services/audio';
 
@@ -19,9 +19,19 @@ export const MatchingExercise: React.FC<MatchingExerciseProps> = ({
   const [matched, setMatched] = useState<Record<string, string>>({}); // left -> right
   const [shuffledRights, setShuffledRights] = useState<string[]>([]);
 
+  const normalizedPairs = useMemo(() => {
+    if (!payload?.pairs) return [];
+    return payload.pairs.map((p, idx) => {
+      if (Array.isArray(p)) {
+        return { id: String(idx), left: p[0] || '', right: p[1] || '' };
+      }
+      return p;
+    });
+  }, [payload?.pairs]);
+
   useEffect(() => {
-    if (payload?.pairs) {
-      const rights = payload.pairs.map((p) => p.right);
+    if (normalizedPairs.length > 0) {
+      const rights = normalizedPairs.map((p) => p.right);
       const shuffled = [...rights].sort(() => Math.random() - 0.5);
       setShuffledRights(shuffled);
       setMatched({});
@@ -44,8 +54,8 @@ export const MatchingExercise: React.FC<MatchingExerciseProps> = ({
     setSelectedLeft(null);
 
     // If all pairs matched
-    if (Object.keys(newMatched).length === payload.pairs.length) {
-      const resultStr = payload.pairs
+    if (Object.keys(newMatched).length === normalizedPairs.length) {
+      const resultStr = normalizedPairs
         .map((p) => `${p.id}:${newMatched[p.left] || ''}`)
         .join(',');
       onComplete(resultStr);
@@ -64,7 +74,7 @@ export const MatchingExercise: React.FC<MatchingExerciseProps> = ({
           <div className="text-xs font-monument uppercase text-muted tracking-wider font-bold">
             Angol Kifejezések:
           </div>
-          {payload.pairs?.map((p) => {
+          {normalizedPairs.map((p) => {
             const isSelected = selectedLeft === p.left;
             const isDone = Boolean(matched[p.left]);
 
