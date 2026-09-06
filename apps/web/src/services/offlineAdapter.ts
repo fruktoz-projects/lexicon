@@ -15,6 +15,7 @@ import {
   WritingFeedbackDto,
   WritingSubmissionModel,
   ZoneType,
+  Role,
 } from '@lexicon/types';
 import { useAuthStore } from '../store/authStore';
 import { useOfflineStore } from '../store/offlineStore';
@@ -29,6 +30,7 @@ export const offlineAdapter = {
       const user: UserProfile = useAuthStore.getState().user || {
         id: 'usr_demo',
         email: data.email || 'expedition@lexicon.hu',
+        role: Role.USER,
         targetCefr: CefrLevel.B2,
         currentCefr: CefrLevel.B1,
         dailyGoalMinutes: 15,
@@ -45,6 +47,7 @@ export const offlineAdapter = {
       const user: UserProfile = {
         id: `usr_${Date.now()}`,
         email: data.email,
+        role: Role.USER,
         targetCefr: data.targetCefr || CefrLevel.B2,
         currentCefr: data.currentCefr || CefrLevel.A2,
         dailyGoalMinutes: 15,
@@ -61,6 +64,7 @@ export const offlineAdapter = {
       return useAuthStore.getState().user || {
         id: 'usr_demo',
         email: 'expedition@lexicon.hu',
+        role: Role.USER,
         targetCefr: CefrLevel.B2,
         currentCefr: CefrLevel.B1,
         dailyGoalMinutes: 15,
@@ -265,6 +269,7 @@ export const offlineAdapter = {
         user: {
           id: 'usr_local',
           email: 'local@lexicon.hu',
+          role: Role.USER,
           currentCefr: CefrLevel.B1,
           targetCefr: CefrLevel.B2,
           dailyGoalMinutes: 15,

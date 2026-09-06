@@ -5,11 +5,13 @@ import {
   UserProfile,
   WritingSubmissionModel,
   ZoneType,
+  Role,
 } from '@lexicon/types';
 
 export const INITIAL_USER: UserProfile = {
   id: 'usr_demo_expedition_01',
   email: 'expedition@lexicon.hu',
+  role: Role.USER,
   targetCefr: CefrLevel.B2,
   currentCefr: CefrLevel.B1,
   dailyGoalMinutes: 15,

@@ -3,8 +3,6 @@ import { Trash2, Edit, Calendar, BookOpen, Activity, Target } from 'lucide-react
 import { api } from '../services/api';
 import { LearningPackSummary } from '@lexicon/types';
 import { CefrBadge } from '../common/CefrBadge';
-import { api } from '../services/api';
-import { LearningPackSummary } from '@lexicon/types';
 
 export const AdminDashboardPage: React.FC = () => {
   const [packs, setPacks] = useState<LearningPackSummary[]>([]);
