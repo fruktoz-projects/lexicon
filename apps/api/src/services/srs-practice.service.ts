@@ -233,8 +233,9 @@ export class SrsPracticeService {
     itemId: string;
     itemType: ProgressItemType | string;
     userAnswer: string;
+    helpUsed?: boolean;
   }): Promise<PracticeSubmitResult> {
-    const { userId, itemId, itemType, userAnswer } = params;
+    const { userId, itemId, itemType, userAnswer, helpUsed } = params;
 
     // Find reference solution
     let expectedSolution = '';
@@ -269,6 +270,7 @@ export class SrsPracticeService {
     const normUser = normalizeAnswer(userAnswer);
     const normExpected = normalizeAnswer(expectedSolution);
     const isCorrect = normUser === normExpected || (normExpected.length > 2 && normUser.includes(normExpected));
+    const isCorrectForSrs = isCorrect && !helpUsed; // If help used, SRS treats it as failure
 
     // Get current progress or create initial
     const existingProg = await this.prisma.userProgress.findUnique({
@@ -284,12 +286,12 @@ export class SrsPracticeService {
     const currentStage = existingProg ? existingProg.srsStage : 0;
     const currentConsecutive = existingProg ? existingProg.consecutiveOk : 0;
 
-    const srsRes = calculateNextSrsResult(currentStage, isCorrect);
+    const srsRes = calculateNextSrsResult(currentStage, isCorrectForSrs);
     const nextStage = srsRes.nextStage;
-    const nextConsecutive = isCorrect ? currentConsecutive + 1 : 0;
+    const nextConsecutive = isCorrectForSrs ? currentConsecutive + 1 : 0;
     const intervalDays = srsRes.intervalDays;
 
-    if (!isCorrect && itemType === ProgressItemType.EXERCISE) {
+    if (!isCorrectForSrs && itemType === ProgressItemType.EXERCISE) {
       // Log mistake
       await this.prisma.mistakeLog.create({
         data: {
@@ -341,6 +343,7 @@ export class SrsPracticeService {
       streakDays,
       consecutiveOk: nextConsecutive,
       explanationHu,
+      helpUsed,
     };
   }
 }

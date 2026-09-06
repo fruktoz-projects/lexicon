@@ -17,6 +17,7 @@ import {
   XCircle,
   ArrowRight,
   Loader2,
+  HelpCircle,
 } from 'lucide-react';
 import { audio } from '../../services/audio';
 
@@ -34,10 +35,12 @@ export const PracticeEngine: React.FC<PracticeEngineProps> = ({ onFinish }) => {
     lastResult,
     score,
     isCompleted,
+    isHelpUsed,
     startSession,
     setAnswer,
     setSubmitting,
     setResult,
+    setHelpUsed,
     nextItem,
     resetSession,
   } = usePracticeStore();
@@ -75,6 +78,7 @@ export const PracticeEngine: React.FC<PracticeEngineProps> = ({ onFinish }) => {
         itemId: currentItem.id,
         itemType: currentItem.sourceType,
         userAnswer: currentAnswer.trim(),
+        helpUsed: isHelpUsed,
       });
 
       setResult(res);
@@ -276,6 +280,16 @@ export const PracticeEngine: React.FC<PracticeEngineProps> = ({ onFinish }) => {
           )}
         </div>
 
+        {/* Display Help Hint */}
+        {isHelpUsed && !lastResult && (
+          <div className="mt-4 p-3 bg-status-warningBg border border-status-warningBorder rounded-xl text-sm font-sans flex gap-2 animate-fade-in text-ink">
+            <HelpCircle size={18} className="text-status-warning shrink-0 mt-0.5" />
+            <div>
+              <strong>Tipp:</strong> {currentItem.payload?.hints?.join(', ') || currentItem.explanationHu || `A megoldás valahogy így kezdődik: "${currentItem.solution.substring(0, Math.max(3, Math.floor(currentItem.solution.length / 2)))}..."`}
+            </div>
+          </div>
+        )}
+
         {/* Bottom Feedback Banner & Actions */}
         <div className="mt-6 sm:mt-8 pt-4 border-t-2 border-border">
           {!lastResult ? (
@@ -292,19 +306,30 @@ export const PracticeEngine: React.FC<PracticeEngineProps> = ({ onFinish }) => {
                 </span>
               </div>
 
-              <Button
-                variant="primary"
-                size="md"
-                disabled={isSubmitting || (!currentAnswer.trim() && currentItem.exerciseType !== ExerciseType.MATCHING)}
-                onClick={handleSubmit}
-                className="w-full sm:w-auto ml-auto px-8 font-monument"
-              >
-                {isSubmitting ? (
-                  <Loader2 size={16} className="animate-spin" />
-                ) : (
-                  'Válasz Ellenőrzése'
-                )}
-              </Button>
+              <div className="flex items-center gap-2 w-full sm:w-auto ml-auto">
+                <Button
+                  variant="secondary"
+                  size="md"
+                  disabled={isSubmitting || isHelpUsed || (!currentAnswer.trim() && currentItem.exerciseType === ExerciseType.MATCHING)}
+                  onClick={() => setHelpUsed(true)}
+                  className="px-4 font-monument"
+                >
+                  Segítség
+                </Button>
+                <Button
+                  variant="primary"
+                  size="md"
+                  disabled={isSubmitting || (!currentAnswer.trim() && currentItem.exerciseType !== ExerciseType.MATCHING)}
+                  onClick={handleSubmit}
+                  className="w-full sm:w-auto px-8 font-monument"
+                >
+                  {isSubmitting ? (
+                    <Loader2 size={16} className="animate-spin" />
+                  ) : (
+                    'Válasz Ellenőrzése'
+                  )}
+                </Button>
+              </div>
             </div>
           ) : (
             <div
@@ -317,8 +342,10 @@ export const PracticeEngine: React.FC<PracticeEngineProps> = ({ onFinish }) => {
                 <div className="flex items-center gap-2 font-monument font-bold text-sm sm:text-base">
                   {lastResult.isCorrect ? (
                     <>
-                      <CheckCircle2 size={20} className="text-status-success" />
-                      <span>Helyes válasz! SRS intervallum megnövelve.</span>
+                      <CheckCircle2 size={20} className="text-status-success shrink-0" />
+                      <span>
+                        Helyes válasz! {lastResult.helpUsed ? 'Mivel segítséget használtál, a kártya visszakerült a gyakorolandók közé.' : 'SRS intervallum megnövelve.'}
+                      </span>
                     </>
                   ) : (
                     <>

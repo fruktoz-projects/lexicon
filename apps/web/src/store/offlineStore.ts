@@ -39,7 +39,7 @@ interface OfflineState {
   getPackById: (id: string) => LearningPackDetail | undefined;
   createLocalRemixPack: (payload: CreateRemixPackPayload) => LearningPackDetail;
   assembleLocalSession: (limit?: number) => PracticeSessionResponse;
-  submitLocalAnswer: (itemId: string, itemType: string, userAnswer: string) => PracticeSubmitResult;
+  submitLocalAnswer: (itemId: string, itemType: string, userAnswer: string, helpUsed?: boolean) => PracticeSubmitResult;
   saveLocalWritingSubmission: (promptText: string, submittedText: string, evaluation: WritingFeedbackDto) => WritingSubmissionModel;
 }
 
@@ -297,7 +297,7 @@ export const useOfflineStore = create<OfflineState>((set, get) => {
       };
     },
 
-    submitLocalAnswer: (itemId, itemType, userAnswer) => {
+    submitLocalAnswer: (itemId, itemType, userAnswer, helpUsed) => {
       const state = get();
       let expectedSolution = '';
       let explanationHu = '';
@@ -321,16 +321,17 @@ export const useOfflineStore = create<OfflineState>((set, get) => {
       const normUser = normalizeAnswer(userAnswer);
       const normExpected = normalizeAnswer(expectedSolution);
       const isCorrect = normUser === normExpected || (normExpected.length > 2 && normUser.includes(normExpected));
+      const isCorrectForSrs = isCorrect && !helpUsed;
 
       const currentProg = state.progress[itemId];
       const currentStage = currentProg ? currentProg.srsStage : 0;
       const currentConsecutive = currentProg ? currentProg.consecutiveOk : 0;
 
-      const srsRes = calculateNextSrsResult(currentStage, isCorrect);
+      const srsRes = calculateNextSrsResult(currentStage, isCorrectForSrs);
       const nextStage = srsRes.nextStage;
-      const nextConsecutive = isCorrect ? currentConsecutive + 1 : 0;
+      const nextConsecutive = isCorrectForSrs ? currentConsecutive + 1 : 0;
 
-      if (!isCorrect) {
+      if (!isCorrectForSrs) {
         // Log mistake
         const newMistake: MistakeLogModel = {
           id: `mist_${Date.now()}`,
@@ -367,6 +368,7 @@ export const useOfflineStore = create<OfflineState>((set, get) => {
         streakDays: 7,
         consecutiveOk: nextConsecutive,
         explanationHu,
+        helpUsed,
       };
     },
 

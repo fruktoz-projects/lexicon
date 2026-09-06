@@ -78,6 +78,7 @@ export interface PracticeSubmitResult {
   streakDays: number;
   consecutiveOk: number;
   explanationHu?: string;
+  helpUsed?: boolean;
 }
 
 // Analytics Responses

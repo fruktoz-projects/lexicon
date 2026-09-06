@@ -197,8 +197,8 @@ export const offlineAdapter = {
       return useOfflineStore.getState().assembleLocalSession(limit);
     },
 
-    submit: async (data: { itemId: string; itemType: ProgressItemType | string; userAnswer: string }): Promise<PracticeSubmitResult> => {
-      return useOfflineStore.getState().submitLocalAnswer(data.itemId, data.itemType, data.userAnswer);
+    submit: async (data: { itemId: string; itemType: ProgressItemType | string; userAnswer: string; helpUsed?: boolean }): Promise<PracticeSubmitResult> => {
+      return useOfflineStore.getState().submitLocalAnswer(data.itemId, data.itemType, data.userAnswer, data.helpUsed);
     },
   },
 

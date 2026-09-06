@@ -31,6 +31,7 @@ export const practiceRoutes: FastifyPluginAsync = async (fastify) => {
         itemId: parse.data.itemId,
         itemType: parse.data.itemType,
         userAnswer: parse.data.userAnswer,
+        helpUsed: parse.data.helpUsed,
       });
 
       return reply.send(result);

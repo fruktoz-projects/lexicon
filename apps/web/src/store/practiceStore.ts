@@ -14,11 +14,13 @@ interface PracticeSessionState {
     xpEarned: number;
   };
   isCompleted: boolean;
+  isHelpUsed: boolean;
 
   startSession: (sessionId: string, items: PracticeSessionItem[]) => void;
   setAnswer: (ans: string) => void;
   setSubmitting: (sub: boolean) => void;
   setResult: (res: PracticeSubmitResult | null) => void;
+  setHelpUsed: (used: boolean) => void;
   nextItem: () => void;
   resetSession: () => void;
 }
@@ -36,6 +38,7 @@ export const usePracticeStore = create<PracticeSessionState>((set, get) => ({
     xpEarned: 0,
   },
   isCompleted: false,
+  isHelpUsed: false,
 
   startSession: (sessionId, items) => {
     set({
@@ -47,12 +50,15 @@ export const usePracticeStore = create<PracticeSessionState>((set, get) => ({
       lastResult: null,
       score: { correct: 0, incorrect: 0, xpEarned: 0 },
       isCompleted: false,
+      isHelpUsed: false,
     });
   },
 
   setAnswer: (currentAnswer) => set({ currentAnswer }),
 
   setSubmitting: (isSubmitting) => set({ isSubmitting }),
+
+  setHelpUsed: (isHelpUsed) => set({ isHelpUsed }),
 
   setResult: (lastResult) => {
     if (!lastResult) {
@@ -82,6 +88,7 @@ export const usePracticeStore = create<PracticeSessionState>((set, get) => ({
         currentIndex: currentIndex + 1,
         currentAnswer: '',
         lastResult: null,
+        isHelpUsed: false,
       });
     }
   },
@@ -96,6 +103,7 @@ export const usePracticeStore = create<PracticeSessionState>((set, get) => ({
       lastResult: null,
       score: { correct: 0, incorrect: 0, xpEarned: 0 },
       isCompleted: false,
+      isHelpUsed: false,
     });
   },
 }));

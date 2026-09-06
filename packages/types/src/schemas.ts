@@ -111,6 +111,7 @@ export const PracticeSubmitSchema = z.object({
   itemType: z.enum(['VOCAB', 'CHUNK', 'EXERCISE']),
   userAnswer: z.string(),
   isCorrect: z.boolean().optional(),
+  helpUsed: z.boolean().optional(),
 });
 
 export const WritingEvaluateSchema = z.object({

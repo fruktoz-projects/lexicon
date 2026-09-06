@@ -142,7 +142,7 @@ export const api = {
       return res.data;
     },
 
-    submit: async (data: { itemId: string; itemType: string; userAnswer: string }): Promise<PracticeSubmitResult> => {
+    submit: async (data: { itemId: string; itemType: string; userAnswer: string; helpUsed?: boolean }): Promise<PracticeSubmitResult> => {
       if (isOffline()) {
         return offlineAdapter.practice.submit(data);
       }
