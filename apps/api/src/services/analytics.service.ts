@@ -5,6 +5,7 @@ import {
   MistakePatternItem,
   ProgressItemType,
   ZoneType,
+  Role,
 } from '@lexicon/types';
 
 export class AnalyticsService {
@@ -110,6 +111,7 @@ export class AnalyticsService {
       user: {
         id: user.id,
         email: user.email,
+        role: user.role as Role,
         targetCefr: user.targetCefr as CefrLevel,
         currentCefr: user.currentCefr as CefrLevel,
         dailyGoalMinutes: user.dailyGoalMinutes,
